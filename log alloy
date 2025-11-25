@@ -66,3 +66,21 @@ Error: /etc/alloy/config.alloy:164:2: expected }, got EOF
     |  
 interrupt received
 Error: could not perform the initial load successfully
+
+
+Error: /etc/alloy/config.alloy:124:1: cannot find the definition of component name "otelcol.exporter.tempo"
+
+123 | 
+124 | otelcol.exporter.tempo "tempo" {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+125 |   endpoint = "http://tempo:4317"
+
+Error: /etc/alloy/config.alloy:136:1: cannot find the definition of component name "otelcol.service"
+
+135 | 
+136 | otelcol.service "default" {
+    | ^^^^^^^^^^^^^^^
+137 |   pipelines {
+
+interrupt received
+Error: could not perform the initial load successfully
