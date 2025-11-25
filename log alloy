@@ -13,6 +13,13 @@ Error: /etc/alloy/config.alloy:22:3: unrecognized attribute name "host_root"
 
 interrupt received
 
+  # -- Security context to apply to the Grafana Alloy pod.
+  podSecurityContext:
+    privileged: true
+    runAsUser: 0
+    capabilities:
+      add: ["SYS_ADMIN", "SYS_PTRACE"]
+
 W1125 03:06:01.724749 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.capabilities"
 W1125 03:06:01.724793 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.privileged"
 Release "alloy" has been upgraded. Happy Helming!
