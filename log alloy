@@ -12,3 +12,7 @@ Error: /etc/alloy/config.alloy:22:3: unrecognized attribute name "host_root"
 23 | }
 
 interrupt received
+
+a@stg-master01:~/app-main/appapp-appyaml/alloy$ helm upgrade alloy ./ -f values.yaml 
+W1125 03:06:01.724749 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.capabilities"
+W1125 03:06:01.724793 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.privileged"
