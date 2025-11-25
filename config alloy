@@ -3,72 +3,53 @@ logging {
   format = "logfmt"
 }
 
+# --- DISCOVERY (optional, không liên quan đến OTLP agent) ---
 discovery.kubernetes "pods" {
   role = "pod"
 }
 
-# OTLP receiver (nhận gRPC + HTTP từ opentelemetry-javaagent)
-otelcol.receiver.otlp "default" {
+# --- OTLP RECEIVER ---
+otelcol.receiver.otlp "receiver" {
   grpc {}
   http {}
 
-  # xuất đầu ra của receiver vào các output targets (ví dụ processors/exporters)
   output {
-    traces  = [otelcol.processor.batch.default.input]
-    metrics = [otelcol.processor.batch.default.input]
-    logs    = [otelcol.processor.batch.default.input]
+    traces  = [otelcol.processor.batch "batch".input]
+    metrics = [otelcol.processor.batch "batch".input]
+    logs    = [otelcol.processor.batch "batch".input]
   }
 }
 
-# Batch processor (đề xuất dùng trước exporters)
-otelcol.processor.batch "default" {
+# --- BATCH PROCESSOR ---
+otelcol.processor.batch "batch" {
   timeout = "5s"
   send_batch_size = 8192
-  send_batch_max_size = 16384
+
+  output {
+    traces  = [otelcol.exporter.otlp "to_tempo".input]
+    metrics = [otelcol.exporter.prometheus "to_prom".input]
+    logs    = [otelcol.exporter.loki "to_loki".input]
+  }
 }
 
-# Exporter: gửi dữ liệu tới Tempo bằng OTLP
-# Tempo nhận OTLP gRPC trên 4317 (thường) — dùng otlp exporter và chỉ endpoint tới Tempo
-otelcol.exporter.otlp "tempo" {
+# --- EXPORTER → TEMPO (TRACE) ---
+otelcol.exporter.otlp "to_tempo" {
   client {
-    endpoint = "tempo:4317"    # nếu chạy local/k8s, đổi tên service nếu cần
+    endpoint = "http://tempo:4317"
     tls {
-      insecure = true          # trong cluster nội bộ, có thể set true; production: dùng TLS đúng
+      insecure = true
     }
   }
 }
 
-# Exporter: convert & forward metrics tới Prometheus pipeline của Alloy
-otelcol.exporter.prometheus "prometheus" {
-  endpoint = "0.0.0.0:9464"    # Alloy sẽ expose Prometheus metrics ở đây để Prometheus scrape
+# --- EXPORTER → PROMETHEUS (METRICS) ---
+otelcol.exporter.prometheus "to_prom" {
+  endpoint = "0.0.0.0:9464"
 }
 
-# Exporter: logs → Loki (nếu dùng)
-otelcol.exporter.loki "loki" {
+# --- EXPORTER → LOKI (LOGS) ---
+otelcol.exporter.loki "to_loki" {
   client {
     endpoint = "http://loki:3100/loki/api/v1/push"
-  }
-}
-
-# Service pipelines: nối các components lại với nhau
-otelcol.service "default" {
-  pipelines {
-    traces = [
-      otelcol.receiver.otlp.default,
-      otelcol.processor.batch.default,
-      otelcol.exporter.otlp.tempo,
-    ]
-
-    metrics = [
-      otelcol.receiver.otlp.default,
-      otelcol.processor.batch.default,
-      otelcol.exporter.prometheus.prometheus,
-    ]
-
-    logs = [
-      otelcol.receiver.otlp.default,
-      otelcol.processor.batch.default,
-      otelcol.exporter.loki.loki,
-    ]
   }
 }
