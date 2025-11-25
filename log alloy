@@ -84,3 +84,14 @@ Error: /etc/alloy/config.alloy:136:1: cannot find the definition of component na
 
 interrupt received
 Error: could not perform the initial load successfully
+
+
+a@stg-master01:~/app-main/appapp-appyaml/alloy$ kl  alloy-khbzv
+
+Error: /etc/alloy/config.alloy:158:1: cannot find the definition of component name "otelcol.service"
+
+157 | 
+158 | otelcol.service "default" {
+    | ^^^^^^^^^^^^^^^
+159 |   pipelines {
+Error: could not perform the initial load successfully
