@@ -7,39 +7,67 @@ discovery.kubernetes "pods" {
   role = "pod"
 }
 
-otelcol.receiver.otlp "otlp" {
-  protocols {
-    grpc {}
-    http {}
+# OTLP receiver (nhận gRPC + HTTP từ opentelemetry-javaagent)
+otelcol.receiver.otlp "default" {
+  grpc {}
+  http {}
+
+  # xuất đầu ra của receiver vào các output targets (ví dụ processors/exporters)
+  output {
+    traces  = [otelcol.processor.batch.default.input]
+    metrics = [otelcol.processor.batch.default.input]
+    logs    = [otelcol.processor.batch.default.input]
   }
 }
 
-otelcol.exporter.tempo "tempo" {
-  endpoint = "http://tempo:4317"
+# Batch processor (đề xuất dùng trước exporters)
+otelcol.processor.batch "default" {
+  timeout = "5s"
+  send_batch_size = 8192
+  send_batch_max_size = 16384
 }
 
+# Exporter: gửi dữ liệu tới Tempo bằng OTLP
+# Tempo nhận OTLP gRPC trên 4317 (thường) — dùng otlp exporter và chỉ endpoint tới Tempo
+otelcol.exporter.otlp "tempo" {
+  client {
+    endpoint = "tempo:4317"    # nếu chạy local/k8s, đổi tên service nếu cần
+    tls {
+      insecure = true          # trong cluster nội bộ, có thể set true; production: dùng TLS đúng
+    }
+  }
+}
+
+# Exporter: convert & forward metrics tới Prometheus pipeline của Alloy
 otelcol.exporter.prometheus "prometheus" {
-  endpoint = "0.0.0.0:9464"
+  endpoint = "0.0.0.0:9464"    # Alloy sẽ expose Prometheus metrics ở đây để Prometheus scrape
 }
 
+# Exporter: logs → Loki (nếu dùng)
 otelcol.exporter.loki "loki" {
-  endpoint = "http://loki:3100/loki/api/v1/push"
+  client {
+    endpoint = "http://loki:3100/loki/api/v1/push"
+  }
 }
 
+# Service pipelines: nối các components lại với nhau
 otelcol.service "default" {
   pipelines {
     traces = [
-      otelcol.receiver.otlp.otlp,
-      otelcol.exporter.tempo.tempo,
+      otelcol.receiver.otlp.default,
+      otelcol.processor.batch.default,
+      otelcol.exporter.otlp.tempo,
     ]
 
     metrics = [
-      otelcol.receiver.otlp.otlp,
+      otelcol.receiver.otlp.default,
+      otelcol.processor.batch.default,
       otelcol.exporter.prometheus.prometheus,
     ]
 
     logs = [
-      otelcol.receiver.otlp.otlp,
+      otelcol.receiver.otlp.default,
+      otelcol.processor.batch.default,
       otelcol.exporter.loki.loki,
     ]
   }
