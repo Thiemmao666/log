@@ -95,3 +95,6 @@ Error: /etc/alloy/config.alloy:158:1: cannot find the definition of component na
     | ^^^^^^^^^^^^^^^
 159 |   pipelines {
 Error: could not perform the initial load successfully
+
+[otel.javaagent 2025-11-25 17:54:53:151 +0700] [OkHttp http://alloy.test-molo.svc.cluster.local:12345/...] WARN io.opentelemetry.exporter.internal.grpc.GrpcExporter - Failed to export spans. Server responded with gRPC status code 2. Error message: 
+[otel.javaagent 2025-11-25 17:54:58:176 +0700] [OkHttp http://alloy.test-molo.svc.cluster.local:12345/...] WARN io.opentelemetry.exporter.internal.grpc.GrpcExporter - Failed to export spans. Server responded with gRPC status code 2. Error message: 
