@@ -1,0 +1,14 @@
+ts=2025-11-25T02:56:08.905717152Z level=info msg="finished node evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b node_id=loki.source.kubernetes.pods duration=1.231359ms
+ts=2025-11-25T02:56:08.906727892Z level=info msg="finished node evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b node_id=pyroscope.write.local duration=973.689µs
+ts=2025-11-25T02:56:08.999538714Z level=info msg="using embedded asprof dist" component_path=/ component_id=pyroscope.java.java
+ts=2025-11-25T02:56:08.999863031Z level=info msg="finished node evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b node_id=pyroscope.java.java duration=93.091461ms
+ts=2025-11-25T02:56:09.000048868Z level=info msg="finished node evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b node_id=otel duration=75.603µs
+ts=2025-11-25T02:56:09.000133993Z level=info msg="finished complete graph evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b duration=103.475323ms
+Error: /etc/alloy/config.alloy:22:3: unrecognized attribute name "host_root"
+
+21 |   // join = discovery.kubernetes.pods.targets
+22 |   host_root = "/hostfs"
+   |   ^^^^^^^^^^^^^^^^^^^^^
+23 | }
+
+interrupt received
