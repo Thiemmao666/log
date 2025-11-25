@@ -13,6 +13,22 @@ Error: /etc/alloy/config.alloy:22:3: unrecognized attribute name "host_root"
 
 interrupt received
 
-a@stg-master01:~/app-main/appapp-appyaml/alloy$ helm upgrade alloy ./ -f values.yaml 
 W1125 03:06:01.724749 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.capabilities"
 W1125 03:06:01.724793 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.privileged"
+Release "alloy" has been upgraded. Happy Helming!
+NAME: alloy
+LAST DEPLOYED: Tue Nov 25 03:06:00 2025
+NAMESPACE: test-molo
+STATUS: deployed
+REVISION: 3
+TEST SUITE: None
+NOTES:
+Welcome to Grafana Alloy!
+Error: /etc/alloy/config.alloy:22:3: unrecognized attribute name "host_root"
+
+21 |   //join = discovery.kubernetes.pods.targets
+22 |   host_root = "/hostfs"
+   |   ^^^^^^^^^^^^^^^^^^^^^
+23 |   join = discovery.kubernetes.pods.targets
+
+Error: could not perform the initial load successfully
