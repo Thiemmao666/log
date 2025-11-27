@@ -1,55 +1,186 @@
-logging {
-  level  = "info"
-  format = "logfmt"
-}
+ configMap:
+    # -- Create a new ConfigMap for the config file.
+    create: true
+    # -- Content to assign to the new ConfigMap.  This is passed into `tpl` allowing for templating from values.
+    content: |
+      logging {
+        level  = "info"
+        format = "logfmt"
+       // timezone = "Asia/Ho_Chi_Minh"
+      }
 
-# --- DISCOVERY (optional, không liên quan đến OTLP agent) ---
-discovery.kubernetes "pods" {
-  role = "pod"
-}
+      // Discovers all kubernetes pods.
+      // Relies on serviceAccountName=grafana-alloy in the pod spec for permissions.
+      discovery.kubernetes "pods" {
+        selectors {
+          field = "spec.nodeName=" + env("HOSTNAME")
+          role = "pod"
+        }
+        role = "pod"
+      }
 
-# --- OTLP RECEIVER ---
-otelcol.receiver.otlp "receiver" {
-  grpc {}
-  http {}
+      // Discovers all processes running on the node.
+      // Relies on a security context with elevated permissions for the alloy container (running as root).
+      // Relies on hostPID=true on the pod spec, to be able to see processes from other pods.
+      discovery.process "all" {
+        // Merges kubernetes and process data (using container_id), to attach kubernetes labels to discovered processes.
+        //join = discovery.kubernetes.pods.targets
+        // root = "/hostfs"
+        join = discovery.kubernetes.pods.targets
+      }
 
-  output {
-    traces  = [otelcol.processor.batch "batch".input]
-    metrics = [otelcol.processor.batch "batch".input]
-    logs    = [otelcol.processor.batch "batch".input]
-  }
-}
+      // Drops non-java processes and adjusts labels.    
+      discovery.relabel "java" {
+        targets = discovery.process.all.targets
 
-# --- BATCH PROCESSOR ---
-otelcol.processor.batch "batch" {
-  timeout = "5s"
-  send_batch_size = 8192
+        // Drops non-java processes.
+        rule {
+          source_labels = ["__meta_process_exe"]
+          action = "keep"
+          regex = ".*/java$"
+        }
 
-  output {
-    traces  = [otelcol.exporter.otlp "to_tempo".input]
-    metrics = [otelcol.exporter.prometheus "to_prom".input]
-    logs    = [otelcol.exporter.loki "to_loki".input]
-  }
-}
+        // Drop any targets that do not have the value "neo" in their "__meta_kubernetes_namespace" label.
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          action        = "keep"
+          regex         = "neo"
+        }
 
-# --- EXPORTER → TEMPO (TRACE) ---
-otelcol.exporter.otlp "to_tempo" {
-  client {
-    endpoint = "http://tempo:4317"
-    tls {
-      insecure = true
-    }
-  }
-}
+        // Sets up the service_name using the namespace and container names.
+        rule {
+          source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_container_name"]
+          target_label = "service_name"
+          separator = "/"
+        }
 
-# --- EXPORTER → PROMETHEUS (METRICS) ---
-otelcol.exporter.prometheus "to_prom" {
-  endpoint = "0.0.0.0:9464"
-}
+        // Sets up kubernetes labels (labels with the __ prefix are ultimately dropped).
+        rule {
+          action = "replace"
+          source_labels = ["__meta_kubernetes_pod_node_name"]
+          target_label = "node"
+        }
 
-# --- EXPORTER → LOKI (LOGS) ---
-otelcol.exporter.loki "to_loki" {
-  client {
-    endpoint = "http://loki:3100/loki/api/v1/push"
-  }
-}
+        rule {
+          action = "replace"
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label = "namespace"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label = "pod"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label = "container"
+        }
+
+        // Sets up the cluster label.
+        // Relies on a pod-level annotation with the "cluster_name" name.
+        // Alternatively it can be set up using external_labels in pyroscope.write. 
+        rule {
+          action = "replace"
+          source_labels = ["__meta_kubernetes_pod_annotation_cluster_name"]
+          target_label = "cluster"
+        }
+      }
+
+      // Attaches the Pyroscope profiler to the processes returned by the discovery.relabel component.
+      // Relies on a security context with elevated permissions for the alloy container (running as root).
+      // Relies on hostPID=true on the pod spec, to be able to access processes from other pods.
+      pyroscope.java "java" {
+        profiling_config {
+          interval = "15s"
+          alloc = "512k"
+          cpu = true
+          lock = "10ms"
+          sample_rate = 100
+        }
+        forward_to = [pyroscope.write.local.receiver]
+        targets = discovery.relabel.java.output
+      }
+        
+      pyroscope.write "local" {
+        // Send metrics to the locally running Pyroscope instance.
+        endpoint {
+          url = "http://pyroscope:4040"
+        }
+        external_labels = {
+          "static_label" = "static_label_value",
+        }
+      }
+
+//      loki.source.kubernetes "pods" {
+  //      targets    = discovery.kubernetes.pods.targets
+       // forward_to = [loki.write.endpoint.receiver]
+    //  }
+
+      loki.write "endpoint" {
+        endpoint {
+            url = "http://loki:3100/loki/api/v1/push"
+            tenant_id = "local"
+        }
+      }
+      prometheus.remote_write "endpoint" {
+        endpoint {
+            url = "http://prometheus-kube-prometheus-prometheus:9090/api/v1/push"
+        }
+      }
+      
+
+      prometheus.remote_write "endpoint_thanos" {
+        endpoint {
+            url = "http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive"
+        }
+      }
+
+      otelcol.receiver.otlp "receiver" {
+        grpc {
+            endpoint = "0.0.0.0:4317"
+        }
+        http {endpoint = "0.0.0.0:4318"}
+        output {
+          traces  = [otelcol.processor.batch.batch.input,otelcol.connector.servicegraph.default.input,]
+          metrics = [otelcol.processor.batch.batch.input]
+          logs    = [otelcol.processor.batch.batch.input]
+          }
+        }
+
+
+      otelcol.processor.batch "batch" {
+        output {
+          traces  = [otelcol.exporter.otlp.to_tempo.input]
+          logs    = [otelcol.exporter.loki.oltp_loki.input]
+          metrics = [otelcol.exporter.prometheus.oltp_prometheus.input]
+        }
+      }
+
+      otelcol.exporter.loki "oltp_loki" {
+      forward_to = [loki.write.endpoint.receiver]
+      }
+      otelcol.exporter.prometheus "oltp_prometheus" {
+      forward_to = [prometheus.remote_write.endpoint_thanos.receiver]
+      }
+
+      otelcol.connector.servicegraph "default" {
+        dimensions = ["http.method", "http.target"]
+        output {
+          metrics = [otelcol.exporter.prometheus.oltp_prometheus.input]
+        }
+      }
+
+      otelcol.exporter.otlp "to_tempo" {
+        client {
+          endpoint = "http://tempo:4317"
+          tls {
+            insecure = true
+          }
+        }
+      }
+     
+#  //        metrics = [otelcol.exporter.prometheus.to_prom.input]
+# //          logs    = [otelcol.exporter.loki.to_loki.input] 
