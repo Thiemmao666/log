@@ -108,6 +108,14 @@ ts=2025-11-26T11:43:32.843744678Z level=error msg="non-recoverable error" compon
 ts=2025-11-26T11:44:24.463402278Z level=warn msg="tailer stopped; will retry" target=molo/monitor-node-exporter-vjdrx:node-exporter component_path=/ component_id=loki.source.kubernetes.pods err="container \"node-exporter\" in pod \"monitor-node-exporter-vjdrx\" is waiting to start: trying and failing to pull image"
 ts=2025-11-26T11:44:42.449918719Z level=info msg="reload requested via /-/reload endpoint" service=http
 
+I have no name!@svim-53-208:~/.vnc$ vncserver -localhost :1
+xauth: (stdin):1:  bad display name "svim-53-208:7" in "add" command
+
+New 'svim-53-208:7 (scloud)' desktop is svim-53-208:7
+
+Starting applications specified in /home/scloud/.vnc/xstartup
+Log file is /home/scloud/.vnc/svim-53-208:7.log
+
 I have no name!@svim-53-208:~/.vnc$ cat /home/scloud/.vnc/svim-53-208:7.log
 
 Fatal server error:
