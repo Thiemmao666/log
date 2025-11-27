@@ -126,3 +126,17 @@ Server is already active for display 1
 xrdb: Connection refused
 xrdb: Can't open display 'svim-53-208:7'
 xsetroot:  unable to open display 'svim-53-208:7'
+
+
+I have no name!@svim-53-208:~/.vnc$ vncserver -kill :1
+
+Can't find file /home/scloud/.vnc/svim-53-208:1.pid
+You'll have to kill the Xvnc4 process manually
+
+I have no name!@svim-53-208:~/.vnc$ vncserver -kill :7
+
+Can't find file /home/scloud/.vnc/svim-53-208:7.pid
+You'll have to kill the Xvnc4 process manually
+
+I have no name!@svim-53-208:~/.vnc$ vncserver :1
+A VNC server is already running as :1
