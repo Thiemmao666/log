@@ -107,3 +107,14 @@ ts=2025-11-26T11:43:24.497328698Z level=warn msg="tailer stopped; will retry" ta
 ts=2025-11-26T11:43:32.843744678Z level=error msg="non-recoverable error" component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=363939 url=http://prometheus-kube-prometheus-prometheus:9090/api/v1/push failedSampleCount=166 failedHistogramCount=0 failedExemplarCount=2 err="server returned HTTP status 404 Not Found: 404 page not found\n"
 ts=2025-11-26T11:44:24.463402278Z level=warn msg="tailer stopped; will retry" target=molo/monitor-node-exporter-vjdrx:node-exporter component_path=/ component_id=loki.source.kubernetes.pods err="container \"node-exporter\" in pod \"monitor-node-exporter-vjdrx\" is waiting to start: trying and failing to pull image"
 ts=2025-11-26T11:44:42.449918719Z level=info msg="reload requested via /-/reload endpoint" service=http
+
+I have no name!@svim-53-208:~/.vnc$ cat /home/scloud/.vnc/svim-53-208:7.log
+
+Fatal server error:
+Server is already active for display 1
+        If this server is no longer running, remove /tmp/.X1-lock
+        and start again.
+
+xrdb: Connection refused
+xrdb: Can't open display 'svim-53-208:7'
+xsetroot:  unable to open display 'svim-53-208:7'
