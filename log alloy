@@ -139,3 +139,14 @@ ts=2025-11-28T07:34:34.777174627Z level=debug msg="Initiating push/pull sync wit
 
 Query error
 failed to execute TraceQL query: {nestedSetParent<0 && true && resource.service.version != nil} | rate() by(resource.service.version) Status: 500 Internal Server Error Body: error querying generators in Querier.queryRangeRecent: error finding generators: empty ring
+
+
+ingester:
+    flush_check_period: 10s
+    trace_idle_period: 5m
+    max_block_duration: 1h
+    complete_block_timeout: 1h
+    lifecycler:
+      ring:
+        kvstore:
+          store: inmemory
