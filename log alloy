@@ -20,6 +20,9 @@ interrupt received
     capabilities:
       add: ["SYS_ADMIN", "SYS_PTRACE"]
 
+
+
+
 W1125 03:06:01.724749 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.capabilities"
 W1125 03:06:01.724793 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.privileged"
 Release "alloy" has been upgraded. Happy Helming!
@@ -126,3 +129,9 @@ ts=2025-11-27T09:48:56.514537817Z level=warn msg="Failed to send batch, retrying
 ts=2025-11-27T09:49:16.236856291Z level=info msg="rejoining peers" service=cluster peers_count=5 min_cluster_size=0 peers=10.244.3.183:12345,10.244.6.104:12345,10.244.5.22:12345,10.244.2.148:12345,10.244.8.118:12345
 ts=2025-11-27T09:49:56.60642361Z level=warn msg="Failed to send batch, retrying" component_path=/ component_id=prometheus.remote_write.endpoint_thanos subcomponent=rw remote_name=af675d url=http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive err="Post \"http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive\": net/http: HTTP/1.x transport connection broken: malformed HTTP response \"\\x00\\x00\\x06\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x05\\x00\\x00@\\x00\""
 ts=2025-11-27T09:50:16.236298791Z level=info msg="rejoining peers" service=cluster peers_count=5 min_cluster_size=0 peers=10.244.5.22:12345,10.244.3.183:12345,10.244.8.118:12345,10.244.1.227:12345,10.244.6.104:12345
+
+ts=2025-11-28T07:34:05.403481879Z level=debug msg="Watcher is reading the WAL due to timeout, haven't received any write notifications recently" component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=29dfd4 url=http://kube-prometheus-prometheus:9090/api/v1/write timeout=15s
+ts=2025-11-28T07:34:07.826745648Z level=debug msg="runShard timer ticked, sending buffered data" component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=29dfd4 url=http://kube-prometheus-prometheus:9090/api/v1/write samples=175 exemplars=2 shard=0 histograms=0
+ts=2025-11-28T07:34:32.323805268Z level=debug msg=QueueManager.calculateDesiredShards component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=29dfd4 url=http://kube-prometheus-prometheus:9090/api/v1/write dataInRate=3.83593668018176 dataOutRate=3.83593668018176 dataKeptRatio=1 dataPendingRate=0 dataPending=0 dataOutDuration=0.0023640450383756485 timePerSample=0.0006162888586220438 desiredShards=0.0023640450383756485 highestSent=1.764315245e+09 highestRecv=1.764315245e+09
+ts=2025-11-28T07:34:32.324149445Z level=debug msg=QueueManager.updateShardsLoop component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=29dfd4 url=http://kube-prometheus-prometheus:9090/api/v1/write lowerBound=0.7 desiredShards=0.0023640450383756485 upperBound=1.3
+ts=2025-11-28T07:34:34.777174627Z level=debug msg="Initiating push/pull sync with: alloy-8 10.244.4.63:12345" service=cluster subsystem=memberlist
