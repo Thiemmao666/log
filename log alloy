@@ -1,152 +1,24 @@
-ts=2025-11-25T02:56:08.905717152Z level=info msg="finished node evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b node_id=loki.source.kubernetes.pods duration=1.231359ms
-ts=2025-11-25T02:56:08.906727892Z level=info msg="finished node evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b node_id=pyroscope.write.local duration=973.689µs
-ts=2025-11-25T02:56:08.999538714Z level=info msg="using embedded asprof dist" component_path=/ component_id=pyroscope.java.java
-ts=2025-11-25T02:56:08.999863031Z level=info msg="finished node evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b node_id=pyroscope.java.java duration=93.091461ms
-ts=2025-11-25T02:56:09.000048868Z level=info msg="finished node evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b node_id=otel duration=75.603µs
-ts=2025-11-25T02:56:09.000133993Z level=info msg="finished complete graph evaluation" controller_path=/ controller_id="" trace_id=bccd2df622b2bae96c8a714dfacbdc1b duration=103.475323ms
-Error: /etc/alloy/config.alloy:22:3: unrecognized attribute name "host_root"
-
-21 |   // join = discovery.kubernetes.pods.targets
-22 |   host_root = "/hostfs"
-   |   ^^^^^^^^^^^^^^^^^^^^^
-23 | }
-
-interrupt received
-
-  # -- Security context to apply to the Grafana Alloy pod.
-  podSecurityContext:
-    privileged: true
-    runAsUser: 0
-    capabilities:
-      add: ["SYS_ADMIN", "SYS_PTRACE"]
-
-
-
-
-W1125 03:06:01.724749 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.capabilities"
-W1125 03:06:01.724793 2700418 warnings.go:70] unknown field "spec.template.spec.securityContext.privileged"
-Release "alloy" has been upgraded. Happy Helming!
-NAME: alloy
-LAST DEPLOYED: Tue Nov 25 03:06:00 2025
-NAMESPACE: test-molo
-STATUS: deployed
-REVISION: 3
-TEST SUITE: None
-NOTES:
-Welcome to Grafana Alloy!
-Error: /etc/alloy/config.alloy:22:3: unrecognized attribute name "host_root"
-
-21 |   //join = discovery.kubernetes.pods.targets
-22 |   host_root = "/hostfs"
-   |   ^^^^^^^^^^^^^^^^^^^^^
-23 |   join = discovery.kubernetes.pods.targets
-
-Error: could not perform the initial load successfully
-
-
-: 2025-11-18T01:01:08Z, oldest acceptable timestamp is: 2025-11-18T03:16:01Z; 1 errors like: entry for stream '{instance=\"rook-ceph/rook-ceph-exporter-stg-master01-7bf597c4b9-7xcw2:ceph-exporter\", job=\"loki.source.kubernetes.pods\", service_name=\"loki.source.kubernetes.pods\"}' has timestamp too old: 2025-11-18T01:02:23Z, oldest acceptable timestamp is: 2025-11-18T03:16:01Z; 1 errors like: entry for stream '{instance=\"rook-ceph/rook-ceph-exporter-stg-master01-7bf597c4b9-7xcw2:ceph-exporter\", job=\"loki.s"
-ts=2025-11-25T03:16:09.570771486Z level=error msg="final error sending batch, no retries left, dropping data" component_path=/ component_id=loki.write.endpoint component=client host=loki:3100 status=400 tenant=local error="server returned HTTP status 400 Bad Request (400): 1 errors like: entry for stream '{instance=\"rook-ceph/rook-ceph-exporter-stg-master01-7bf597c4b9-7xcw2:ceph-exporter\", job=\"loki.source.kubernetes.pods\", service_name=\"loki.source.kubernetes.pods\"}' has timestamp too old: 2025-11-18T02:00:12Z, oldest acceptable timestamp is: 2025-11-18T03:16:02Z; 1 errors like: entry for stream '{instance=\"rook-ceph/rook-ceph-exporter-stg-master01-7bf597c4b9-7xcw2:ceph-exporter\", job=\"loki.source.kubernetes.pods\", service_name=\"loki.source.kubernetes.pods\"}' has timestamp too old: 2025-11-18T02:10:29Z, oldest acceptable timestamp is: 2025-11-18T03:16:02Z; 1 errors like: entry for stream '{instance=\"rook-ceph/rook-ceph-exporter-stg-master01-7bf597c4b9-7xcw2:ceph-exporter\", job=\"loki.source.kubernetes.pods\", service_name=\"loki.source.kubernetes.pods\"}' has timestamp too old: 2025-11-18T02:22:27Z, oldest acceptable timestamp is: 2025-11-18T03:16:02Z; 1 errors like: entry for stream '{instance=\"rook-ceph/rook-ceph-exporter-stg-master01-7bf597c4b9-7xcw2:ceph-exporter\", job=\"loki.s"
-
-
-Error: /etc/alloy/config.alloy:129:13: expected block label, got TERMINATOR
-
-128 |       protocols {
-129 |         grpc
-    |             
-130 |         http
-
-Error: /etc/alloy/config.alloy:130:9: expected attribute assignment or block body, got IDENT
-
-129 |         grpc
-130 |         http
-    |         ^
-131 |       }
-
-Error: /etc/alloy/config.alloy:164:2: expected }, got EOF
-
-163 |   }
-164 | }
-    |  
-interrupt received
-Error: could not perform the initial load successfully
-
-
-Error: /etc/alloy/config.alloy:124:1: cannot find the definition of component name "otelcol.exporter.tempo"
-
-123 | 
-124 | otelcol.exporter.tempo "tempo" {
-    | ^^^^^^^^^^^^^^^^^^^^^^
-125 |   endpoint = "http://tempo:4317"
-
-Error: /etc/alloy/config.alloy:136:1: cannot find the definition of component name "otelcol.service"
-
-135 | 
-136 | otelcol.service "default" {
-    | ^^^^^^^^^^^^^^^
-137 |   pipelines {
-
-interrupt received
-Error: could not perform the initial load successfully
-
-
-a@stg-master01:~/app-main/appapp-appyaml/alloy$ kl  alloy-khbzv
-
-Error: /etc/alloy/config.alloy:158:1: cannot find the definition of component name "otelcol.service"
-
-157 | 
-158 | otelcol.service "default" {
-    | ^^^^^^^^^^^^^^^
-159 |   pipelines {
-Error: could not perform the initial load successfully
-
-[otel.javaagent 2025-11-25 17:54:53:151 +0700] [OkHttp http://alloy.test-molo.svc.cluster.local:12345/...] WARN io.opentelemetry.exporter.internal.grpc.GrpcExporter - Failed to export spans. Server responded with gRPC status code 2. Error message: 
-[otel.javaagent 2025-11-25 17:54:58:176 +0700] [OkHttp http://alloy.test-molo.svc.cluster.local:12345/...] WARN io.opentelemetry.exporter.internal.grpc.GrpcExporter - Failed to export spans. Server responded with gRPC status code 2. Error message: 
-
-ting to start: trying and failing to pull image"
-ts=2025-11-26T11:42:27.929410369Z level=info msg="Done replaying WAL" component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=363939 url=http://prometheus-kube-prometheus-prometheus:9090/api/v1/push duration=45.364772274s
-ts=2025-11-26T11:42:32.611276284Z level=error msg="non-recoverable error" component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=363939 url=http://prometheus-kube-prometheus-prometheus:9090/api/v1/push failedSampleCount=1 failedHistogramCount=0 failedExemplarCount=4 err="server returned HTTP status 404 Not Found: 404 page not found\n"
-ts=2025-11-26T11:42:41.389958271Z level=warn msg="tailer stopped; will retry" target=molo/monitor-node-exporter-vjdrx:node-exporter component_path=/ component_id=loki.source.kubernetes.pods err="container \"node-exporter\" in pod \"monitor-node-exporter-vjdrx\" is waiting to start: trying and failing to pull image"
-ts=2025-11-26T11:43:24.497328698Z level=warn msg="tailer stopped; will retry" target=molo/monitor-node-exporter-vjdrx:node-exporter component_path=/ component_id=loki.source.kubernetes.pods err="container \"node-exporter\" in pod \"monitor-node-exporter-vjdrx\" is waiting to start: trying and failing to pull image"
-ts=2025-11-26T11:43:32.843744678Z level=error msg="non-recoverable error" component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=363939 url=http://prometheus-kube-prometheus-prometheus:9090/api/v1/push failedSampleCount=166 failedHistogramCount=0 failedExemplarCount=2 err="server returned HTTP status 404 Not Found: 404 page not found\n"
-ts=2025-11-26T11:44:24.463402278Z level=warn msg="tailer stopped; will retry" target=molo/monitor-node-exporter-vjdrx:node-exporter component_path=/ component_id=loki.source.kubernetes.pods err="container \"node-exporter\" in pod \"monitor-node-exporter-vjdrx\" is waiting to start: trying and failing to pull image"
-ts=2025-11-26T11:44:42.449918719Z level=info msg="reload requested via /-/reload endpoint" service=http
-
-I have no name!@svim-53-208:~/.vnc$ sudo rm -rf /tmp/.X1-lock 
-I have no name!@svim-53-208:~/.vnc$ sudo rm -rf /tmp/.X11-unix/X1 
-I have no name!@svim-53-208:~/.vnc$ pkill -f Xtigervnc
-I have no name!@svim-53-208:~/.vnc$ ps aux | grep Xtigervnc
-1000     2666247  0.0  0.0  12940  1024 pts/6    S+   20:03   0:00 grep --color=auto Xtigervnc
-I have no name!@svim-53-208:~/.vnc$ vncserver :1
-A VNC server is already running as :1rver :1
-A VNC server is already running as :1
-
-
-ts=2025-11-27T09:46:56.293195671Z level=warn msg="Failed to send batch, retrying" component_path=/ component_id=prometheus.remote_write.endpoint_thanos subcomponent=rw remote_name=af675d url=http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive err="Post \"http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive\": net/http: HTTP/1.x transport connection broken: malformed HTTP response \"\\x00\\x00\\x06\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x05\\x00\\x00@\\x00\""
-ts=2025-11-27T09:47:16.236647508Z level=info msg="rejoining peers" service=cluster peers_count=5 min_cluster_size=0 peers=10.244.0.124:12345,10.244.8.118:12345,10.244.1.227:12345,10.244.5.22:12345,10.244.3.183:12345
-ts=2025-11-27T09:47:56.41560162Z level=warn msg="Failed to send batch, retrying" component_path=/ component_id=prometheus.remote_write.endpoint_thanos subcomponent=rw remote_name=af675d url=http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive err="Post \"http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive\": net/http: HTTP/1.x transport connection broken: malformed HTTP response \"\\x00\\x00\\x06\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x05\\x00\\x00@\\x00\""
-ts=2025-11-27T09:48:16.235898983Z level=info msg="rejoining peers" service=cluster peers_count=5 min_cluster_size=0 peers=10.244.7.108:12345,10.244.6.104:12345,10.244.4.50:12345,10.244.5.22:12345,10.244.1.227:12345
-ts=2025-11-27T09:48:56.514537817Z level=warn msg="Failed to send batch, retrying" component_path=/ component_id=prometheus.remote_write.endpoint_thanos subcomponent=rw remote_name=af675d url=http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive err="Post \"http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive\": net/http: HTTP/1.x transport connection broken: malformed HTTP response \"\\x00\\x00\\x06\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x05\\x00\\x00@\\x00\""
-ts=2025-11-27T09:49:16.236856291Z level=info msg="rejoining peers" service=cluster peers_count=5 min_cluster_size=0 peers=10.244.3.183:12345,10.244.6.104:12345,10.244.5.22:12345,10.244.2.148:12345,10.244.8.118:12345
-ts=2025-11-27T09:49:56.60642361Z level=warn msg="Failed to send batch, retrying" component_path=/ component_id=prometheus.remote_write.endpoint_thanos subcomponent=rw remote_name=af675d url=http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive err="Post \"http://prometheus-kube-prometheus-prometheus-thanos:10901/api/v1/receive\": net/http: HTTP/1.x transport connection broken: malformed HTTP response \"\\x00\\x00\\x06\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x05\\x00\\x00@\\x00\""
-ts=2025-11-27T09:50:16.236298791Z level=info msg="rejoining peers" service=cluster peers_count=5 min_cluster_size=0 peers=10.244.5.22:12345,10.244.3.183:12345,10.244.8.118:12345,10.244.1.227:12345,10.244.6.104:12345
-
-ts=2025-11-28T07:34:05.403481879Z level=debug msg="Watcher is reading the WAL due to timeout, haven't received any write notifications recently" component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=29dfd4 url=http://kube-prometheus-prometheus:9090/api/v1/write timeout=15s
-ts=2025-11-28T07:34:07.826745648Z level=debug msg="runShard timer ticked, sending buffered data" component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=29dfd4 url=http://kube-prometheus-prometheus:9090/api/v1/write samples=175 exemplars=2 shard=0 histograms=0
-ts=2025-11-28T07:34:32.323805268Z level=debug msg=QueueManager.calculateDesiredShards component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=29dfd4 url=http://kube-prometheus-prometheus:9090/api/v1/write dataInRate=3.83593668018176 dataOutRate=3.83593668018176 dataKeptRatio=1 dataPendingRate=0 dataPending=0 dataOutDuration=0.0023640450383756485 timePerSample=0.0006162888586220438 desiredShards=0.0023640450383756485 highestSent=1.764315245e+09 highestRecv=1.764315245e+09
-ts=2025-11-28T07:34:32.324149445Z level=debug msg=QueueManager.updateShardsLoop component_path=/ component_id=prometheus.remote_write.endpoint subcomponent=rw remote_name=29dfd4 url=http://kube-prometheus-prometheus:9090/api/v1/write lowerBound=0.7 desiredShards=0.0023640450383756485 upperBound=1.3
-ts=2025-11-28T07:34:34.777174627Z level=debug msg="Initiating push/pull sync with: alloy-8 10.244.4.63:12345" service=cluster subsystem=memberlist
-
-
-Query error
-failed to execute TraceQL query: {nestedSetParent<0 && true && resource.service.version != nil} | rate() by(resource.service.version) Status: 500 Internal Server Error Body: error querying generators in Querier.queryRangeRecent: error finding generators: empty ring
-
-
-ingester:
-    flush_check_period: 10s
-    trace_idle_period: 5m
-    max_block_duration: 1h
-    complete_block_timeout: 1h
-    lifecycler:
-      ring:
-        kvstore:
-          store: inmemory
+level=info ts=2025-11-28T11:34:17.986519435Z caller=metrics_query_range_handler.go:187 msg="query range request" tenant=single-tenant query="{nestedSetParent<0 && true && status=error} | rate()  with(sample=true)" range_nanos=300000000000 mode= step=4000000000
+level=warn ts=2025-11-28T11:34:17.986658199Z caller=server.go:2322 msg="GET /querier/api/metrics/query_range?start=1764329340000000000&end=1764329664000000000&step=12s&mode=recent&blockID=&startPage=0&pagesToSearch=0&version=&encoding=&size=0&footerSize=0&q=%7BnestedSetParent%3C0+%26%26+true%7D+%7C+histogram_over_time%28duration%29+with%28sample%3Dtrue%29&exemplars=100&maxSeries=0 (500) 350.331µs Response: \"error querying generators in Querier.queryRangeRecent: error finding generators: empty ring\\n\""
+level=info ts=2025-11-28T11:34:17.987037343Z caller=metrics_query_range_handler.go:145 msg="query range response - no resp" tenant=single-tenant duration_seconds=0.007071615 error=null
+level=info ts=2025-11-28T11:34:17.987200372Z caller=handler.go:135 msg="query stats" tenant=single-tenant method=GET traceID= url="/api/metrics/query_range?end=1764329657000000000&q=%7BnestedSetParent%3C0+%26%26+true%7D+%7C+histogram_over_time%28duration%29+with%28sample%3Dtrue%29&start=1764329357000000000&step=12s" duration=7.221201ms response_size=0 status=500
+level=warn ts=2025-11-28T11:34:17.987397355Z caller=server.go:2322 msg="GET /api/metrics/query_range?end=1764329657&q=%7BnestedSetParent%3C0+%26%26+true%7D+%7C+histogram_over_time%28duration%29+with%28sample%3Dtrue%29&start=1764329357&step=12s (500) 7.480301ms Response: \"error querying generators in Querier.queryRangeRecent: error finding generators: empty ring\\n\""
+level=error ts=2025-11-28T11:34:17.988880454Z caller=querier_query_range.go:36 msg="error querying generators in Querier.queryRangeRecent" err="error finding generators: empty ring"
+level=warn ts=2025-11-28T11:34:17.989012621Z caller=server.go:2322 msg="GET /querier/api/metrics/query_range?start=1764329352000000000&end=1764329660000000000&step=4s&mode=recent&blockID=&startPage=0&pagesToSearch=0&version=&encoding=&size=0&footerSize=0&q=%7BnestedSetParent%3C0+%26%26+true+%26%26+status%3Derror%7D+%7C+rate%28%29++with%28sample%3Dtrue%29&exemplars=100&maxSeries=0 (500) 672.348µs Response: \"error querying generators in Querier.queryRangeRecent: error finding generators: empty ring\\n\""
+level=error ts=2025-11-28T11:34:17.991009721Z caller=querier_query_range.go:36 msg="error querying generators in Querier.queryRangeRecent" err="error finding generators: empty ring"
+level=warn ts=2025-11-28T11:34:17.991099289Z caller=server.go:2322 msg="GET /querier/api/metrics/query_range?start=1764329352000000000&end=1764329660000000000&step=4s&mode=recent&blockID=&startPage=0&pagesToSearch=0&version=&encoding=&size=0&footerSize=0&q=%7BnestedSetParent%3C0+%26%26+true+%26%26+status%3Derror%7D+%7C+rate%28%29++with%28sample%3Dtrue%29&exemplars=100&maxSeries=0 (500) 230.502µs Response: \"error querying generators in Querier.queryRangeRecent: error finding generators: empty ring\\n\""
+level=info ts=2025-11-28T11:34:17.991819998Z caller=metrics_query_range_handler.go:145 msg="query range response - no resp" tenant=single-tenant duration_seconds=0.00531679 error=null
+level=info ts=2025-11-28T11:34:17.991889755Z caller=handler.go:135 msg="query stats" tenant=single-tenant method=GET traceID= url="/api/metrics/query_range?end=1764329657000000000&q=%7BnestedSetParent%3C0+%26%26+true+%26%26+status%3Derror%7D+%7C+rate%28%29++with%28sample%3Dtrue%29&start=1764329357000000000&step=4s" duration=5.381737ms response_size=0 status=500
+level=warn ts=2025-11-28T11:34:17.991974442Z caller=server.go:2322 msg="GET /api/metrics/query_range?end=1764329657&q=%7BnestedSetParent%3C0+%26%26+true+%26%26+status%3Derror%7D+%7C+rate%28%29++with%28sample%3Dtrue%29&start=1764329357&step=4s (500) 6.821903ms Response: \"error querying generators in Querier.queryRangeRecent: error finding generators: empty ring\\n\""
+level=info ts=2025-11-28T11:34:18.025095318Z caller=search_handlers.go:205 msg="search response" tenant=single-tenant query="{nestedSetParent<0 && true}" range_seconds=300 duration_seconds=0.077066852 request_throughput=8.759680491425807e+06 total_requests=3 total_blockBytes=0 total_blocks=0 completed_requests=3 inspected_bytes=675081 inspected_traces=0 inspected_spans=0 status_code=200 error=null
+level=info ts=2025-11-28T11:34:18.025554133Z caller=metrics_query_range_handler.go:187 msg="query range request" tenant=single-tenant query="{nestedSetParent<0 && true && resource.service.name != nil} | rate() by(resource.service.name)" range_nanos=300000000000 mode= step=4000000000
+level=info ts=2025-11-28T11:34:18.028059659Z caller=handler.go:135 msg="query stats" tenant=single-tenant method=GET traceID= url="/api/search?end=1764329657&limit=200&q=%7BnestedSetParent%3C0+%26%26+true%7D&spss=10&start=1764329357" duration=77.179253ms response_size=75270 status=200
+level=error ts=2025-11-28T11:34:18.028072129Z caller=querier_query_range.go:36 msg="error querying generators in Querier.queryRangeRecent" err="error finding generators: empty ring"
+level=warn ts=2025-11-28T11:34:18.028394535Z caller=server.go:2322 msg="GET /querier/api/metrics/query_range?start=1764329352000000000&end=1764329660000000000&step=4s&mode=recent&blockID=&startPage=0&pagesToSearch=0&version=&encoding=&size=0&footerSize=0&q=%7BnestedSetParent%3C0+%26%26+true+%26%26+resource.service.name+%21%3D+nil%7D+%7C+rate%28%29+by%28resource.service.name%29&exemplars=100&maxSeries=0 (500) 602.785µs Response: \"error querying generators in Querier.queryRangeRecent: error finding generators: empty ring\\n\""
+level=error ts=2025-11-28T11:34:18.03175073Z caller=querier_query_range.go:36 msg="error querying generators in Querier.queryRangeRecent" err="error finding generators: empty ring"
+level=warn ts=2025-11-28T11:34:18.032233624Z caller=server.go:2322 msg="GET /querier/api/metrics/query_range?start=1764329352000000000&end=1764329660000000000&step=4s&mode=recent&blockID=&startPage=0&pagesToSearch=0&version=&encoding=&size=0&footerSize=0&q=%7BnestedSetParent%3C0+%26%26+true+%26%26+resource.service.name+%21%3D+nil%7D+%7C+rate%28%29+by%28resource.service.name%29&exemplars=100&maxSeries=0 (500) 648.143µs Response: \"error querying generators in Querier.queryRangeRecent: error finding generators: empty ring\\n\""
+level=info ts=2025-11-28T11:34:18.032701665Z caller=metrics_query_range_handler.go:145 msg="query range response - no resp" tenant=single-tenant duration_seconds=0.007144095 error=null
+level=info ts=2025-11-28T11:34:18.032739099Z caller=handler.go:135 msg="query stats" tenant=single-tenant method=GET traceID= url="/api/metrics/query_range?end=1764329657000000000&q=%7BnestedSetParent%3C0+%26%26+true+%26%26+resource.service.name+%21%3D+nil%7D+%7C+rate%28%29+by%28resource.service.name%29&start=1764329357000000000&step=4s" duration=7.195629ms response_size=0 status=500
+level=warn ts=2025-11-28T11:34:18.032792198Z caller=server.go:2322 msg="GET /api/metrics/query_range?end=1764329657&q=%7BnestedSetParent%3C0+%26%26+true+%26%26+resource.service.name+%21%3D+nil%7D+%7C+rate%28%29+by%28resource.service.name%29&start=1764329357&step=4s (500) 7.665508ms Response: \"error querying generators in Querier.queryRangeRecent: error finding generators: empty ring\\n\""
+level=info ts=2025-11-28T11:34:27.962277111Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-11-28T11:34:27.962669457Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
