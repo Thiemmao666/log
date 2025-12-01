@@ -1,0 +1,12 @@
+postgresql-repmgr 18:36:10.37 INFO  ==> ** Starting repmgrd **
+[2025-12-01 18:36:10] [NOTICE] repmgrd (repmgrd 5.4.1) starting up
+INFO:  set_repmgrd_pid(): provided pidfile is /tmp/repmgrd.pid
+[2025-12-01 18:36:10] [NOTICE] starting monitoring of node "postgres-0" (ID: 1000)
+[2025-12-01 18:36:10] [ERROR] connection to database failed
+[2025-12-01 18:36:10] [DETAIL] 
+could not translate host name "postgres-1.postgres-headless.mcc.svc.cluster.local" to address: Name or service not known
+
+[2025-12-01 18:36:10] [DETAIL] attempted to connect using:
+  user=repmgr password=rep@mgr connect_timeout=5 dbname=repmgr host=postgres-1.postgres-headless.mcc.svc.cluster.local port=5432 fallback_application_name=repmgr options=-csearch_path=
+[2025-12-01 18:36:10] [ERROR] unable connect to upstream node (ID: 1001), terminating
+[2025-12-01 18:36:10] [HINT] upstream node must be running before repmgrd can start
