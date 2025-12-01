@@ -1,0 +1,3 @@
+Hiện tại nhà máy đang có VOC lỗi liên quan đến download Excel như dưới đây.
+Lỗi không xác định: JDBC exception executing SQL [select [ERROR: could not resize shared memory segment "/PostgreSQL.4012732290" to 16777216 bytes: No space left on device] [n/a]
+A có search thử thì có vẻ như liên quan đến "shm_size" và cần tăng giá trị này lên. Trong bài này có hướng dẫn tăng khi chạy Docker.
