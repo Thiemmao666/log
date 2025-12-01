@@ -1,0 +1,5 @@
+logger=sqlstore.transactions t=2025-12-01T01:55:41.01817343Z level=info msg="Database locked, sleeping then retrying" error="database is locked" retry=1 code=(MISSING)
+logger=ssosettings.service t=2025-12-01T01:55:41.019361101Z level=error msg="failed to fetch SSO Settings for all providers" err="[sqlstore.max-retries-reached] retry 1: database is locked"
+logger=sqlstore.transactions t=2025-12-01T01:55:45.03226414Z level=info msg="Database locked, sleeping then retrying" error="failed to fetch alert rules: database is locked" retry=1 code=(MISSING)
+logger=ngalert.scheduler t=2025-12-01T01:55:45.032722319Z level=error msg="Failed to update alert rules" error="failed to get alert rules: [sqlstore.max-retries-reached] retry 1: failed to fetch alert rules: database is locked"
+logger=sqlstore.transactions t=2025-12-01T01:55:48.14331791Z level=info msg="Database locked, sleeping then retrying" error="database is locked" retry=1 code=(MISSING)
