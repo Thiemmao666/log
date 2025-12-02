@@ -4,3 +4,13 @@ error querying ingesters in Querier.SearchTags: forIngesterRings: error getting 
 
 shm                     64M   20M   45M  31% /dev/shm
 tmpfs                              200M  1.2M  199M   1% /dev/shm
+
+
+
+evel=info ts=2025-12-02T09:26:53.016889113Z caller=reporter.go:298 msg="failed to send usage report" retries=1 err="Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+level=warn ts=2025-12-02T09:27:01.144335476Z caller=memcached_client.go:259 msg="error updating memcache servers" err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-02T09:27:01.702235259Z caller=reporter.go:298 msg="failed to send usage report" retries=2 err="Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+level=info ts=2025-12-02T09:27:11.953632414Z caller=reporter.go:298 msg="failed to send usage report" retries=3 err="Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+level=info ts=2025-12-02T09:27:28.765743608Z caller=reporter.go:298 msg="failed to send usage report" retries=4 err="Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+level=info ts=2025-12-02T09:27:28.768202164Z caller=reporter.go:274 msg="failed to report usage" err="5 errors: Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers); Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers); Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers); Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers); Post \"https://stats.grafana.org/tempo-usage-report\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+level=info ts=2025-12-02T09:27:41.046953748Z caller=reporter.go:272 msg="reporting cluster stats" date=2025-12-02T09:27:41.046915303Z
