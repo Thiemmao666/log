@@ -1,0 +1,2 @@
+Error
+error querying ingesters in Querier.SearchTags: forIngesterRings: error getting replication set for ring (0): too many unhealthy instances in the ring
