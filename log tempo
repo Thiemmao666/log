@@ -1,2 +1,6 @@
 Error
 error querying ingesters in Querier.SearchTags: forIngesterRings: error getting replication set for ring (0): too many unhealthy instances in the ring
+
+
+shm                     64M   20M   45M  31% /dev/shm
+tmpfs                              200M  1.2M  199M   1% /dev/shm
