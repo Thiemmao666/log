@@ -1,0 +1,54 @@
+a@stg-master01:~$ journalctl -xe
+-- Support: http://www.ubuntu.com/support
+-- 
+-- A stop job for unit etcd.service has finished.
+-- 
+-- The job identifier is 7148 and the job result is done.
+Dec 07 14:08:10 stg-master01 systemd[1]: Starting Etcd cluster...
+-- Subject: A start job for unit etcd.service has begun execution
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- A start job for unit etcd.service has begun execution.
+-- 
+-- The job identifier is 7148.
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"warn","ts":"2025-12-07T14:08:10.160825Z","caller":"embed/config.go:687","msg":"Running http and grpc server on single port. This is not recommended for production."}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.160973Z","caller":"etcdmain/etcd.go:73","msg":"Running: ","args":["/usr/local/bin/etcd","--name=stg-master01","--data-dir=/var/lib/etcd","--initial-cluster-token=etcd-cluster-0","--ini>
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.161078Z","caller":"etcdmain/etcd.go:116","msg":"server has been already initialized","data-dir":"/var/lib/etcd","dir-type":"member"}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"warn","ts":"2025-12-07T14:08:10.161125Z","caller":"embed/config.go:687","msg":"Running http and grpc server on single port. This is not recommended for production."}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.161146Z","caller":"embed/etcd.go:128","msg":"configuring peer listeners","listen-peer-urls":["http://172.17.0.202:2380"]}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.161436Z","caller":"embed/etcd.go:136","msg":"configuring client listeners","listen-client-urls":["http://127.0.0.1:2379","http://172.17.0.202:2379"]}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.161596Z","caller":"embed/etcd.go:310","msg":"starting an etcd server","etcd-version":"3.5.15","git-sha":"9a5533382","go-version":"go1.21.12","go-os":"linux","go-arch":"amd64","max-cpu->
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"warn","ts":"2025-12-07T14:08:10.161683Z","caller":"fileutil/fileutil.go:53","msg":"check file permission","error":"directory \"/var/lib/etcd\" exist, but the permission is \"drwxr-xr-x\". The recommended permission i>
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.163252Z","caller":"etcdserver/backend.go:81","msg":"opened backend db","path":"/var/lib/etcd/member/snap/db","took":"1.21603ms"}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.167643Z","caller":"netutil/netutil.go:112","msg":"resolved URL Host","url":"http://172.17.0.198:2380","host":"172.17.0.198:2380","resolved-addr":"172.17.0.198:2380"}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.168528Z","caller":"netutil/netutil.go:112","msg":"resolved URL Host","url":"http://172.17.0.202:2380","host":"172.17.0.202:2380","resolved-addr":"172.17.0.202:2380"}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.169249Z","caller":"netutil/netutil.go:112","msg":"resolved URL Host","url":"http://172.17.0.198:2380","host":"172.17.0.198:2380","resolved-addr":"172.17.0.198:2380"}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.169583Z","caller":"netutil/netutil.go:112","msg":"resolved URL Host","url":"http://172.17.0.197:2380","host":"172.17.0.197:2380","resolved-addr":"172.17.0.197:2380"}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.169852Z","caller":"netutil/netutil.go:112","msg":"resolved URL Host","url":"http://172.17.0.198:2380","host":"172.17.0.198:2380","resolved-addr":"172.17.0.198:2380"}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.170145Z","caller":"netutil/netutil.go:112","msg":"resolved URL Host","url":"http://172.17.1.241:2380","host":"172.17.1.241:2380","resolved-addr":"172.17.1.241:2380"}
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.177248Z","caller":"embed/etcd.go:377","msg":"closing etcd server","name":"stg-master01","data-dir":"/var/lib/etcd","advertise-peer-urls":["http://172.17.0.202:2380"],"advertise-client->
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"info","ts":"2025-12-07T14:08:10.177519Z","caller":"embed/etcd.go:379","msg":"closed etcd server","name":"stg-master01","data-dir":"/var/lib/etcd","advertise-peer-urls":["http://172.17.0.202:2380"],"advertise-client-u>
+Dec 07 14:08:10 stg-master01 etcd[3191]: {"level":"fatal","ts":"2025-12-07T14:08:10.177676Z","caller":"etcdmain/etcd.go:204","msg":"discovery failed","error":"error validating peerURLs {ClusterID:eef586ed2307e070 Members:[&{ID:8c1f73b191f398cb RaftAttributes:{PeerURL>
+Dec 07 14:08:10 stg-master01 systemd[1]: etcd.service: Main process exited, code=exited, status=1/FAILURE
+-- Subject: Unit process exited
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- An ExecStart= process belonging to unit etcd.service has exited.
+-- 
+-- The process' exit code is 'exited' and its exit status is 1.
+Dec 07 14:08:10 stg-master01 systemd[1]: etcd.service: Failed with result 'exit-code'.
+-- Subject: Unit failed
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- The unit etcd.service has entered the 'failed' state with result 'exit-code'.
+Dec 07 14:08:10 stg-master01 systemd[1]: Failed to start Etcd cluster.
+-- Subject: A start job for unit etcd.service has failed
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- A start job for unit etcd.service has finished with a failure.
+-- 
+-- The job identifier is 7148 and the job result is failed.
