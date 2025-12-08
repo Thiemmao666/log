@@ -1,0 +1,19 @@
+I1208 03:06:02.833686       1 server_linux.go:69] "Using iptables proxy"
+I1208 03:06:02.850981       1 server.go:1062] "Successfully retrieved node IP(s)" IPs=["172.17.0.202"]
+I1208 03:06:02.866751       1 conntrack.go:59] "Setting nf_conntrack_max" nfConntrackMax=131072
+I1208 03:06:04.330177       1 server.go:659] "kube-proxy running in dual-stack mode" primary ipFamily="IPv4"
+I1208 03:06:04.330258       1 server_linux.go:165] "Using iptables Proxier"
+I1208 03:06:04.333522       1 server_linux.go:511] "Detect-local-mode set to ClusterCIDR, but no cluster CIDR for family" ipFamily="IPv6"
+I1208 03:06:04.333559       1 server_linux.go:528] "Defaulting to no-op detect-local"
+I1208 03:06:04.333733       1 proxier.go:243] "Setting route_localnet=1 to allow node-ports on localhost; to change this either disable iptables.localhostNodePorts (--iptables-localhost-nodeports) or set nodePortAddresses (--nodeport-addresses) to filter loopback addresses"
+I1208 03:06:04.334381       1 server.go:872] "Version info" version="v1.30.3"
+I1208 03:06:04.334435       1 server.go:874] "Golang settings" GOGC="" GOMAXPROCS="" GOTRACEBACK=""
+I1208 03:06:04.336652       1 config.go:192] "Starting service config controller"
+I1208 03:06:04.336979       1 shared_informer.go:313] Waiting for caches to sync for service config
+I1208 03:06:04.337106       1 config.go:319] "Starting node config controller"
+I1208 03:06:04.337124       1 shared_informer.go:313] Waiting for caches to sync for node config
+I1208 03:06:04.337513       1 config.go:101] "Starting endpoint slice config controller"
+I1208 03:06:04.337533       1 shared_informer.go:313] Waiting for caches to sync for endpoint slice config
+I1208 03:06:04.437819       1 shared_informer.go:320] Caches are synced for endpoint slice config
+I1208 03:06:04.437958       1 shared_informer.go:320] Caches are synced for service config
+I1208 03:06:04.437920       1 shared_informer.go:320] Caches are synced for node config
