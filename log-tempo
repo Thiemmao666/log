@@ -1,0 +1,29 @@
+a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-distributor-57c4b65d9c-fpngh
+failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
+  line 144: field max_duration not found in type querier.SearchConfig
+  line 189: field force_path_style not found in type s3.Config
+a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-compactor-6ccc468455-bh2ft
+failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
+  line 144: field max_duration not found in type querier.SearchConfig
+  line 189: field force_path_style not found in type s3.Config
+
+a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-ingester-0
+failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
+  line 144: field max_duration not found in type querier.SearchConfig
+  line 189: field force_path_style not found in type s3.Config
+
+a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-query-frontend-7bd5f6b9b5-74psp
+Defaulted container "query-frontend" out of: query-frontend, tempo-query
+failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
+  line 144: field max_duration not found in type querier.SearchConfig
+  line 189: field force_path_style not found in type s3.Config
+
+a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-querier-876ddfb8-qbvsx
+failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
+  line 144: field max_duration not found in type querier.SearchConfig
+  line 189: field force_path_style not found in type s3.Config
+
+a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-metrics-generator-6b576f5bc9-h466d
+failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
+  line 144: field max_duration not found in type querier.SearchConfig
+  line 189: field force_path_style not found in type s3.Config
