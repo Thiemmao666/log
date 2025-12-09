@@ -2,28 +2,14 @@ a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-distribu
 failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
   line 144: field max_duration not found in type querier.SearchConfig
   line 189: field force_path_style not found in type s3.Config
-a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-compactor-6ccc468455-bh2ft
-failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
-  line 144: field max_duration not found in type querier.SearchConfig
-  line 189: field force_path_style not found in type s3.Config
 
-a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-ingester-0
-failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
-  line 144: field max_duration not found in type querier.SearchConfig
-  line 189: field force_path_style not found in type s3.Config
-
-a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-query-frontend-7bd5f6b9b5-74psp
+a@stg-master01:~$ kl -f tempo-query-frontend-6dd98c56b6-v92sq
 Defaulted container "query-frontend" out of: query-frontend, tempo-query
-failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
-  line 144: field max_duration not found in type querier.SearchConfig
-  line 189: field force_path_style not found in type s3.Config
-
-a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-querier-876ddfb8-qbvsx
-failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
-  line 144: field max_duration not found in type querier.SearchConfig
-  line 189: field force_path_style not found in type s3.Config
-
-a@stg-master01:~/app-main/appapp-appyaml/tempo-distributed$ kl -f tempo-metrics-generator-6b576f5bc9-h466d
-failed parsing config: failed to parse configFile /conf/tempo.yaml: yaml: unmarshal errors:
-  line 144: field max_duration not found in type querier.SearchConfig
-  line 189: field force_path_style not found in type s3.Config
+level=warn ts=2025-12-09T03:16:21.036869465Z caller=main.go:119 msg="-- CONFIGURATION WARNINGS --"
+level=warn ts=2025-12-09T03:16:21.036962993Z caller=main.go:125 msg="Span logging is enabled. This is for debugging only and not recommended for production deployments."
+level=warn ts=2025-12-09T03:16:21.036976253Z caller=main.go:125 msg="Span logging for discarded traces is enabled. This is for debugging only and not recommended for production deployments."
+level=info ts=2025-12-09T03:16:21.040602951Z caller=main.go:103 msg="Starting Tempo" version="(version=v2.9.0, branch=main, revision=9e5af99e4)" target=query-frontend
+level=info ts=2025-12-09T03:16:21.04069822Z caller=cache.go:46 msg="configuring memcached client" roles=parquet-footer|bloom|frontend-search
+level=error ts=2025-12-09T03:16:21.801793574Z caller=memcached_client.go:185 msg="error setting memcache servers to host" host=tempo-memcached err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=error ts=2025-12-09T03:16:21.80305633Z caller=main.go:110 msg="error running Tempo" err="failed to init module services: error initialising module: store: failed to create store: invalid config while creating tempodb: wal config validation failed: failed to validate block version vParquet: vParquet is not a valid block version"
+a@stg-master01:~$ 
