@@ -1,0 +1,97 @@
+logger=plugin.backgroundinstaller t=2025-12-12T06:46:02.540455616Z level=info msg="Installing plugins" plugins="[{ID:grafana-lokiexplore-app Version: URL:} {ID:grafana-pyroscope-app Version: URL:} {ID:grafana-exploretraces-app Version: URL:} {ID:grafana-metricsdrilldown-app Version: URL:}]"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.542075658Z level=info msg=starting module=provisioning
+logger=provisioning.alerting t=2025-12-12T06:46:02.566956673Z level=info msg="starting to provision alerting"
+logger=provisioning.alerting t=2025-12-12T06:46:02.567118809Z level=info msg="finished to provision alerting"
+logger=provisioning.dashboard t=2025-12-12T06:46:02.569615956Z level=info msg="starting to provision dashboards"
+logger=provisioning.dashboard t=2025-12-12T06:46:02.569765678Z level=info msg="finished to provision dashboards"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.569973569Z level=info msg=starting module=*live.GrafanaLive
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.56999839Z level=info msg=starting module=*ssosettingsimpl.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.570083216Z level=info msg=starting module=*updatemanager.PluginsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.570328251Z level=info msg=starting module=*loginattemptimpl.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.572398165Z level=info msg=starting module=*anonimpl.AnonDeviceService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.572480733Z level=info msg=starting module=*appregistry.Service
+logger=app-registry t=2025-12-12T06:46:02.572563167Z level=info msg="app registry initialized"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.572597786Z level=info msg=starting module=*cleanup.CleanUpService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.57296258Z level=info msg=starting module=*service.DashboardUpdater
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.573008288Z level=info msg=starting module=*manager.ServiceAccountsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.573753818Z level=info msg=starting module=*migrations.SecretMigrationProviderImpl
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.574585709Z level=info msg=starting module=*garbagecollectionworker.Worker
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.575023854Z level=info msg=starting module=*manager.SecretsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.57517668Z level=info msg=starting module=*api.HTTPServer
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.574677964Z level=info msg=starting module=*notifications.NotificationService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.576322381Z level=info msg=starting module=*ngalert.AlertNG
+logger=ngalert.state.manager t=2025-12-12T06:46:02.576539428Z level=info msg="Warming state cache for startup"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.581552919Z level=info msg=starting module=*pushhttp.Gateway
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.581597117Z level=info msg=starting module=*authimpl.UserAuthTokenService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.581637373Z level=info msg=starting module=*store.standardStorageService
+logger=grafanaStorageLogger t=2025-12-12T06:46:02.58169539Z level=info msg="Storage starting"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.581706145Z level=info msg=starting module=*rendering.RenderingService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.581720962Z level=info msg=starting module=*remotecache.RemoteCache
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.581867135Z level=info msg=starting module=*angulardetectorsprovider.Dynamic
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.584282347Z level=info msg=starting module=*pluginexternal.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.585115666Z level=info msg=starting module=*dualwrite.ZanzanaReconciler
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.585488698Z level=info msg=starting module=*dynamic.KeyRetriever
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.58550372Z level=info msg=starting module=*service.DashboardServiceImpl
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.585514983Z level=info msg=starting module=*store.dummyEntityEventsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.585524966Z level=info msg=starting module=*supportbundlesimpl.Service
+logger=ngalert.multiorg.alertmanager t=2025-12-12T06:46:02.586362106Z level=info msg="Starting MultiOrg Alertmanager"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.585541091Z level=info msg=starting module=*service.UsageStats
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.585533239Z level=info msg=starting module=*metrics.InternalMetricsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.569983817Z level=info msg=starting module=*metric.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.585549094Z level=info msg=starting module=*statscollector.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.590719233Z level=info msg="All modules healthy"
+logger=http.server t=2025-12-12T06:46:02.608377542Z level=info msg="HTTP Server Listen" address=[::]:3000 protocol=http subUrl= socket=
+logger=ngalert.state.manager t=2025-12-12T06:46:02.616211098Z level=info msg="State cache has been initialized" states=0 duration=39.671937ms
+logger=ngalert.scheduler t=2025-12-12T06:46:02.616279087Z level=info msg="Starting scheduler" tickInterval=10s maxAttempts=3
+logger=ngalert.scheduler t=2025-12-12T06:46:02.622901198Z level=info msg=starting component=ticker first_tick=2025-12-12T06:46:10Z
+logger=plugin.backgroundinstaller t=2025-12-12T06:46:12.541919337Z level=error msg="Failed to get plugin info" pluginId=grafana-lokiexplore-app error="Get \"https://grafana.com/api/plugins/grafana-lokiexplore-app/versions\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+logger=plugin.angulardetectorsprovider.dynamic t=2025-12-12T06:46:12.62318739Z level=error msg="Error while updating detectors" error="fetch: http do: Get \"https://grafana.com/api/plugins/angular_patterns\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+logger=plugin.angulardetectorsprovider.dynamic t=2025-12-12T06:46:12.623270182Z level=info msg="Patterns update finished" duration=10.001658019s
+logger=plugin.backgroundinstaller t=2025-12-12T06:46:22.543157517Z level=error msg="Failed to get plugin info" pluginId=grafana-pyroscope-app error="Get \"https://grafana.com/api/plugins/grafana-pyroscope-app/versions\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+logger=plugin.backgroundinstaller t=2025-12-12T06:46:32.544581306Z level=error msg="Failed to get plugin info" pluginId=grafana-exploretraces-app error="Get \"https://grafana.com/api/plugins/grafana-exploretraces-app/versions\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+logger=context userId=1 orgId=1 uname=admin t=2025-12-12T06:46:40.487241689Z level=info msg="Request Completed" method=GET path=/api/live/ws status=-1 remote_addr=10.244.1.1 time_ms=17 duration=17.460005ms size=0 referer= handler=/api/live/ws status_source=server
+logger=live t=2025-12-12T06:46:40.855706046Z level=info msg="Initialized channel handler" channel=grafana/dashboard/uid/k8s_views_nodes address=grafana/dashboard/uid/k8s_views_nodes
+logger=infra.usagestats t=2025-12-12T06:46:41.602926064Z level=info msg="Usage stats are ready to report"
+logger=plugin.backgroundinstaller t=2025-12-12T06:46:42.548370272Z level=error msg="Failed to get plugin info" pluginId=grafana-metricsdrilldown-app error="Get \"https://grafana.com/api/plugins/grafana-metricsdrilldown-app/versions\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+logger=server t=2025-12-12T06:50:32.587018521Z level=info msg="Shutdown started" reason="System signal: terminated"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.587354512Z level=info msg="module stopped" module=*store.standardStorageService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.58745893Z level=info msg="module stopped" module=*service.UsageStats
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.587537896Z level=info msg="module stopped" module=*updatemanager.PluginsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.587636485Z level=info msg="module stopped" module=*pluginexternal.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.587954781Z level=info msg="module stopped" module=*remotecache.RemoteCache
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.587996262Z level=info msg="module stopped" module=*garbagecollectionworker.Worker
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588055832Z level=info msg="module stopped" module=*store.dummyEntityEventsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588125689Z level=info msg="module stopped" module=*pushhttp.Gateway
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588268711Z level=info msg="module stopped" module=*api.HTTPServer
+logger=ngalert.scheduler t=2025-12-12T06:50:32.588249722Z level=info msg=stopped component=ticker last_tick=2025-12-12T06:50:30Z
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588327045Z level=info msg="module stopped" module=*metrics.InternalMetricsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588346103Z level=info msg="module stopped" module=*authimpl.UserAuthTokenService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588368693Z level=info msg="module stopped" module=*service.DashboardUpdater
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588371853Z level=info msg="module stopped" module=*anonimpl.AnonDeviceService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588419611Z level=info msg="module stopped" module=*supportbundlesimpl.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588423593Z level=info msg="module stopped" module=*rendering.RenderingService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588490305Z level=info msg="module stopped" module=*ssosettingsimpl.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588510296Z level=info msg="module stopped" module=*manager.ServiceAccountsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588612406Z level=info msg="module stopped" module=*dynamic.KeyRetriever
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588633887Z level=info msg="module stopped" module=*loginattemptimpl.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588680575Z level=info msg="module stopped" module=*cleanup.CleanUpService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588761505Z level=info msg="module stopped" module=*migrations.SecretMigrationProviderImpl
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.58881959Z level=info msg="module stopped" module=*angulardetectorsprovider.Dynamic
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588835251Z level=info msg="module stopped" module=*live.GrafanaLive
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588893276Z level=info msg="module stopped" module=*manager.SecretsService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.588990805Z level=info msg="module stopped" module=*dualwrite.ZanzanaReconciler
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.589042966Z level=info msg="module stopped" module=*statscollector.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.59006609Z level=info msg="module stopped" module=*notifications.NotificationService
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.590140541Z level=info msg="module stopped" module=*appregistry.Service
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.590250942Z level=info msg="module stopped" module=*metric.Service
+logger=dashboard-service t=2025-12-12T06:50:32.590456987Z level=error msg="Failed to execute k8s dashboard cleanup" error="context canceled"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.590542445Z level=info msg="module stopped" module=*service.DashboardServiceImpl
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.596286715Z level=info msg="module stopped" module=*ngalert.AlertNG
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.598972767Z level=info msg="module stopped" module=provisioning
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.599956965Z level=info msg="module stopped" module=plugin.backgroundinstaller
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.600764338Z level=info msg="module stopped" module=plugins.store
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.60090865Z level=info msg="module stopped" module=grafana-apiserver
+logger=tracing t=2025-12-12T06:50:32.600971824Z level=info msg="Closing tracing"
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.601034616Z level=info msg="module stopped" module=tracing
+logger=backgroundsvcs.managerAdapter t=2025-12-12T06:50:32.601068129Z level=info msg="All modules stopped"
+logger=grafana-apiserver t=2025-12-12T06:50:32.601077825Z level=info msg="StorageObjectCountTracker pruner is exiting"
