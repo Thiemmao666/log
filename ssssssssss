@@ -87,3 +87,4 @@ t=2025-12-12T06:46:02.539930209Z level=info caller=logger.go:214 time=2025-12-12
 logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.54005932Z level=info msg=starting module=plugins.store
 logger=backgroundsvcs.managerAdapter t=2025-12-12T06:46:02.540369312Z level=info msg=starting module=plugin.backgroundinstaller
 logger=plugin.backgroundinstaller t=2025-12-12T06:46:02.540419243Z level=info msg="Plugins installed" plugins=[]
+
