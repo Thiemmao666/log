@@ -91,3 +91,93 @@ log-loki                               ClusterIP      10.98.9.36       <none>   
 loki-headless                          ClusterIP      None             <none>        3100/TCP                      433d
 loki-memberlist                        ClusterIP      None             <none>        7946/TCP                      433d
 monitor-grafana                        ClusterIP      10.105.211.245   <none>        3000/TCP                      443d
+
+
+[otel.javaagent 2025-12-17 11:01:39:091 +0700] [OkHttp http://alloy.molo.svc.cluster.local:4317/...] ERROR io.opentelemetry.exporter.internal.grpc.GrpcExporter - Failed to export metrics. The request could not be executed. Error message: timeout
+java.io.InterruptedIOException: timeout
+        at okhttp3.internal.connection.RealCall.timeoutExit(RealCall.kt:430)
+        at okhttp3.internal.connection.RealCall.callDone(RealCall.kt:392)
+        at okhttp3.internal.connection.RealCall.noMoreExchanges$okhttp(RealCall.kt:351)
+        at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:216)
+        at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:530)
+        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+        at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.net.SocketException: Socket closed
+        at java.base/sun.nio.ch.NioSocketImpl.endConnect(NioSocketImpl.java:536)
+        at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:620)
+        at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+        at java.base/java.net.Socket.connect(Socket.java:633)
+        at okhttp3.internal.platform.Platform.connectSocket(Platform.kt:147)
+        at okhttp3.internal.connection.ConnectPlan.connectSocket(ConnectPlan.kt:280)
+        at okhttp3.internal.connection.ConnectPlan.connectTcp(ConnectPlan.kt:140)
+        at okhttp3.internal.connection.FastFallbackExchangeFinder$launchTcpConnect$1.runOnce(FastFallbackExchangeFinder.kt:141)
+        at okhttp3.internal.concurrent.TaskRunner$runnable$1.run(TaskRunner.kt:81)
+        ... 3 more
+2025-12-17T11:01:43.535+07:00  INFO [mcc-material-service,c6e1367f5332808b9eff038c6a8f5fa2,48edf5dac6156adc] 1 --- [mcc-material-service] [nio-8085-exec-2] c.s.m.m.s.m.f.ErrorInformationFacade     : Register loss
+2025-12-17T11:01:46.212+07:00  INFO [mcc-material-service,,] 1 --- [mcc-material-service] [ionThreadPool-1] c.s.m.m.mqtt.MqttConnectionManager       : Handle message - Topic: req/mcc/smart-transfer/BIN_OUT Payload: {"storeID":"AS175","mgzID":"W520XC74DA840008","zName":"13","bName":"01-01"}
+2025-12-17T11:01:46.225+07:00  INFO [mcc-material-service,,] 1 --- [mcc-material-service] [   MOSS-Async-5] .s.m.m.m.s.i.SmartTransferOutServiceImpl : GiBin - mgzID: W520XC74DA840008 - Transfer Order Ids: [MO251215AS175A0131]
+2025-12-17T11:01:46.226+07:00  INFO [mcc-material-service,,] 1 --- [mcc-material-service] [   MOSS-Async-5] c.s.m.m.s.l.l.i.StockInOutBinServiceImpl : Gi bin dto {"datas":[{"stockId":4344740,"quantity":23.00000}],"toIds":[2038439],"packageType":null,"idSessionMap":{}}
+2025-12-17T11:01:46.227+07:00  INFO [mcc-material-service,,] 1 --- [mcc-material-service] [   MOSS-Async-5] c.s.m.m.s.l.l.i.StockInOutBinServiceImpl : Gi bin : giQty 23.00000, neededQty 255
+2025-12-17T11:02:02.390+07:00  INFO [mcc-material-service,,] 1 --- [mcc-material-service] [ionThreadPool-1] c.s.m.m.mqtt.MqttConnectionManager       : Handle message - Topic: req/mcc/smart-transfer/BIN_IN Payload: {"storeID":"AS175","mgzID":"W520XC74CE9A0002","zName":"01","bName":"04-03"}
+2025-12-17T11:02:02.398+07:00  INFO [mcc-material-service,,] 1 --- [mcc-material-service] [   MOSS-Async-8] c.s.m.m.s.l.l.i.StockInOutBinServiceImpl : Gr bin dto {"updateDatas":[{"stockId":4347784,"quantity":60.00000}],"binId":2451,"storeId":238,"idSessionMap":{},"action":"GR_BIN","combineStock":false}
+2025-12-17T11:02:02.404+07:00  INFO [mcc-material-service,,] 1 --- [mcc-material-service] [   MOSS-Async-8] c.s.m.m.s.l.l.i.StockInOutBinServiceImpl : Gr bin stocks after [{"id":4347784,"materialCode":"HALB/GH96-20625B/PCE/12","standard":"MAIN","magazineId":"W520XC74CE9A0002","oldMagazineId":null,"binName":"UNDEFINED","qty":"0/0/0/0/0"},{"id":null,"materialCode":"HALB/GH96-20625B/PCE/12","standard":"MAIN","magazineId":"W520XC74CE9A0002","oldMagazineId":null,"binName":"04-03","qty":"60/0/0/0/0"}]
+2025-12-17T11:02:02.411+07:00  INFO [mcc-material-service,,] 1 --- [mcc-material-service] [ionThreadPool-4] c.s.mcc.material.mqtt.MqttServiceImpl    : Publish success res/mcc/smart-transfer/BIN_IN - Payload: {"storeID":"AS175","res":"OK","mgzID":"W520XC74CE9A0002"}
+[otel.javaagent 2025-12-17 11:02:10:846 +0700] [OkHttp http://alloy.molo.svc.cluster.local:4317/...] ERROR io.opentelemetry.exporter.internal.grpc.GrpcExporter - Failed to export spans. The request could not be executed. Error message: Failed to connect to alloy.molo.svc.cluster.local/10.98.49.39:4317
+java.net.ConnectException: Failed to connect to alloy.molo.svc.cluster.local/10.98.49.39:4317
+        at okhttp3.internal.connection.ConnectPlan.connectSocket(ConnectPlan.kt:282)
+        at okhttp3.internal.connection.ConnectPlan.connectTcp(ConnectPlan.kt:140)
+        at okhttp3.internal.connection.FastFallbackExchangeFinder$launchTcpConnect$1.runOnce(FastFallbackExchangeFinder.kt:141)
+        at okhttp3.internal.concurrent.TaskRunner$runnable$1.run(TaskRunner.kt:81)
+        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+        at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.net.ConnectException: Connection refused
+        at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+        at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+        at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+        at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+        at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+        at java.base/java.net.Socket.connect(Socket.java:633)
+        at okhttp3.internal.platform.Platform.connectSocket(Platform.kt:147)
+        at okhttp3.internal.connection.ConnectPlan.connectSocket(ConnectPlan.kt:280)
+        ... 6 more
+[otel.javaagent 2025-12-17 11:02:11:435 +0700] [OkHttp http://alloy.molo.svc.cluster.local:4317/...] ERROR io.opentelemetry.exporter.internal.grpc.GrpcExporter - Failed to export logs. The request could not be executed. Error message: Failed to connect to alloy.molo.svc.cluster.local/10.98.49.39:4317
+java.net.ConnectException: Failed to connect to alloy.molo.svc.cluster.local/10.98.49.39:4317
+        at okhttp3.internal.connection.ConnectPlan.connectSocket(ConnectPlan.kt:282)
+        at okhttp3.internal.connection.ConnectPlan.connectTcp(ConnectPlan.kt:140)
+        at okhttp3.internal.connection.FastFallbackExchangeFinder$launchTcpConnect$1.runOnce(FastFallbackExchangeFinder.kt:141)
+        at okhttp3.internal.concurrent.TaskRunner$runnable$1.run(TaskRunner.kt:81)
+        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+        at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.net.ConnectException: Connection refused
+        at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+        at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+        at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+        at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+        at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+        at java.base/java.net.Socket.connect(Socket.java:633)
+        at okhttp3.internal.platform.Platform.connectSocket(Platform.kt:147)
+        at okhttp3.internal.connection.ConnectPlan.connectSocket(ConnectPlan.kt:280)
+alloy:
+  configMap:
+    # -- Create a new ConfigMap for the config file.
+    create: true
+    # -- Content to assign to the new ConfigMap.  This is passed into `tpl` allowing for templating from values.
+    content: |
+      logging {
+        level  = "info"
+        format = "logfmt"
+      }
+
+      otelcol.receiver.otlp "receiver" {
+        grpc {endpoint = "0.0.0.0:4317"}
+        http {endpoint = "0.0.0.0:4318"}
+        output {
+          traces  = [otelcol.processor.batch.batch.input]
+          metrics = [otelcol.processor.batch.batch.input]
+          logs    = [otelcol.processor.batch.batch.input]
+        }
+      }
+      otelcol.processor.batch "batch" {}
