@@ -23,3 +23,71 @@ sevtmcc@sevtmccmn01:~/devops-mcc/2.prd/2.mcc-db/1.postgres-service$ ka -f 1.sts.
 The StatefulSet "postgres" is invalid: 
 * spec.updateStrategy.rollingUpdate: Invalid value: apps.RollingUpdateStatefulSetStrategy{Partition:0, MaxUnavailable:(*intstr.IntOrString)(nil)}: only allowed for updateStrategy 'RollingUpdate'
 * spec: Forbidden: updates to statefulset spec for fields other than 'replicas', 'ordinals', 'template', 'updateStrategy', 'persistentVolumeClaimRetentionPolicy' and 'minReadySeconds' are forbidden
+
+
+sevtmcc@sevtmccmn01:~/devops-mcc/2.prd/1.mcc-app/jmx$ kex ping  -n mcc -- bash
+ping:~# grpcurl
+Too few arguments.
+Try 'grpcurl -help' for more details.
+ping:~# grpcurl -plaintext alloy.molo.svc.cluster.local:4317 list
+Failed to dial target host "alloy.molo.svc.cluster.local:4317": connection error: desc = "transport: error while dialing: dial tcp 10.108.247.65:4317: connect: connection refused"
+ping:~# curl -i alloy.molo.svc.cluster.local:4318
+curl: (7) Failed to connect to alloy.molo.svc.cluster.local port 4318 after 2 ms: Could not connect to server
+ping:~# curl http://alloy.molo.svc.cluster.local:4317
+curl: (7) Failed to connect to alloy.molo.svc.cluster.local port 4317 after 1 ms: Could not connect to server
+ping:~# nslookup alloy.molo.svc.cluster.local
+;; Got recursion not available from 10.96.0.10
+;; Got recursion not available from 10.96.0.10
+;; Got recursion not available from 10.96.0.10
+;; Got recursion not available from 10.96.0.10
+Server:         10.96.0.10
+Address:        10.96.0.10#53
+
+Name:   alloy.molo.svc.cluster.local
+Address: 10.108.247.65
+;; Got recursion not available from 10.96.0.10
+
+ping:~# curl http://alloy.molo.svc.cluster.local:4317
+curl: (7) Failed to connect to alloy.molo.svc.cluster.local port 4317 after 1 ms: Could not connect to server
+ping:~# curl http://alloy.molo.svc.cluster.local:4318
+curl: (7) Failed to connect to alloy.molo.svc.cluster.local port 4318 after 1 ms: Could not connect to server
+ping:~# curl -i  http://alloy.molo.svc.cluster.local:4318
+curl: (7) Failed to connect to alloy.molo.svc.cluster.local port 4318 after 2 ms: Could not connect to server
+ping:~# curl -i alloy.molo.svc.cluster.local:4318
+
+alloy:
+  configMap:
+    # -- Create a new ConfigMap for the config file.
+    create: true
+    # -- Content to assign to the new ConfigMap.  This is passed into `tpl` allowing for templating from values.
+    content: |
+      logging {
+        level  = "info"
+        format = "logfmt"
+      }
+
+      otelcol.receiver.otlp "receiver" {
+        grpc {endpoint = "0.0.0.0:4317"}
+        http {endpoint = "0.0.0.0:4318"}
+        output {}
+      }
+
+  # -- Extra ports to expose on the Alloy container.
+  extraPorts:
+    - name: "faro"
+      port: 4317
+      targetPort: 4317
+      protocol: "TCP"
+      appProtocol: "h2c"
+    - name: "far2"
+      port: 4318
+      targetPort: 4318
+      protocol: "TCP"
+      appProtocol: "http"
+
+alloy                                  ClusterIP      10.108.247.65    <none>        12345/TCP,4317/TCP,4318/TCP   58m
+alloy-cluster                          ClusterIP      None             <none>        12345/TCP,4317/TCP,4318/TCP   58m
+log-loki                               ClusterIP      10.98.9.36       <none>        3100/TCP,9095/TCP             433d
+loki-headless                          ClusterIP      None             <none>        3100/TCP                      433d
+loki-memberlist                        ClusterIP      None             <none>        7946/TCP                      433d
+monitor-grafana                        ClusterIP      10.105.211.245   <none>        3000/TCP                      443d
