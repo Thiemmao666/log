@@ -17,3 +17,27 @@ level=info ts=2025-12-02T09:27:41.046953748Z caller=reporter.go:272 msg="reporti
 
 
 level=error ts=2025-12-18T01:39:49.177515989Z caller=main.go:110 msg="error running Tempo" err="failed to init module services: error initialising module: store: failed to create store: unexpected error creating core: failed to create minio client: Endpoint url cannot have fully qualified paths."
+
+
+sh-4.4$ cd tempo-traces
+sh-4.4$ ls -la
+total 16
+drwxr-xr-x 4 1000 1000 4096 Dec 18 02:37 .
+drwxrwxrwx 6 root root 4096 Dec 18 02:01 ..
+drwxr-xr-x 9 1000 1000 4096 Dec 18 04:07 single-tenant
+drwxr-xr-x 2 1000 1000 4096 Dec 18 02:06 tempo_cluster_seed.json
+sh-4.4$ la -lag single-tenant
+sh: la: command not found
+sh-4.4$ la -lah single-tenant
+sh: la: command not found
+sh-4.4$ ls -lah single-tenant
+total 36K
+drwxr-xr-x 9 1000 1000 4.0K Dec 18 04:07 .
+drwxr-xr-x 4 1000 1000 4.0K Dec 18 02:37 ..
+drwxr-xr-x 6 1000 1000 4.0K Dec 18 02:37 13f79f40-2aac-4958-9e02-ac7c4006cd5b
+drwxr-xr-x 6 1000 1000 4.0K Dec 18 03:42 35ba2111-0c4b-4813-aa8c-e6fc02addafc
+drwxr-xr-x 6 1000 1000 4.0K Dec 18 03:42 7ef94c39-e629-4a8b-9c86-fc21ec039fe8
+drwxr-xr-x 6 1000 1000 4.0K Dec 18 03:42 959e743c-1ca1-468e-b361-82fab5e9d19a
+drwxr-xr-x 6 1000 1000 4.0K Dec 18 04:07 ba181b6d-c830-45f9-b196-5ae758b12c7a
+drwxr-xr-x 2 1000 1000 4.0K Dec 18 04:16 index.json.gz
+drwxr-xr-x 2 1000 1000 4.0K Dec 18 04:16 index.pb.zst
