@@ -1,0 +1,2 @@
+Query error
+failed to execute TraceQL query: {nestedSetParent<0 && true && resource.service.name != nil} | rate() by(resource.service.name) Status: 401 Unauthorized Body: no org id
