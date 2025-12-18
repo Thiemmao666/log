@@ -1,0 +1,2 @@
+d or are too far into the future" num_dropped=2755
+^Xts=2025-12-18T10:12:05.040Z caller=scrape.go:1747 level=warn component="scrape manager" scrape_pool=kubernetes-nodes-cadvisor target=https://kubernetes.default.svc:443/api/v1/nodes/sevtmccwn-main01/proxy/metrics/cadvisor msg="Error on ingesting samples that are too old or are too far into the future" num_dropped=2755
