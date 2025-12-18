@@ -116,3 +116,320 @@ minio:
 # Configuration for the gateway
 
   
+querier:
+  # -- Number of replicas for the querier
+  replicas: 1
+  # -- hostAliases to add
+  hostAliases: []
+  #  - ip: 1.2.3.4
+  #    hostnames:
+  #      - domain.tld
+  # -- Annotations for querier deployment
+  annotations: {}
+  autoscaling:
+    # -- Enable autoscaling for the querier
+    enabled: false
+    # -- Minimum autoscaling replicas for the querier
+    minReplicas: 1
+    # -- Maximum autoscaling replicas for the querier
+    maxReplicas: 3
+    # -- Autoscaling behavior configuration for the querier
+    behavior: {}
+    # -- Target CPU utilisation percentage for the querier
+    targetCPUUtilizationPercentage: 60
+    # -- Target memory utilisation percentage for the querier
+    targetMemoryUtilizationPercentage:
+  image:
+    # -- The Docker registry for the querier image. Overrides `tempo.image.registry`
+    registry: null
+    # -- Optional list of imagePullSecrets. Overrides `tempo.image.pullSecrets`
+    pullSecrets: []
+    # -- Docker image repository for the querier image. Overrides `tempo.image.repository`
+    repository: null
+    # -- Docker image tag for the querier image. Overrides `tempo.image.tag`
+    tag: null
+  # -- The name of the PriorityClass for querier pods
+  priorityClassName: null
+  # -- Labels for querier pods
+  podLabels: {}
+  # -- Annotations for querier pods
+  podAnnotations: {}
+  # -- Additional CLI args for the querier
+  extraArgs: []
+  # -- Environment variables to add to the querier pods
+  extraEnv: []
+  # -- Environment variables from secrets or configmaps to add to the querier pods
+  extraEnvFrom: []
+  # -- Resource requests and limits for the querier
+  resources: {}
+  # -- Grace period to allow the querier to shutdown before it is killed
+  terminationGracePeriodSeconds: 30
+  # -- topologySpread for querier pods. Passed through `tpl` and, thus, to be configured as string
+  # @default -- Defaults to allow skew no more then 1 node per AZ
+  topologySpreadConstraints: |
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          {{- include "tempo.selectorLabels" (dict "ctx" . "component" "querier") | nindent 6 }}
+  # -- Affinity for querier pods. Passed through `tpl` and, thus, to be configured as string
+  # @default -- Hard node and soft zone anti-affinity
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              {{- include "tempo.selectorLabels" (dict "ctx" . "component" "querier" "memberlist" true) | nindent 10 }}
+          topologyKey: kubernetes.io/hostname
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                {{- include "tempo.selectorLabels" (dict "ctx" . "component" "querier" "memberlist" true) | nindent 12 }}
+            topologyKey: topology.kubernetes.io/zone
+  # -- Pod Disruption Budget maxUnavailable
+  maxUnavailable: 1
+  # -- Max Surge for querier pods
+  maxSurge: 0
+  rollingUpdate:
+    # -- Maximum number of Pods that can be unavailable during the update process
+    maxUnavailable: 1
+  # -- Minimum number of seconds for which a newly created Pod should be ready without any of its containers crashing/terminating
+  minReadySeconds: 10
+  # -- Node selector for querier pods
+  nodeSelector:
+    kubernetes.io/hostname: stg-master01
+  # -- Tolerations for querier pods
+  tolerations: 
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+  # -- Init containers for the querier pod
+  initContainers: []
+  # -- Extra volumes for querier pods
+  extraVolumeMounts: []
+  # -- Extra volumes for querier deployment
+  extraVolumes: []
+  config:
+    frontend_worker:
+      # -- grpc client configuration
+      grpc_client_config: {}
+    trace_by_id:
+      # -- Timeout for trace lookup requests
+      query_timeout: 10s
+    search:
+      # -- Timeout for search requests
+      query_timeout: 30s
+    # -- This value controls the overall number of simultaneous subqueries that the querier will service at once. It does not distinguish between the types of queries.
+    max_concurrent_queries: 20
+
+  service:
+    # -- Annotations for querier service
+    annotations: {}
+  # -- Adds the appProtocol field to the querier service. This allows querier to work with istio protocol selection.
+  appProtocol:
+    # -- Set the optional grpc service protocol. Ex: "grpc", "http2" or "https"
+    grpc: null
+
+# Configuration for the query-frontend
+queryFrontend:
+  query:
+    # -- Required for grafana version <7.5 for compatibility with jaeger-ui. Doesn't work on ARM arch
+    enabled: true
+    image:
+      # -- The Docker registry for the tempo-query image. Overrides `tempo.image.registry`
+      registry: null
+      # -- Optional list of imagePullSecrets. Overrides `tempo.image.pullSecrets`
+      pullSecrets: []
+      # -- Docker image repository for the tempo-query image. Overrides `tempo.image.repository`
+      repository: grafana/tempo-query
+      # -- Docker image tag for the tempo-query image. Overrides `tempo.image.tag`
+      tag: 2.9.0
+    # -- Resource requests and limits for the query
+    resources: {}
+    # -- Additional CLI args for tempo-query pods
+    extraArgs: []
+    # -- Environment variables to add to the tempo-query pods
+    extraEnv: []
+    # -- Environment variables from secrets or configmaps to add to the tempo-query pods
+    extraEnvFrom: []
+    # -- Extra volumes for tempo-query pods
+    extraVolumeMounts: []
+    # -- Extra volumes for tempo-query deployment
+    extraVolumes: []
+    config: |
+      backend: 127.0.0.1:3200
+  # -- Number of replicas for the query-frontend
+  replicas: 1
+  # -- Annotations for the query-frontend Deployment
+  annotations: {}
+  # -- hostAliases to add
+  hostAliases: []
+  #  - ip: 1.2.3.4
+  #    hostnames:
+  #      - domain.tld
+  config:
+    # -- Maximum number of outstanding requests per tenant per frontend; requests beyond this error with HTTP 429.
+    max_outstanding_per_tenant: 2000
+    # -- Number of times to retry a request sent to a querier
+    max_retries: 2
+    search:
+      # -- The number of concurrent jobs to execute when searching the backend
+      concurrent_jobs: 1000
+      # -- The target number of bytes for each job to handle when performing a backend search
+      target_bytes_per_job: 104857600
+      # -- The maximum allowed value of spans per span set. 0 disables this limit.
+      max_spans_per_span_set: 100
+    # -- Trace by ID lookup configuration
+      max_duration: 168h
+    trace_by_id:
+      # -- The number of shards to split a trace by id query into.
+      query_shards: 50
+    metrics:
+      # -- The number of concurrent jobs to execute when querying the backend.
+      concurrent_jobs: 1000
+      # -- The target number of bytes for each job to handle when querying the backend.
+      target_bytes_per_job: 104857600
+      # -- The maximum allowed time range for a metrics query.
+      # 0 disables this limit.
+      max_duration: 168h
+      # -- query_backend_after controls where the query-frontend searches for traces.
+      # Time ranges older than query_backend_after will be searched in the backend/object storage only.
+      # Time ranges between query_backend_after and now will be queried from the metrics-generators.
+      query_backend_after: 30m
+      # -- The target length of time for each job to handle when querying the backend.
+      interval: 5m
+      # -- If set to a non-zero value, it's value will be used to decide if query is within SLO or not.
+      # Query is within SLO if it returned 200 within duration_slo seconds OR processed throughput_slo bytes/s data.
+      # NOTE: `duration_slo` and `throughput_bytes_slo` both must be configured for it to work
+      duration_slo: 0s
+      # -- If set to a non-zero value, it's value will be used to decide if query is within SLO or not.
+      # Query is within SLO if it returned 200 within duration_slo seconds OR processed throughput_slo bytes/s data.
+      throughput_bytes_slo: 0
+  autoscaling:
+    # -- Enable autoscaling for the query-frontend
+    enabled: false
+    # -- Minimum autoscaling replicas for the query-frontend
+    minReplicas: 1
+    # -- Maximum autoscaling replicas for the query-frontend
+    maxReplicas: 3
+    # -- Autoscaling behavior configuration for the query-frontend
+    behavior: {}
+    # -- Target CPU utilisation percentage for the query-frontend
+    targetCPUUtilizationPercentage: 60
+    # -- Target memory utilisation percentage for the query-frontend
+    targetMemoryUtilizationPercentage:
+  image:
+    # -- The Docker registry for the query-frontend image. Overrides `tempo.image.registry`
+    registry: null
+    # -- Optional list of imagePullSecrets. Overrides `tempo.image.pullSecrets`
+    pullSecrets: []
+    # -- Docker image repository for the query-frontend image. Overrides `tempo.image.repository`
+    repository: null
+    # -- Docker image tag for the query-frontend image. Overrides `tempo.image.tag`
+    tag: null
+  service:
+    # -- Port of the query-frontend service
+    port: 16686
+    # -- Annotations for queryFrontend service
+    annotations: {}
+    # -- Labels for queryFrontend service
+    labels: {}
+    # -- Type of service for the queryFrontend
+    type: ClusterIP
+    # -- If type is LoadBalancer you can assign the IP to the LoadBalancer
+    loadBalancerIP: ""
+    # -- If type is LoadBalancer limit incoming traffic from IPs.
+    loadBalancerSourceRanges: []
+  serviceDiscovery:
+    # -- Annotations for queryFrontendDiscovery service
+    annotations: {}
+    # -- Labels for queryFrontendDiscovery service
+    labels: {}
+  ingress:
+    # -- Specifies whether an ingress for the Jaeger should be created
+    enabled: false
+    # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
+    # ingressClassName: nginx
+    # -- Annotations for the Jaeger ingress
+    annotations: {}
+    # -- Hosts configuration for the Jaeger ingress
+    hosts:
+      - host: query.tempo.example.com
+        paths:
+          - path: /
+            # -- pathType (e.g. ImplementationSpecific, Prefix, .. etc.) might also be required by some Ingress Controllers
+            # pathType: Prefix
+    # -- TLS configuration for the Jaeger ingress
+    tls:
+      - secretName: tempo-query-tls
+        hosts:
+          - query.tempo.example.com
+  # -- The name of the PriorityClass for query-frontend pods
+  priorityClassName: null
+  # -- Labels for queryFrontend pods
+  podLabels: {}
+  # -- Annotations for query-frontend pods
+  podAnnotations: {}
+  # -- Additional CLI args for the query-frontend
+  extraArgs: []
+  # -- Environment variables to add to the query-frontend pods
+  extraEnv: []
+  # -- Environment variables from secrets or configmaps to add to the query-frontend pods
+  extraEnvFrom: []
+  # -- Resource requests and limits for the query-frontend
+  resources: {}
+  # -- Grace period to allow the query-frontend to shutdown before it is killed
+  terminationGracePeriodSeconds: 30
+  # -- topologySpread for query-frontend pods. Passed through `tpl` and, thus, to be configured as string
+  # @default -- Defaults to allow skew no more then 1 node per AZ
+  topologySpreadConstraints: |
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          {{- include "tempo.selectorLabels" (dict "ctx" . "component" "query-frontend") | nindent 6 }}
+  # -- Affinity for query-frontend pods. Passed through `tpl` and, thus, to be configured as string
+  # @default -- Hard node and soft zone anti-affinity
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              {{- include "tempo.selectorLabels" (dict "ctx" . "component" "query-frontend") | nindent 10 }}
+          topologyKey: kubernetes.io/hostname
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                {{- include "tempo.selectorLabels" (dict "ctx" . "component" "query-frontend") | nindent 12 }}
+            topologyKey: topology.kubernetes.io/zone
+  # -- Pod Disruption Budget maxUnavailable
+  maxUnavailable: 1
+  # -- Minimum number of seconds for which a newly created Pod should be ready without any of its containers crashing/terminating
+  minReadySeconds: 10
+  # -- Node selector for query-frontend pods
+  nodeSelector: 
+    kubernetes.io/hostname: stg-master01
+  # -- Tolerations for query-frontend pods
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+  # -- Init containers for the query-frontend pod
+  initContainers: []
+  # -- Extra volumes for query-frontend pods
+  extraVolumeMounts: []
+  # -- Extra volumes for query-frontend deployment
+  extraVolumes: []
+  # -- Adds the appProtocol field to the queryFrontend service. This allows queryFrontend to work with istio protocol selection.
+  appProtocol:
+    # -- Set the optional grpc service protocol. Ex: "grpc", "http2" or "https"
+    grpc: null
+
+# Configuration for the federation-frontend
+# Can only be enabled if enterprise.enabled is true - requires license.
