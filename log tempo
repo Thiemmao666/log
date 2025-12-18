@@ -41,3 +41,83 @@ drwxr-xr-x 6 1000 1000 4.0K Dec 18 03:42 959e743c-1ca1-468e-b361-82fab5e9d19a
 drwxr-xr-x 6 1000 1000 4.0K Dec 18 04:07 ba181b6d-c830-45f9-b196-5ae758b12c7a
 drwxr-xr-x 2 1000 1000 4.0K Dec 18 04:16 index.json.gz
 drwxr-xr-x 2 1000 1000 4.0K Dec 18 04:16 index.pb.zst
+
+
+a@stg-master01:~$ kl tempo-compactor-c6cf9f5f9-bxjsd
+level=warn ts=2025-12-18T04:29:24.974521813Z caller=main.go:119 msg="-- CONFIGURATION WARNINGS --"
+level=warn ts=2025-12-18T04:29:24.97458682Z caller=main.go:125 msg="Span logging is enabled. This is for debugging only and not recommended for production deployments."
+level=warn ts=2025-12-18T04:29:24.974598974Z caller=main.go:125 msg="Span logging for discarded traces is enabled. This is for debugging only and not recommended for production deployments."
+level=info ts=2025-12-18T04:29:24.982356241Z caller=main.go:103 msg="Starting Tempo" version="(version=v2.9.0, branch=main, revision=9e5af99e4)" target=compactor
+level=info ts=2025-12-18T04:29:24.982435205Z caller=cache.go:46 msg="configuring memcached client" roles=parquet-footer|bloom|frontend-search
+level=error ts=2025-12-18T04:29:25.128292927Z caller=memcached_client.go:185 msg="error setting memcache servers to host" host=tempo-memcached err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-18T04:29:25.152636518Z caller=cache.go:55 msg="caches available to storage backend" parquet-footer=true bloom=true parquet-offset-idx=false parquet-column-idx=false trace-id-index=false parquet-page=false
+level=info ts=2025-12-18T04:29:25.154099345Z caller=server.go:284 msg="server listening on addresses" http=[::]:3200 grpc=[::]:9095
+level=info ts=2025-12-18T04:29:25.248984996Z caller=memberlist_client.go:503 msg="Using memberlist cluster label and node name" cluster_label=tempo.test-molo node=tempo-compactor-c6cf9f5f9-bxjsd-d448fbbb
+level=info ts=2025-12-18T04:29:25.252836529Z caller=module_service.go:82 msg=starting module=cache-provider
+level=info ts=2025-12-18T04:29:25.253596983Z caller=module_service.go:82 msg=starting module=internal-server
+level=info ts=2025-12-18T04:29:25.253641767Z caller=module_service.go:82 msg=starting module=store
+level=info ts=2025-12-18T04:29:25.253775346Z caller=module_service.go:82 msg=starting module=server
+level=info ts=2025-12-18T04:29:25.25387129Z caller=module_service.go:82 msg=starting module=overrides
+level=info ts=2025-12-18T04:29:25.253901537Z caller=module_service.go:82 msg=starting module=memberlist-kv
+level=info ts=2025-12-18T04:29:25.253943777Z caller=module_service.go:82 msg=starting module=usage-report
+level=info ts=2025-12-18T04:29:25.254396412Z caller=module_service.go:82 msg=starting module=compactor
+level=info ts=2025-12-18T04:29:25.25485167Z caller=memberlist_client.go:681 msg="memberlist fast-join starting" nodes_found=2 to_join=2
+level=info ts=2025-12-18T04:29:25.25655278Z caller=memberlist_client.go:687 msg="fast-joining node failed" node=10.244.1.215:7946 err="1 error occurred:\n\t* failed to join 10.244.1.215:7946: dial tcp 10.244.1.215:7946: connect: connection refused\n\n"
+level=info ts=2025-12-18T04:29:25.267547775Z caller=memberlist_client.go:701 msg="memberlist fast-join finished" joined_nodes=1 elapsed_time=14.551046ms
+level=info ts=2025-12-18T04:29:25.267596059Z caller=memberlist_client.go:719 phase=startup msg="joining memberlist cluster" join_members=dns+tempo-gossip-ring:7946
+level=info ts=2025-12-18T04:29:25.268388649Z caller=basic_lifecycler.go:324 msg="instance not found in the ring" instance=tempo-compactor-c6cf9f5f9-bxjsd ring=compactor
+level=info ts=2025-12-18T04:29:25.269255783Z caller=compactor.go:125 msg="waiting until compactor is ACTIVE in the ring"
+level=info ts=2025-12-18T04:29:25.279315884Z caller=memberlist_client.go:726 phase=startup msg="joining memberlist cluster succeeded" reached_nodes=2 elapsed_time=11.706875ms
+level=info ts=2025-12-18T04:29:25.428432514Z caller=compactor.go:131 msg="compactor is ACTIVE in the ring"
+level=info ts=2025-12-18T04:29:25.428653261Z caller=compactor.go:140 msg="waiting until compactor ring topology is stable" min_waiting=1m0s max_waiting=5m0s
+level=warn ts=2025-12-18T04:30:25.203332919Z caller=memcached_client.go:259 msg="error updating memcache servers" err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-18T04:30:25.428947133Z caller=compactor.go:144 msg="compactor ring topology is stable"
+level=info ts=2025-12-18T04:30:25.429092931Z caller=tempodb.go:638 msg="polling enabled" interval=5m0s blocklist_concurrency=50
+level=info ts=2025-12-18T04:30:26.333947958Z caller=poller.go:302 msg="writing tenant index" tenant=single-tenant metas=3 compactedMetas=2
+level=info ts=2025-12-18T04:30:26.363300069Z caller=poller.go:249 msg="blocklist poll complete" seconds=0.934062878
+level=info ts=2025-12-18T04:30:26.363494246Z caller=compactor.go:157 msg="enabling compaction"
+level=info ts=2025-12-18T04:30:26.363585866Z caller=tempodb.go:598 msg="compaction and retention enabled."
+level=info ts=2025-12-18T04:30:26.363859511Z caller=app.go:216 msg="Tempo started"
+level=info ts=2025-12-18T04:30:26.364442435Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:30:26.364504807Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=info ts=2025-12-18T04:30:56.364669119Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:30:56.364908263Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=warn ts=2025-12-18T04:31:25.333941878Z caller=memcached_client.go:259 msg="error updating memcache servers" err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-18T04:31:26.365698958Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:31:26.365909576Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=info ts=2025-12-18T04:31:56.366464774Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:31:56.366612707Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=warn ts=2025-12-18T04:32:25.469497316Z caller=memcached_client.go:259 msg="error updating memcache servers" err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-18T04:32:26.36714174Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:32:26.367638271Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=info ts=2025-12-18T04:32:56.368149082Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:32:56.3683616Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=warn ts=2025-12-18T04:33:25.269556041Z caller=memcached_client.go:259 msg="error updating memcache servers" err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-18T04:33:26.369185603Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:33:26.369347798Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=info ts=2025-12-18T04:33:56.37016378Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:33:56.370380952Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=warn ts=2025-12-18T04:34:25.265485665Z caller=memcached_client.go:259 msg="error updating memcache servers" err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-18T04:34:26.371336323Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:34:26.371689712Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=info ts=2025-12-18T04:34:56.372304613Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:34:56.372547593Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=warn ts=2025-12-18T04:35:25.321155383Z caller=memcached_client.go:259 msg="error updating memcache servers" err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-18T04:35:26.372718514Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:35:26.373106675Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=info ts=2025-12-18T04:35:27.461089151Z caller=poller.go:302 msg="writing tenant index" tenant=single-tenant metas=4 compactedMetas=2
+level=info ts=2025-12-18T04:35:27.494158255Z caller=poller.go:249 msg="blocklist poll complete" seconds=1.12940409
+level=info ts=2025-12-18T04:35:56.374094122Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:35:56.375256612Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=warn ts=2025-12-18T04:36:25.335969301Z caller=memcached_client.go:259 msg="error updating memcache servers" err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
+level=info ts=2025-12-18T04:36:26.374086176Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:36:26.374303629Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=info ts=2025-12-18T04:36:56.374752052Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:40:26.378821688Z caller=compactor.go:158 msg="compaction cycle complete. No more blocks to compact" tenantID=single-tenant
+level=info ts=2025-12-18T04:40:27.607508445Z caller=poller.go:302 msg="writing tenant index" tenant=single-tenant metas=5 compactedMetas=2
+level=info ts=2025-12-18T04:40:27.627155256Z caller=poller.go:249 msg="blocklist poll complete" seconds=1.262945604
+level=info ts=2025-12-18T04:40:56.379319196Z caller=compactor.go:145 msg="starting compaction cycle" tenantID=single-tenant offset=0
+level=info ts=2025-12-18T04:40:56.380088159Z caller=compactor.go:170 msg="Compacting hash" hashString=single-tenant-0-490564-0
+level=info ts=2025-12-18T04:40:56.380651634Z caller=compactor.go:266 msg="compacting block" version=v2 tenantID=single-tenant blockID=d60948fc-5c5c-4394-baa8-ef4ddc8fb8fa startTime="2025-12-18 04:33:20 +0000 UTC" endTime="2025-12-18 04:39:52 +0000 UTC" totalObjects=753 size=61727 compactionLevel=0 encoding=zstd totalRecords=753 bloomShardCount=1 footerSize=0 replicationFactor=0
+level=info ts=2025-12-18T04:40:56.395637022Z caller=compactor.go:266 msg="compacting block" version=v2 tenantID=single-tenant blockID=2ff9a314-1aa4-4533-ba28-aec0ba4d0533 startTime="2025-12-18 04:28:13 +0000 UTC" endTime="2025-12-18 04:34:44 +0000 UTC" totalObjects=822 size=68480 compactionLevel=0 encoding=zstd totalRecords=822 bloomShardCount=1 footerSize=0 replicationFactor=0
+level=info ts=2025-12-18T04:40:57.611556918Z caller=compactor.go:159 msg="writing compacted block" block="version:\"v2\" block_id:\"Ag\\n\\024(kKR\\262U2\\033\\236-\\340\\016\" tenant_id:\"single-tenant\" start_time:<seconds:1766032093 > end_time:<seconds:1766032792 > total_objects:1575 size:99924 compaction_level:1 encoding:\"\\007\" data_encoding:\"v2\" "
