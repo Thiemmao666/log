@@ -13,3 +13,13 @@ level=info ts=2025-12-09T03:16:21.04069822Z caller=cache.go:46 msg="configuring 
 level=error ts=2025-12-09T03:16:21.801793574Z caller=memcached_client.go:185 msg="error setting memcache servers to host" host=tempo-memcached err="lookup _memcached-client._tcp.tempo-memcached on 10.96.0.10:53: no such host"
 level=error ts=2025-12-09T03:16:21.80305633Z caller=main.go:110 msg="error running Tempo" err="failed to init module services: error initialising module: store: failed to create store: invalid config while creating tempodb: wal config validation failed: failed to validate block version vParquet: vParquet is not a valid block version"
 a@stg-master01:~$ 
+
+
+Error
+error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.7.36:9095: rpc error: code = Unknown desc = unexpected error searching head block (7b46254b-77bc-4fa4-b009-0cdb1de49e52): unsupported
+
+Error
+error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.0.62:9095: rpc error: code = Unknown desc = unexpected error searching head block (ef7afc93-adba-441c-82db-8c5eaca0c09a): unsupported
+
+Error
+error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.4.114:9095: rpc error: code = Unknown desc = unexpected error searching head block (162ddce2-e8be-49c0-8efc-59c78860288d): unsupported
