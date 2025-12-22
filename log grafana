@@ -22,3 +22,7 @@ Error
 error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.0.62:9095: rpc error: code = Unknown desc = unexpected error searching complete block (37b80fa1-4ddf-4c49-84f4-c880d695e69c): unsupported
 
 Error
+
+
+Query error
+failed to execute TraceQL query: {nestedSetParent<0 && true && resource.service.name != nil} | rate() by(resource.service.name) Status: 500 Internal Server Error Body: error querying generators in Querier.queryRangeRecent: failed to get response from generators: failed to execute f() for 10.244.1.15:9095: rpc error: code = Unknown desc = time range must be within last 1h0m0s
