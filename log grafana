@@ -7,3 +7,18 @@ logger=sqlstore.transactions t=2025-12-01T01:55:48.14331791Z level=info msg="Dat
 
 Error
 error querying ingesters in Querier.SearchTags: forIngesterRings: error getting replication set for ring (0): too many unhealthy instances in the ring
+
+
+Error
+error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.4.114:9095: rpc error: code = Unknown desc = unexpected error searching completing block (8c990db7-0006-4f30-a6b3-9f2802ca85d6): unsupported
+
+Error
+error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.0.62:9095: rpc error: code = Unknown desc = unexpected error searching complete block (388e7b6a-77ab-483a-b7eb-2719f2d99cf5): unsupported
+
+Error
+error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.7.36:9095: rpc error: code = Unknown desc = unexpected error searching complete block (5bfb0f04-3a6c-4e39-9550-6dc7730f5af1): unsupported
+
+Error
+error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.0.62:9095: rpc error: code = Unknown desc = unexpected error searching complete block (37b80fa1-4ddf-4c49-84f4-c880d695e69c): unsupported
+
+Error
