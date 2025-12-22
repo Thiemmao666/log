@@ -6,3 +6,14 @@ bash-5.1# mc ls minio/tempo-traces/single-tenant/
 [2025-12-22 06:58:58 UTC]     0B 004df623-46e8-46d6-8d40-23a1ff1724a0/
 [2025-12-22 06:58:58 UTC]     0B 008bf56e-34db-4b14-ae26-f12acfb55053/
 [2025-12-22 06:58:58 UTC]     0B 00ba2050-54cd-4364-961a-8155554c64dd/
+
+[2025-12-22 06:58:58 UTC]     0B ff7534ba-0328-4e34-9d39-efeb484eead7/
+bash-5.1# mc ls minio/tempo-traces/single-tenant/ff7534ba-0328-4e34-9d39-efeb484eead7/
+[2025-12-19 15:55:37 UTC] 100KiB STANDARD bloom-0
+[2025-12-19 15:55:37 UTC] 158KiB STANDARD data
+[2025-12-19 15:55:37 UTC] 250KiB STANDARD index
+[2025-12-19 15:55:38 UTC]   322B STANDARD meta.json
+bash-5.1# mc ls minio/tempo-traces/single-tenant/ff7534ba-0328-4e34-9d39-efeb484eead7/meta.json
+[2025-12-19 15:55:38 UTC]   322B STANDARD meta.json
+bash-5.1# mc cat  minio/tempo-traces/single-tenant/ff7534ba-0328-4e34-9d39-efeb484eead7/meta.json
+{"format":"v2","blockID":"ff7534ba-0328-4e34-9d39-efeb484eead7","tenantID":"single-tenant","startTime":"2025-12-19T15:47:23Z","endTime":"2025-12-19T15:54:48Z","totalObjects":1443,"size":162150,"compactionLevel":1,"encoding":"zstd","indexPageSize":256000,"totalRecords":4,"dataEncoding":"v2","bloomShards":1,"footerSize":0}bash-5.1# 
