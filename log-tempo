@@ -23,3 +23,65 @@ error querying ingesters in Querier.SearchTagValues: failed to execute f() for 1
 
 Error
 error querying ingesters in Querier.SearchTagValues: failed to execute f() for 10.244.4.114:9095: rpc error: code = Unknown desc = unexpected error searching head block (162ddce2-e8be-49c0-8efc-59c78860288d): unsupported
+
+
+
+[signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x20bf89e]
+
+goroutine 852 [running]:
+github.com/grafana/tempo/tempodb.(*readerWriter).Fetch(0xc0003dac00, {0x425d378, 0xc040f167e0}, 0xc041184770?, {0x18837bd49f952000, 0x18837ca62bc34800, {0xc0410e0fa0, 0x1, 0x1}, 0x1, ...}, ...)
+        /home/runner/work/tempo/tempo/tempodb/tempodb.go:542 +0x5e
+github.com/grafana/tempo/modules/querier.(*Querier).SearchBlock.func1({0x425d378?, 0xc040f167e0?}, {0x18837bd49f952000, 0x18837ca62bc34800, {0xc0410e0fa0, 0x1, 0x1}, 0x1, {0x0, 0x0}, ...})
+        /home/runner/work/tempo/tempo/modules/querier/querier.go:899 +0xa3
+github.com/grafana/tempo/pkg/traceql.SpansetFetcherWrapper.Fetch({0xc040c7c700?}, {0x425d378?, 0xc040f167e0?}, {0x18837bd49f952000, 0x18837ca62bc34800, {0xc0410e0fa0, 0x1, 0x1}, 0x1, {0x0, ...}, ...})
+        /home/runner/work/tempo/tempo/pkg/traceql/storage.go:330 +0x63
+github.com/grafana/tempo/pkg/traceql.(*Engine).ExecuteSearch(0xc040c7b3c0?, {0x425d378?, 0xc040f163c0?}, 0xc0410e0b40, {0x4216280, 0xc00017d9d0}, 0x0)
+        /home/runner/work/tempo/tempo/pkg/traceql/engine.go:130 +0x8ce
+github.com/grafana/tempo/modules/querier.(*Querier).SearchBlock(0xc0409e0008, {0x425d378, 0xc040f163c0}, 0xc040c7c700)
+        /home/runner/work/tempo/tempo/modules/querier/querier.go:902 +0x466
+github.com/grafana/tempo/modules/querier.(*Querier).SearchHandler(0xc0409e0008, {0x4251c70, 0xc040c7b300}, 0xc040f18280)
+        /home/runner/work/tempo/tempo/modules/querier/http.go:173 +0x670
+net/http.HandlerFunc.ServeHTTP(0x425d378?, {0x4251c70?, 0xc040c7b300?}, 0x41f8b08?)
+        /home/runner/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.1.linux-amd64/src/net/http/server.go:2322 +0x29
+github.com/grafana/tempo/cmd/tempo/app.init.func1.1({0x4251c70, 0xc040c7b300}, 0xc040f18140)
+        /home/runner/work/tempo/tempo/cmd/tempo/app/fake_auth.go:16 +0x12e
+net/http.HandlerFunc.ServeHTTP(0xc040f18000?, {0x4251c70?, 0xc040c7b300?}, 0x2?)
+        /home/runner/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.1.linux-amd64/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc0003db200, {0x4251c70, 0xc040c7b300}, 0xc000339e00)
+        /home/runner/work/tempo/tempo/vendor/github.com/gorilla/mux/mux.go:212 +0x1e2
+github.com/grafana/dskit/middleware.(*Instrument).Wrap.Instrument.Wrap.func1.2({0x4251c70?, 0xc040c7b300?})
+        /home/runner/work/tempo/tempo/vendor/github.com/grafana/dskit/middleware/instrument.go:99 +0x33
+github.com/felixge/httpsnoop.(*Metrics).CaptureMetrics(0xc00012ced0, {0x7f9db5ff6590, 0xc0410f6720}, 0xc000663330)
+        /home/runner/work/tempo/tempo/vendor/github.com/felixge/httpsnoop/capture_metrics.go:84 +0x1e5
+github.com/felixge/httpsnoop.CaptureMetricsFn({0x7f9db5ff6590, 0xc0410f6720}, 0xc000663330)
+        /home/runner/work/tempo/tempo/vendor/github.com/felixge/httpsnoop/capture_metrics.go:39 +0x4e
+github.com/grafana/dskit/middleware.(*Instrument).Wrap.Instrument.Wrap.func1({0x7f9db5ff6590, 0xc0410f6720}, 0xc000339e00)
+        /home/runner/work/tempo/tempo/vendor/github.com/grafana/dskit/middleware/instrument.go:98 +0x2b1
+net/http.HandlerFunc.ServeHTTP(0x6515980?, {0x7f9db5ff6590?, 0xc0410f6720?}, 0xc040f16240?)
+        /home/runner/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.1.linux-amd64/src/net/http/server.go:2322 +0x29
+github.com/grafana/dskit/middleware.(*Log).Wrap.Log.Wrap.func1({0x4251bb0, 0xc040f161b0}, 0xc000339e00)
+        /home/runner/work/tempo/tempo/vendor/github.com/grafana/dskit/middleware/logging.go:92 +0x257
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x4251bb0?, 0xc040f161b0?}, 0x0?)
+        /home/runner/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.1.linux-amd64/src/net/http/server.go:2322 +0x29
+github.com/grafana/dskit/middleware.Tracer.wrapWithOTel.func1({0x4251bb0, 0xc040f161b0}, 0xc000339e00)
+        /home/runner/work/tempo/tempo/vendor/github.com/grafana/dskit/middleware/http_tracing.go:103 +0x7f3
+net/http.HandlerFunc.ServeHTTP(0x425d378?, {0x4251bb0?, 0xc040f161b0?}, 0x41f8b08?)
+        /home/runner/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.1.linux-amd64/src/net/http/server.go:2322 +0x29
+go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp.(*middleware).serveHTTP(0xc0006f45b0, {0x4251fa0, 0xc040c7b280}, 0xc000339b80, {0x4213fe0, 0xc000824840})
+        /home/runner/work/tempo/tempo/vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/handler.go:180 +0x1263
+go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp.NewMiddleware.func1.1({0x4251fa0?, 0xc040c7b280?}, 0xc040f16150?)
+        /home/runner/work/tempo/tempo/vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/handler.go:67 +0x35
+net/http.HandlerFunc.ServeHTTP(0xc000339a40?, {0x4251fa0?, 0xc040c7b280?}, 0x39ff640?)
+        /home/runner/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.1.linux-amd64/src/net/http/server.go:2322 +0x29
+github.com/grafana/dskit/middleware.(*RouteInjector).Wrap.RouteInjector.Wrap.func1({0x4251fa0, 0xc040c7b280}, 0xc000339a40)
+        /home/runner/work/tempo/tempo/vendor/github.com/grafana/dskit/middleware/route_injector.go:24 +0x69
+net/http.HandlerFunc.ServeHTTP(0x425d378?, {0x4251fa0?, 0xc040c7b280?}, 0x41f8b08?)
+        /home/runner/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.1.linux-amd64/src/net/http/server.go:2322 +0x29
+github.com/grafana/dskit/httpgrpc/server.Server.Handle({{0x4213fe0?, 0xc000824960?}, 0xb0?}, {0x425d378?, 0xc040e8bf50?}, 0xc0410e02d0)
+        /home/runner/work/tempo/tempo/vendor/github.com/grafana/dskit/httpgrpc/server/server.go:83 +0x147
+github.com/grafana/tempo/modules/querier/worker.(*frontendProcessor).runRequest(0xc000787770, {0x425d3b0?, 0xc040d13ea0?}, 0xc0410e02d0)
+        /home/runner/work/tempo/tempo/modules/querier/worker/frontend_processor.go:170 +0x15c
+github.com/grafana/tempo/modules/querier/worker.(*frontendProcessor).runRequests.func1(0x0, 0xc0003c8bd0?)
+        /home/runner/work/tempo/tempo/modules/querier/worker/frontend_processor.go:157 +0x70
+created by github.com/grafana/tempo/modules/querier/worker.(*frontendProcessor).runRequests in goroutine 851
+        /home/runner/work/tempo/tempo/modules/querier/worker/frontend_processor.go:155 +0x6f
