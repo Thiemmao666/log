@@ -1,0 +1,47 @@
+scloud@stg-master02:~/devops-mcc/1.stg/2.moss-db/1.postgres-service$ kl -f postgres-0
+postgresql-repmgr 09:20:57.49 INFO  ==> 
+postgresql-repmgr 09:20:57.49 INFO  ==> Welcome to the Bitnami postgresql-repmgr container
+postgresql-repmgr 09:20:57.49 INFO  ==> Subscribe to project updates by watching https://github.com/bitnami/containers
+postgresql-repmgr 09:20:57.49 INFO  ==> Submit issues and feature requests at https://github.com/bitnami/containers/issues
+postgresql-repmgr 09:20:57.50 INFO  ==> Upgrade to Tanzu Application Catalog for production environments to access custom-configured and pre-packaged software components. Gain enhanced features, including Software Bill of Materials (SBOM), CVE scan result reports, and VEX documents. To learn more, visit https://bitnami.com/enterprise
+postgresql-repmgr 09:20:57.50 INFO  ==> 
+postgresql-repmgr 09:20:57.53 INFO  ==> ** Starting PostgreSQL with Replication Manager setup **
+postgresql-repmgr 09:20:57.57 INFO  ==> Validating settings in REPMGR_* env vars...
+postgresql-repmgr 09:20:57.57 INFO  ==> Validating settings in POSTGRESQL_* env vars..
+postgresql-repmgr 09:20:57.58 INFO  ==> Querying all partner nodes for common upstream node...
+postgresql-repmgr 09:20:57.64 INFO  ==> This node was acting as a primary before restart!
+postgresql-repmgr 09:20:57.64 INFO  ==> Can not find new primary. Starting PostgreSQL normally...
+postgresql-repmgr 09:20:57.64 INFO  ==> There are no nodes with primary role. Assuming the primary role...
+postgresql-repmgr 09:20:57.65 INFO  ==> Preparing PostgreSQL configuration...
+postgresql-repmgr 09:20:57.66 INFO  ==> postgresql.conf file not detected. Generating it...
+postgresql-repmgr 09:20:57.78 INFO  ==> Preparing repmgr configuration...
+postgresql-repmgr 09:20:57.80 INFO  ==> Initializing Repmgr...
+postgresql-repmgr 09:20:57.80 INFO  ==> Initializing PostgreSQL database...
+postgresql-repmgr 09:20:57.81 INFO  ==> Custom configuration /opt/bitnami/postgresql/conf/postgresql.conf detected
+postgresql-repmgr 09:20:57.82 INFO  ==> Custom configuration /opt/bitnami/postgresql/conf/pg_hba.conf detected
+postgresql-repmgr 09:20:57.84 INFO  ==> Deploying PostgreSQL with persisted data...
+postgresql-repmgr 09:20:57.88 INFO  ==> Configuring replication parameters
+postgresql-repmgr 09:20:57.93 INFO  ==> Configuring fsync
+postgresql-repmgr 09:20:57.95 INFO  ==> ** PostgreSQL with Replication Manager setup finished! **
+
+postgresql-repmgr 09:20:58.00 INFO  ==> Starting PostgreSQL in background...
+pg_ctl: another server might be running; trying to start server anyway
+server starting
+2025-12-23 02:20:58 GMT::@:[144]: LOG:  pgaudit extension initialized
+2025-12-23 02:20:58 GMT::@:[144]: LOG:  redirecting log output to logging collector process
+2025-12-23 02:20:58 GMT::@:[144]: HINT:  Future log output will appear in directory "/opt/bitnami/postgresql/logs".
+2025-12-23 02:20:58 GMT::@:[144]: LOG:  starting PostgreSQL 16.3 on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+2025-12-23 02:20:58 GMT::@:[144]: LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2025-12-23 02:20:58 GMT::@:[144]: LOG:  listening on IPv6 address "::", port 5432
+2025-12-23 02:20:58 GMT::@:[144]: LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-12-23 02:20:58 GMT::@:[150]: LOG:  database system was interrupted; last known up at 2025-12-23 02:20:56 GMT
+2025-12-23 02:20:58 GMT::@:[150]: LOG:  database system was not properly shut down; automatic recovery in progress
+2025-12-23 02:20:58 GMT::@:[150]: LOG:  invalid record length at 0/4000280: expected at least 24, got 0
+2025-12-23 02:20:58 GMT::@:[150]: LOG:  redo is not required
+2025-12-23 02:20:58 GMT::@:[148]: LOG:  checkpoint starting: end-of-recovery immediate wait
+2025-12-23 02:20:58 GMT::@:[148]: LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.002 s, total=0.008 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/4000280, redo lsn=0/4000280
+2025-12-23 02:20:58 GMT::@:[144]: LOG:  database system is ready to accept connections
+postgresql-repmgr 09:20:59.05 INFO  ==> ** Starting repmgrd **
+[2025-12-23 09:20:59] [NOTICE] repmgrd (repmgrd 5.4.1) starting up
+[2025-12-23 09:20:59] [ERROR] unable to write to shared memory
+[2025-12-23 09:20:59] [HINT] ensure "shared_preload_libraries" includes "repmgr"
