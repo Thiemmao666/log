@@ -13,3 +13,46 @@ Reading state information... Done
 83 packages can be upgraded. Run 'apt list --upgradable' to see them.
 W: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/InRelease  Certificate verification failed: The certificate is NOT trusted. The certificate issuer is unknown. The received OCSP status response is invalid.  Could not handshake: Error in the certificate verification. [IP: 18.244.60.84 443]
 W: Some index files failed to download. They have been ignored, or old ones used instead.
+
+
+The Cross-Origin-Opener-Policy header has been ignored, because the URL's origin was untrustworthy. It was defined either in the final response or a redirect. Please deliver the response using the HTTPS protocol. You can also use the 'localhost' origin instead. See https://www.w3.org/TR/powerful-features/#potentially-trustworthy-origin and https://html.spec.whatwg.org/#the-cross-origin-opener-policy-header.
+:8080/setupWizard/proxy-configuration:1  The Cross-Origin-Opener-Policy header has been ignored, because the URL's origin was untrustworthy. It was defined either in the final response or a redirect. Please deliver the response using the HTTPS protocol. You can also use the 'localhost' origin instead. See https://www.w3.org/TR/powerful-features/#potentially-trustworthy-origin and https://html.spec.whatwg.org/#the-cross-origin-opener-policy-header.
+3pluginManager.js:89  Uncaught TypeError: Cannot read properties of undefined (reading 'recommendedPlugins')
+    at __webpack_modules__.5645.pluginManager.recommendedPluginNames (pluginManager.js:89:18)
+    at pluginSetupWizardGui.js:453:36
+    at Object.<anonymous> (pluginSetupWizardGui.js:717:9)
+    at Object.<anonymous> (pluginSetupWizardGui.js:145:15)
+    at util_jenkins.get.timeout [as success] (pluginManager.js:164:15)
+    at fire (vendors.js:9077:31)
+    at Object.fireWith [as resolveWith] (vendors.js:9207:7)
+    at done (vendors.js:15481:14)
+    at XMLHttpRequest.<anonymous> (vendors.js:15742:9)
+2pluginSetupWizardGui.js:725  Uncaught TypeError: Cannot read properties of undefined (reading 'length')
+    at pluginSetupWizardGui.js:725:38
+    at Object.<anonymous> (pluginSetupWizardGui.js:717:9)
+    at Object.<anonymous> (pluginSetupWizardGui.js:145:15)
+    at util_jenkins.get.timeout [as success] (pluginManager.js:164:15)
+    at fire (vendors.js:9077:31)
+    at Object.fireWith [as resolveWith] (vendors.js:9207:7)
+    at done (vendors.js:15481:14)
+    at XMLHttpRequest.<anonymous> (vendors.js:15742:9)
+5pluginManager.js:89  Uncaught TypeError: Cannot read properties of undefined (reading 'recommendedPlugins')
+    at __webpack_modules__.5645.pluginManager.recommendedPluginNames (pluginManager.js:89:18)
+    at pluginSetupWizardGui.js:453:36
+    at Object.<anonymous> (pluginSetupWizardGui.js:717:9)
+    at Object.<anonymous> (pluginSetupWizardGui.js:145:15)
+    at util_jenkins.get.timeout [as success] (pluginManager.js:164:15)
+    at fire (vendors.js:9077:31)
+    at Object.fireWith [as resolveWith] (vendors.js:9207:7)
+    at done (vendors.js:15481:14)
+    at XMLHttpRequest.<anonymous> (vendors.js:15742:9)
+2pluginManager.js:89  Uncaught TypeError: Cannot read properties of undefined (reading 'recommendedPlugins')
+    at __webpack_modules__.5645.pluginManager.recommendedPluginNames (pluginManager.js:89:18)
+    at pluginSetupWizardGui.js:453:36
+    at Object.<anonymous> (pluginSetupWizardGui.js:717:9)
+    at Object.<anonymous> (pluginSetupWizardGui.js:145:15)
+    at util_jenkins.get.timeout [as success] (pluginManager.js:164:15)
+    at fire (vendors.js:9077:31)
+    at Object.fireWith [as resolveWith] (vendors.js:9207:7)
+    at done (vendors.js:15481:14)
+    at XMLHttpRequest.<anonymous> (vendors.js:15742:9)
