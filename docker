@@ -25,6 +25,9 @@ The Cross-Origin-Opener-Policy header has been ignored, because the URL's origin
     at util_jenkins.get.timeout [as success] (pluginManager.js:164:15)
     at fire (vendors.js:9077:31)
     at Object.fireWith [as resolveWith] (vendors.js:9207:7)
+
+
+There were errors checking the update sites: SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
     at done (vendors.js:15481:14)
     at XMLHttpRequest.<anonymous> (vendors.js:15742:9)
 2pluginSetupWizardGui.js:725  Uncaught TypeError: Cannot read properties of undefined (reading 'length')
