@@ -62,3 +62,6 @@ There were errors checking the update sites: SSLHandshakeException: (certificate
     at Object.fireWith [as resolveWith] (vendors.js:9207:7)
     at done (vendors.js:15481:14)
     at XMLHttpRequest.<anonymous> (vendors.js:15742:9)
+
+
+There were errors checking the update sites: SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
