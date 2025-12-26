@@ -1,0 +1,28 @@
+Started by user admin
+[Fri Dec 26 06:28:08 UTC 2025] Starting branch indexing...
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git ls-remote --symref -- https://github.com/Thiemmao666/simple-java-maven-app.git # timeout=10
+ERROR: [Fri Dec 26 06:28:08 UTC 2025] Could not update folder level actions from source 1
+[Fri Dec 26 06:28:08 UTC 2025] Finished branch indexing. Indexing took 0.58 sec
+FATAL: Failed to recompute children of mutli -pipe
+hudson.plugins.git.GitException: Command "git ls-remote --symref -- https://github.com/Thiemmao666/simple-java-maven-app.git" returned status code 128:
+stdout: 
+stderr: fatal: unable to access 'https://github.com/Thiemmao666/simple-java-maven-app.git/': server verification failed: attached OCSP status response is invalid. (CAfile: /etc/ssl/certs/ca-certificates.crt CRLfile: none)
+
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.launchCommandIn(CliGitAPIImpl.java:2848)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.launchCommandWithCredentials(CliGitAPIImpl.java:2189)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.launchCommandWithCredentials(CliGitAPIImpl.java:2083)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.launchCommandWithCredentials(CliGitAPIImpl.java:2074)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.getRemoteSymbolicReferences(CliGitAPIImpl.java:3849)
+	at PluginClassLoader for git//jenkins.plugins.git.AbstractGitSCMSource.retrieveActions(AbstractGitSCMSource.java:1189)
+Caused: java.io.IOException
+	at PluginClassLoader for git//jenkins.plugins.git.AbstractGitSCMSource.retrieveActions(AbstractGitSCMSource.java:1191)
+	at PluginClassLoader for scm-api//jenkins.scm.api.SCMSource.fetchActions(SCMSource.java:843)
+	at PluginClassLoader for branch-api//jenkins.branch.MultiBranchProject.computeChildren(MultiBranchProject.java:650)
+	at PluginClassLoader for cloudbees-folder//com.cloudbees.hudson.plugins.folder.computed.ComputedFolder.updateChildren(ComputedFolder.java:272)
+	at PluginClassLoader for cloudbees-folder//com.cloudbees.hudson.plugins.folder.computed.FolderComputation.run(FolderComputation.java:170)
+	at PluginClassLoader for branch-api//jenkins.branch.MultiBranchProject$BranchIndexing.run(MultiBranchProject.java:1096)
+	at hudson.model.ResourceController.execute(ResourceController.java:101)
+	at hudson.model.Executor.run(Executor.java:460)
+Finished: FAILURE
