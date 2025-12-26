@@ -28,6 +28,9 @@ The Cross-Origin-Opener-Policy header has been ignored, because the URL's origin
 
 
 There were errors checking the update sites: SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+
+
+There were errors checking the update sites: SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
     at done (vendors.js:15481:14)
     at XMLHttpRequest.<anonymous> (vendors.js:15742:9)
 2pluginSetupWizardGui.js:725  Uncaught TypeError: Cannot read properties of undefined (reading 'length')
