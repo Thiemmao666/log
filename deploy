@@ -1,0 +1,171 @@
+name: K8S CD Production
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: "0 2 * * *" # 09:00 VN
+
+env:
+  NAMESPACE: mcc
+  ORDER: "1.config-server 2.auth 3.xxx 4.xxx 5.xxx 6.gateway 7.front-end"
+  WORKER_LABEL: "image-cache=enabled"
+
+# =====================================================
+# 1. Detect changed folders (only app/)
+# =====================================================
+jobs:
+  detect:
+    runs-on: self-hosted
+    outputs:
+      folders: ${{ steps.diff.outputs.folders }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: diff
+        run: |
+          FOLDERS=$(git diff --name-only HEAD~1 HEAD \
+            | grep '^app/' \
+            | cut -d/ -f2 \
+            | sort -u \
+            | jq -R -s -c 'split("\n")[:-1]' || echo '[]')
+
+          echo "folders=$FOLDERS" >> $GITHUB_OUTPUT
+
+# =====================================================
+# 2. Collect images need to be pulled
+# =====================================================
+  collect-images:
+    needs: detect
+    if: needs.detect.outputs.folders != '[]'
+    runs-on: self-hosted
+    outputs:
+      images: ${{ steps.collect.outputs.images }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: collect
+        run: |
+          IMAGES=()
+
+          for dir in $ORDER; do
+            echo '${{ needs.detect.outputs.folders }}' | jq -e ".[] | select(.==\"$dir\")" >/dev/null || continue
+
+            DEPLOY=app/$dir/1.deploy.yaml
+            [[ ! -f "$DEPLOY" ]] && continue
+
+            if [[ "${{ github.event_name }}" == "schedule" ]] || \
+               git diff HEAD~1 HEAD -- "$DEPLOY" | grep image; then
+              IMAGE=$(yq e '.spec.template.spec.containers[].image' "$DEPLOY")
+              IMAGES+=("$IMAGE")
+            fi
+          done
+
+          printf '%s\n' "${IMAGES[@]}" | sort -u > images.txt
+          jq -R -s -c 'split("\n")[:-1]' images.txt > images.json
+
+          echo "images=$(cat images.json)" >> $GITHUB_OUTPUT
+
+# =====================================================
+# 3. Pull image on selected worker nodes (FAIL = STOP)
+# =====================================================
+  pull-image:
+    needs: collect-images
+    if: needs.collect-images.outputs.images != '[]'
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull images on worker nodes
+        run: |
+          set -e
+          NODES=$(kubectl get nodes -l $WORKER_LABEL \
+            -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+
+          echo "## 📦 Image Pull Result" >> $GITHUB_STEP_SUMMARY
+
+          for node in $NODES; do
+            echo "➡️ Node: $node"
+            for image in $(echo '${{ needs.collect-images.outputs.images }}' | jq -r '.[]'); do
+              ssh -i ~/.ssh/k8s-image-pull root@$node "crictl pull $image"
+              echo "✅ $image on $node" >> $GITHUB_STEP_SUMMARY
+            done
+          done
+
+# =====================================================
+# 4. DRY RUN (preview only)
+# =====================================================
+  dry-run:
+    needs: [detect, pull-image]
+    if: needs.detect.outputs.folders != '[]'
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dry run preview
+        run: |
+          echo "## 🧪 Dry Run Preview" >> $GITHUB_STEP_SUMMARY
+
+          for dir in $ORDER; do
+            echo '${{ needs.detect.outputs.folders }}' | jq -e ".[] | select(.==\"$dir\")" >/dev/null || continue
+            cd app/$dir
+
+            for f in *.yaml; do
+              git diff --name-only HEAD~1 HEAD -- "$f" || continue
+              kubectl apply -f "$f" -n $NAMESPACE --dry-run=server
+              echo "- would apply $dir/$f" >> $GITHUB_STEP_SUMMARY
+            done
+
+            cd -
+          done
+
+# =====================================================
+# 5. DEPLOY (MANUAL APPROVAL)
+# =====================================================
+  deploy:
+    needs: [detect, pull-image, dry-run]
+    if: needs.detect.outputs.folders != '[]'
+    runs-on: self-hosted
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cut gateway traffic (schedule)
+        if: github.event_name == 'schedule'
+        run: |
+          kubectl delete -f app/6.gateway/2.svc.yaml -n $NAMESPACE || true
+
+      - name: Deploy in order
+        run: |
+          echo "## 🚀 Deploy Result" >> $GITHUB_STEP_SUMMARY
+
+          for dir in $ORDER; do
+            echo '${{ needs.detect.outputs.folders }}' | jq -e ".[] | select(.==\"$dir\")" >/dev/null || continue
+            cd app/$dir
+
+            for f in *.yaml; do
+              [[ "$f" == "1.deploy.yaml" ]] && continue
+              git diff --name-only HEAD~1 HEAD -- "$f" || continue
+              kubectl apply -f "$f" -n $NAMESPACE
+              echo "- applied $dir/$f" >> $GITHUB_STEP_SUMMARY
+            done
+
+            if git diff --name-only HEAD~1 HEAD -- 1.deploy.yaml; then
+              kubectl apply -f 1.deploy.yaml -n $NAMESPACE
+              DEPLOY_NAME=$(yq e '.metadata.name' 1.deploy.yaml)
+
+              if ! kubectl rollout status deploy/$DEPLOY_NAME -n $NAMESPACE --timeout=120s; then
+                kubectl rollout undo deploy/$DEPLOY_NAME -n $NAMESPACE
+                exit 1
+              fi
+            fi
+
+            cd -
+          done
+
+      - name: Restore gateway service
+        if: github.event_name == 'schedule'
+        run: |
+          kubectl apply -f app/6.gateway/2.svc.yaml -n $NAMESPACE
