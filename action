@@ -1,0 +1,48 @@
+Run actions/checkout@v4
+Syncing repository: svmc-sre/devops-mcc
+Getting Git version info
+Copying '/home/scloud/.gitconfig' to '/home/scloud/actions-runner/_work/_temp/af4f5dc0-4789-4d56-bc3b-8f12e57e1596/.gitconfig'
+Temporarily overriding HOME='/home/scloud/actions-runner/_work/_temp/af4f5dc0-4789-4d56-bc3b-8f12e57e1596' before making global git config changes
+Adding repository directory to the temporary git global config as a safe directory
+/usr/bin/git config --global --add safe.directory /home/scloud/actions-runner/_work/devops-mcc/devops-mcc
+Deleting the contents of '/home/scloud/actions-runner/_work/devops-mcc/devops-mcc'
+Initializing the repository
+Disabling automatic garbage collection
+Setting up auth
+Fetching the repository
+Determining the checkout info
+Checking out the ref
+/usr/bin/git log -1 --format='%H'
+'f0522a498b25d585d58a19390f945682bdb9beaf'
+23s
+Run FOLDERS=$(git diff --name-only HEAD~1 HEAD \
+  FOLDERS=$(git diff --name-only HEAD~1 HEAD \
+    | grep '^1.stg/1.moss-app/' \
+    | cut -d/ -f2 \
+    | sort -u \
+    | jq -R -s -c 'split("\n")[:-1]' || echo '[]')
+  
+  echo "folders=$FOLDERS" >> $GITHUB_OUTPUT
+  shell: /usr/bin/bash -e {0}
+  env:
+    NAMESPACE: mcc
+    ORDER: 1.config-server-service 2.auth-service 3.master-data-service 4.material-service 5.plan-service 6.gateway 7.frontend-service
+    WORKER_LABEL: role=app
+fatal: ambiguous argument 'HEAD~1': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+/home/scloud/actions-runner/_work/_temp/ad8357e8-4e47-4335-9a6a-6100224e9495.sh: line 5: jq: command not found
+23s
+Post job cleanup.
+/usr/bin/git version
+git version 2.25.1
+Copying '/home/scloud/.gitconfig' to '/home/scloud/actions-runner/_work/_temp/8715e5c4-c0b8-421c-8a4f-153704d83e25/.gitconfig'
+Temporarily overriding HOME='/home/scloud/actions-runner/_work/_temp/8715e5c4-c0b8-421c-8a4f-153704d83e25' before making global git config changes
+Adding repository directory to the temporary git global config as a safe directory
+/usr/bin/git config --global --add safe.directory /home/scloud/actions-runner/_work/devops-mcc/devops-mcc
+/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.sec\.samsung\.net\/\.extraheader
+http.https://github.sec.samsung.net/.extraheader
+/usr/bin/git config --local --unset-all http.https://github.sec.samsung.net/.extraheader
+/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.sec\.samsung\.net\/\.extraheader' && git config --local --unset-all 'http.https://github.sec.samsung.net/.extraheader' || :"
