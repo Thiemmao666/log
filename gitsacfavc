@@ -1,0 +1,60 @@
+name: approved deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      plan:
+        type: string
+        description: "Paste deployment PLAN"
+        required: true
+      approvers:
+        type: string
+        description: "Allowed approvers (comma-separated)"
+        required: true
+
+jobs:
+  validate:
+    runs-on: self-hosted
+    outputs:
+      approvers: ${{ steps.out.outputs.approvers }}
+
+    steps:
+      - id: out
+        run: |
+          APPROVERS=$(echo "${{ github.event.inputs.approvers }}" \
+            | tr ',' '\n' \
+            | jq -R -s -c 'split("\n")[:-1]')
+          echo "approvers=$APPROVERS" >> $GITHUB_OUTPUT
+
+  request-approval:
+    needs: validate
+    runs-on: self-hosted
+    environment: deploy-approval
+
+    steps:
+      - name: Show plan
+        run: |
+          echo "## 🛑 APPROVAL REQUIRED" >> $GITHUB_STEP_SUMMARY
+          echo "**Requested by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Allowed approvers:**" >> $GITHUB_STEP_SUMMARY
+          echo '${{ needs.validate.outputs.approvers }}' | jq -r '.[]' | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### PLAN" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "${{ github.event.inputs.plan }}" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+
+  enforce:
+    needs: [validate, request-approval]
+    runs-on: self-hosted
+
+    steps:
+      - name: Enforce approver
+        run: |
+          ACTOR="${{ github.actor }}"
+          if echo '${{ needs.validate.outputs.approvers }}' | jq -e ".[] | select(.==\"$ACTOR\")" >/dev/null; then
+            echo "Approval accepted from $ACTOR"
+          else
+            echo "Approval rejected: $ACTOR not allowed"
+            exit 1
+          fi
