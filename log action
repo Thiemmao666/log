@@ -5,3 +5,63 @@
 ===== VALIDATE PLAN =====
 ❌ PLAN does not contain delimiter '---CMD---'
 Error: Process completed with exit code 1.
+
+
+Run set -e
+  set -e
+  
+  PLAN="kubectl rollout restart deployment/material-service-deployment -n mcc ||| kubectl rollout restart deployment/plan-service-deployment -n mcc"
+  DELIM="$CMD_DELIMITER"
+  
+  echo "===== VALIDATE PLAN ====="
+  echo "PLAN: $PLAN"
+  echo "DELIMITER: $DELIM"
+  
+  # 1️⃣ Không rỗng
+  if [ -z "$PLAN" ]; then
+    echo "❌ PLAN is empty"
+    exit 1
+  fi
+  
+  # 2️⃣ Phải có delimiter
+  if ! echo "$PLAN" | grep -q "$DELIM"; then
+    echo "❌ PLAN does not contain delimiter '$DELIM'"
+    exit 1
+  fi
+  
+  # 3️⃣ Tách lệnh
+  IFS="$DELIM"
+  read -ra CMDS <<< "$PLAN"
+  
+  INDEX=0
+  for CMD in "${CMDS[@]}"; do
+    INDEX=$((INDEX+1))
+    CMD=$(echo "$CMD" | xargs) # trim
+  
+    echo "Checking command #$INDEX: $CMD"
+  
+    # 4️⃣ Chỉ cho kubectl / crictl
+    if ! echo "$CMD" | grep -Eq '^(kubectl|crictl)[[:space:]]'; then
+      echo "❌ Command #$INDEX is not allowed"
+      exit 1
+    fi
+  
+    # 5️⃣ Chặn lệnh nguy hiểm
+    if echo "$CMD" | grep -Eq 'rm[[:space:]]+-rf|curl|wget|bash'; then
+      echo "❌ Dangerous command detected in #$INDEX"
+      exit 1
+    fi
+  done
+  
+  echo "✅ PLAN syntax valid"
+  shell: /usr/bin/bash -e {0}
+  env:
+    NAMESPACE: mcc
+    CMD_DELIMITER: |||
+===== VALIDATE PLAN =====
+PLAN: kubectl rollout restart deployment/material-service-deployment -n mcc ||| kubectl rollout restart deployment/plan-service-deployment -n mcc
+DELIMITER: |||
+Checking command #1: kubectl rollout restart deployment/material-service-deployment -n mcc
+Checking command #2: 
+❌ Command #2 is not allowed
+Error: Process completed with exit code 1.
