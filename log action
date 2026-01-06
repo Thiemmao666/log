@@ -1,0 +1,7 @@
+ shell: /usr/bin/bash -e {0}
+  env:
+    NAMESPACE: mcc
+    CMD_DELIMITER: ---CMD---
+===== VALIDATE PLAN =====
+❌ PLAN does not contain delimiter '---CMD---'
+Error: Process completed with exit code 1.
