@@ -1,48 +1,316 @@
-Run actions/checkout@v4
-Syncing repository: svmc-sre/devops-mcc
-Getting Git version info
-Copying '/home/scloud/.gitconfig' to '/home/scloud/actions-runner/_work/_temp/af4f5dc0-4789-4d56-bc3b-8f12e57e1596/.gitconfig'
-Temporarily overriding HOME='/home/scloud/actions-runner/_work/_temp/af4f5dc0-4789-4d56-bc3b-8f12e57e1596' before making global git config changes
-Adding repository directory to the temporary git global config as a safe directory
-/usr/bin/git config --global --add safe.directory /home/scloud/actions-runner/_work/devops-mcc/devops-mcc
-Deleting the contents of '/home/scloud/actions-runner/_work/devops-mcc/devops-mcc'
-Initializing the repository
-Disabling automatic garbage collection
-Setting up auth
-Fetching the repository
-Determining the checkout info
-Checking out the ref
-/usr/bin/git log -1 --format='%H'
-'f0522a498b25d585d58a19390f945682bdb9beaf'
-23s
-Run FOLDERS=$(git diff --name-only HEAD~1 HEAD \
-  FOLDERS=$(git diff --name-only HEAD~1 HEAD \
-    | grep '^1.stg/1.moss-app/' \
-    | cut -d/ -f2 \
-    | sort -u \
-    | jq -R -s -c 'split("\n")[:-1]' || echo '[]')
-  
-  echo "folders=$FOLDERS" >> $GITHUB_OUTPUT
-  shell: /usr/bin/bash -e {0}
-  env:
-    NAMESPACE: mcc
-    ORDER: 1.config-server-service 2.auth-service 3.master-data-service 4.material-service 5.plan-service 6.gateway 7.frontend-service
-    WORKER_LABEL: role=app
-fatal: ambiguous argument 'HEAD~1': unknown revision or path not in the working tree.
-Use '--' to separate paths from revisions, like this:
-'git <command> [<revision>...] -- [<file>...]'
-/home/scloud/actions-runner/_work/_temp/ad8357e8-4e47-4335-9a6a-6100224e9495.sh: line 5: jq: command not found
-23s
-Post job cleanup.
-/usr/bin/git version
-git version 2.25.1
-Copying '/home/scloud/.gitconfig' to '/home/scloud/actions-runner/_work/_temp/8715e5c4-c0b8-421c-8a4f-153704d83e25/.gitconfig'
-Temporarily overriding HOME='/home/scloud/actions-runner/_work/_temp/8715e5c4-c0b8-421c-8a4f-153704d83e25' before making global git config changes
-Adding repository directory to the temporary git global config as a safe directory
-/usr/bin/git config --global --add safe.directory /home/scloud/actions-runner/_work/devops-mcc/devops-mcc
-/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.sec\.samsung\.net\/\.extraheader
-http.https://github.sec.samsung.net/.extraheader
-/usr/bin/git config --local --unset-all http.https://github.sec.samsung.net/.extraheader
-/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.sec\.samsung\.net\/\.extraheader' && git config --local --unset-all 'http.https://github.sec.samsung.net/.extraheader' || :"
+      name: Prepare Deploy Plan
+
+on:
+  #  push:
+  #    branches: [MCC-STG]
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: "Base tag or commit (default: latest tag)"
+        required: false
+        type: string
+      env:
+        description: "chọn môi trường deploy"
+        required: true
+        type: choice
+        options:
+          - stg
+          - prd
+
+env:
+  NAMESPACE: mcc
+  ORDER: "1.config-server-service 2.auth-service 3.master-data-service 4.material-service 5.plan-service 6.gateway 7.frontend-service"
+  WORKER_LABEL: "role=app"
+
+jobs:
+  init: 
+    runs-on: [code-xlarge, code-linux]
+    outputs:
+      branch_deploy: ${{ steps.set.outputs.branch }}
+      APP_ROOT: ${{ steps.set.outputs.deploy_dir }}
+    steps:
+      - name: toa bien moi truong
+        id: set
+        run: |
+          ENV = "${{github.event.inputs.env}}"
+          
+          if ["$ENV" = "prd"]; then
+            echo "branch_deploy=main" >> $GITHUB_OUTPUT
+            echo "APP_ROOT=2.prd/1.moss-app" >> $GITHUB_OUTPUT   
+
+          elif ["$ENV" = "stg"]; then
+            echo "branch_deploy=MCC-STG" >> $GITHUB_OUTPUT
+            echo "APP_ROOT=1.stg/1.moss-app"/1.moss-app" >> $GITHUB_OUTPUT   
+
+          else
+            echo "Invalid env: $ENV"
+            exit 1
+          fi
+
+  resolve-base:
+    needs: init
+    runs-on: [code-xlarge, code-linux]
+    outputs:
+      base_ref: ${{ steps.base.outputs.base_ref }}
+    steps:
+      - uses: actions/checkout@v4
+        ref: ${{steps.set.outputs.branch}}
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{steps.set.outputs.branch}}
+      - id: base
+        run: |
+          echo"APP_ROOT: ${{ steps.set.outputs.deploy_dir }}"
+          if [ -n "${{ github.event.inputs.base_ref }}" ]; then
+            BASE="${{ github.event.inputs.base_ref }}"
+            echo "✔ Using input base_ref: $BASE"
+          else
+            BASE=$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)
+            echo "✔ Using latest tag: $BASE"
+          fi
+          git rev-parse "$BASE"
+          echo "base_ref=$BASE" >> $GITHUB_OUTPUT
+
+  detect-folders:
+    needs: [resolve-base,init]
+    runs-on: [code-xlarge, code-linux]
+    outputs:
+      folders: ${{ steps.diff.outputs.folders }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: diff
+        run: |
+          set -e
+
+          BASE="${{ needs.resolve-base.outputs.base_ref }}"
+          echo"APP_ROOT: ${{ steps.set.outputs.deploy_dir }}"
+          echo "===== [JOB1] Diff from $BASE → HEAD ====="
+          FILES=$(git diff --name-only "$BASE" HEAD || true)
+          echo "$FILES"
+
+          APP_FILES=$(echo "$FILES" | grep '^"$APP_ROOT" ' || true)
+
+          FOLDERS=$(echo "$APP_FILES" \
+            | cut -d/ -f3 \
+            | sort -u \
+            | jq -R -s -c 'split("\n")[:-1]' || echo '[]')
+
+          echo "Detected folders:"
+          echo "$FOLDERS" | jq .
+
+          echo "folders=$FOLDERS" >> $GITHUB_OUTPUT
+  collect-images:
+    needs: [detect-folders,init]
+    if: needs.detect-folders.outputs.folders != '[]'
+    runs-on: [self-hosted, stg]
+    outputs:
+      images: ${{ steps.collect.outputs.images }}
+
+    steps:
+      - uses: actions/checkout@v4
+        ref: ${{steps.set.outputs.branch}}
+      - id: collect
+        run: |
+          set -e
+          echo"APP_ROOT: ${{ steps.set.outputs.deploy_dir }}"
+          echo "===== [JOB2] Collect images from changed folders ====="
+          echo '${{ needs.detect-folders.outputs.folders }}' | jq .
+
+          IMAGES=()
+
+          for dir in $ORDER; do
+            echo '${{ needs.detect-folders.outputs.folders }}' \
+              | jq -e ".[] | select(.==\"$dir\")" >/dev/null || continue
+
+            DEPLOY="1.stg/1.moss-app/$dir/1.deploy.yaml"
+            [ ! -f "$DEPLOY" ] && continue
+
+            IMAGE=$(yq e '.spec.template.spec.containers[].image' "$DEPLOY")
+            echo "✔ $dir → $IMAGE"
+            IMAGES+=("$IMAGE")
+          done
+
+          printf '%s\n' "${IMAGES[@]}" | sort -u > images.txt
+          jq -R -s -c 'split("\n")[:-1]' images.txt > images.json
+
+          echo "images=$(cat images.json)" >> $GITHUB_OUTPUT
+
+  prepull-images:
+    needs: [collect-images,init]
+    if: needs.collect-images.outputs.images != '[]'
+    runs-on: [self-hosted, stg]
+
+    steps:
+      - uses: actions/checkout@v4
+        ref: ${{steps.set.outputs.branch}}
+      - name: Pre-pull images on worker nodes (role=app)
+        run: |
+          set -e
+          echo"APP_ROOT: ${{ steps.set.outputs.deploy_dir }}"
+          echo "===== [JOB3] Images from Job2 ====="
+          echo '${{ needs.collect-images.outputs.images }}' | jq .
+          echo
+
+          echo "===== [JOB3] Worker nodes (role=app) ====="
+          NODES=$(kubectl get nodes -l role=app \
+            -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+
+          if [ -z "$NODES" ]; then
+            echo "❌ No worker node with label role=app found"
+            exit 1
+          fi
+
+          echo "$NODES"
+          echo
+
+          for node in $NODES; do
+            echo "----- Checking node: $node -----"
+
+            for image in $(echo '${{ needs.collect-images.outputs.images }}' | jq -r '.[]'); do
+              echo "🔍 Image: $image"
+
+              if ssh -i /home/scloud/.ssh/share-key scloud@stg-worker01 "sudo crictl images | awk '{print \$1\":\"\$2}' | grep -qx $image" ; then 
+                  echo true
+              else
+                ssh -i /home/scloud/.ssh/share-key scloud@$node "sudo ctr -n k8s.io i pull -u ${{ secrets.TOKEN_PULL_IMAGE }} $image"
+                  echo false
+              fi
+
+            done
+          done
+
+          echo
+          echo "===== [JOB3] Image pre-pull completed successfully ====="
+
+  generate-plan:
+    needs: [resolve-base, detect-folders,init]
+    runs-on: [self-hosted, stg]
+    outputs:
+      final_plan: ${{ steps.plan.outputs.final_plan }}
+    steps:
+      - uses: actions/checkout@v4
+        ref: ${{steps.set.outputs.branch}}
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # =========================
+      # 1️⃣ Debug inputs
+      # =========================
+      - name: Debug detected folders
+        run: |
+          echo "BASE_REF=${{ needs.resolve-base.outputs.base_ref }}"
+          echo "DETECTED_FOLDERS=${{ needs.detect-folders.outputs.folders }}"
+          echo"APP_ROOT: ${{ steps.set.outputs.deploy_dir }}"
+
+      # =========================
+      # 2️⃣ Generate PLAN
+      # =========================
+      - name: Generate deployment PLAN (DEBUG, ORDERED)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE="${{ needs.resolve-base.outputs.base_ref }}"
+          DETECTED_FOLDERS='${{ needs.detect-folders.outputs.folders }}'
+          
+          NAMESPACE="mcc"
+          PLAN_FILE="$RUNNER_TEMP/deploy.plan" 
+          : > "$PLAN_FILE"
+          echo "## 🧾 DEPLOY PLAN (base=$BASE)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          # ===== Iterate ORDER but ONLY when folder is detected =====
+          for dir in $ORDER; do
+            if ! echo "$DETECTED_FOLDERS" | jq -e ".[] | select(.==\"$dir\")" >/dev/null; then
+              echo "⏭ Skip $dir (not in detected_folders)"
+              continue
+            fi
+
+            echo "📂 Processing $dir"
+            echo "### 📂 $dir" >> "$GITHUB_STEP_SUMMARY"
+
+            cd "$APP_ROOT/$dir"
+
+            DEPLOY_NAME=""
+            DEPLOY_CHANGED=false
+            OTHER_CHANGED=false
+
+            # ===== Collect files =====
+            DEPLOY_FILE=""
+            NON_DEPLOY_FILES=()
+
+            for f in $(ls *.yaml | sort); do
+              if [ "$f" = "1.deploy.yaml" ]; then
+                DEPLOY_FILE="$f"
+              else
+                NON_DEPLOY_FILES+=("$f")
+              fi
+            done
+
+            echo "➡ NON-deploy files: ${NON_DEPLOY_FILES[*]}"
+            echo "➡ Deploy file: ${DEPLOY_FILE:-none}"
+
+            # ===== Phase 1: NON-deploy =====
+            for f in "${NON_DEPLOY_FILES[@]}"; do
+              if git diff "$BASE" HEAD -- "$f" | grep . >/dev/null; then
+                echo "   ✔ $f changed → apply"
+                OTHER_CHANGED=true
+                CMD="kubectl apply -f $APP_ROOT/$dir/$f -n $NAMESPACE"
+                echo "- $CMD" >> "$GITHUB_STEP_SUMMARY"
+                echo "$CMD"  >> "$PLAN_FILE"
+              else
+                echo "   ✘ $f unchanged"
+              fi
+            done
+
+            # ===== Phase 2: deploy LAST =====
+            if [ -n "$DEPLOY_FILE" ]; then
+              DEPLOY_NAME=$(yq e '.metadata.name' "$DEPLOY_FILE")
+
+              if git diff "$BASE" HEAD -- "$DEPLOY_FILE" | grep . >/dev/null; then
+                echo "   ✔ deploy.yaml changed → apply"
+                DEPLOY_CHANGED=true
+                CMD="kubectl apply -f $APP_ROOT/$dir/$DEPLOY_FILE -n $NAMESPACE"
+                echo "- $CMD" >> "$GITHUB_STEP_SUMMARY"
+                echo "$CMD"  >> "$PLAN_FILE"
+              else
+                echo "   ✘ deploy.yaml unchanged"
+              fi
+            fi
+            # ===== Phase 3: restart =====
+            if [ "$DEPLOY_CHANGED" = false ] && [ "$OTHER_CHANGED" = true ]; then
+              echo "   🔁 restart deployment/$DEPLOY_NAME"
+              CMD="kubectl rollout restart deployment/$DEPLOY_NAME -n $NAMESPACE"
+              echo "- $CMD" >> "$GITHUB_STEP_SUMMARY"
+              echo "$CMD"  >> "$PLAN_FILE"
+            fi
+
+            cd - >/dev/null
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+          done
+          # =========================
+          # 4️⃣ Final one-line PLAN
+          # =========================
+          FINAL_PLAN=$(paste -sd ';' "$PLAN_FILE")
+
+          echo ""
+          echo "=============================="
+          echo "🔗 FINAL ORDERED PLAN (1 LINE)"
+          echo "=============================="
+          echo "$FINAL_PLAN"
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "## 🔗 FINAL PLAN (1 LINE)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```bash' >> "$GITHUB_STEP_SUMMARY"
+          echo "$FINAL_PLAN" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+          # export output
+          echo "final_plan=$FINAL_PLAN" >> "$GITHUB_OUTPUT"
