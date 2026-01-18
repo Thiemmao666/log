@@ -1,0 +1,104 @@
+ placement:
+    mon:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                    - app
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - sevtmccmn02
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+    mgr:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                    - master
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+    osd:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+    mds:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                    - master
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+  annotations:
+  #   all:
+  #   mon:
+  #   mgr:
+  #   osd:
+  #   exporter:
+  #   crashcollector:
+  #   cleanup:
+  #   prepareosd:
+  # cmdreporter is for jobs to detect ceph and csi versions, and check network status
+  #   cmdreporter:
+  # clusterMetadata annotations will be applied to only `rook-ceph-mon-endpoints` configmap and the `rook-ceph-mon` and `rook-ceph-admin-keyring` secrets.
+  # And clusterMetadata annotations will not be merged with `all` annotations.
+  #    clusterMetadata:
+  #       kubed.appscode.com/sync: "true"
+  # If no mgr annotations are set, prometheus scrape annotations will be set by default.
+  #   mgr:
+  labels:
+  #   all:
+  #   mon:
+  #   osd:
+  #   cleanup:
+  #   mgr:
+  #   prepareosd:
+  # These labels are applied to ceph-exporter servicemonitor only
+  #   exporter:
+  # monitoring is a list of key-value pairs. It is injected into all the monitoring resources created by operator.
+  # These labels can be passed as LabelSelector to Prometheus
+  #   monitoring:
+  #   crashcollector:
+  resources:
+    #The requests and limits set here, allow the mgr pod to use half of one CPU core and 1 gigabyte of memory
+    #   mgr:
+    #     limits:
+    #       memory: "1024Mi"
+    #     requests:
+    #       cpu: "500m"
+    #       memory: "1024Mi"
+    # The above example requests/limits can also be added to the other components
+    #   mon:
+    #osd:
+      # For OSD it also is a possible to specify requests/limits based on device class
+    osd-hdd:
+      limits:
+        memory: "2.5Gi"
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+    osd-ssd:
+      limits:
+        memory: "3.5Gi"
+      requests:
+        cpu: "500m"
+        memory: "2Gi"
