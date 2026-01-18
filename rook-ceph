@@ -1,0 +1,47 @@
+2026-01-18 02:10:58.841188 I | op-config: successfully applied settings to the mon configuration database
+2026-01-18 02:10:58.841394 I | op-config: applying ceph settings:
+[global]
+log to file = true
+2026-01-18 02:10:59.061378 I | op-config: successfully applied settings to the mon configuration database
+2026-01-18 02:10:59.061425 I | op-config: deleting "global" "log file" option from the mon configuration database
+2026-01-18 02:10:59.291001 I | ceph-spec: parsing mon endpoints: c=10.109.124.184:6789,g=10.102.104.31:6789,j=10.107.46.100:6789
+2026-01-18 02:10:59.291097 I | ceph-spec: detecting the ceph image version for image quay.io/ceph/ceph:v18.2.4...
+2026-01-18 02:10:59.297293 I | op-config: successfully deleted "log file" option from the mon configuration database
+2026-01-18 02:10:59.297308 I | op-mon: checking for basic quorum with existing mons
+2026-01-18 02:11:00.210597 I | op-mon: mon "c" cluster IP is 10.109.124.184
+2026-01-18 02:11:01.010011 I | ceph-spec: detected ceph image version: "18.2.4-0 reef"
+2026-01-18 02:11:01.410123 I | op-mon: mon "g" cluster IP is 10.102.104.31
+2026-01-18 02:11:01.500004 I | ceph-file-controller: start running mdses for filesystem "mccfs"
+2026-01-18 02:11:01.772537 I | cephclient: getting or creating ceph auth key "mds.mccfs-a"
+2026-01-18 02:11:02.210103 I | op-mon: mon "j" cluster IP is 10.107.46.100
+2026-01-18 02:11:03.208320 I | op-mds: setting mds config flags
+2026-01-18 02:11:03.208472 I | op-config: setting "mds.mccfs-a"="mds_join_fs"="mccfs" option to the mon configuration database
+2026-01-18 02:11:03.408489 I | op-mon: saved mon endpoints to config map map[csi-cluster-config-json:[{"clusterID":"rook-ceph","monitors":["10.109.124.184:6789","10.102.104.31:6789","10.107.46.100:6789"],"cephFS":{"netNamespaceFilePath":"","subvolumeGroup":"","kernelMountOptions":"","fuseMountOptions":""},"rbd":{"netNamespaceFilePath":"","radosNamespace":""},"nfs":{"netNamespaceFilePath":""},"readAffinity":{"enabled":false,"crushLocationLabels":null},"namespace":""}] data:c=10.109.124.184:6789,g=10.102.104.31:6789,j=10.107.46.100:6789 mapping:{"node":{"c":{"Name":"sevtmccmn02","Hostname":"sevtmccmn02","Address":"107.114.34.108"},"g":{"Name":"sevtmccwn02","Hostname":"sevtmccwn02","Address":"107.114.34.106"},"j":{"Name":"sevtmccwn01","Hostname":"sevtmccwn01","Address":"107.114.34.105"}}} maxMonId:9 outOfQuorum:]
+2026-01-18 02:11:03.429416 I | op-config: successfully set "mds.mccfs-a"="mds_join_fs"="mccfs" option to the mon configuration database
+2026-01-18 02:11:03.440083 I | op-mds: deployment for mds "rook-ceph-mds-mccfs-a" already exists. updating if needed
+2026-01-18 02:11:03.448692 I | op-k8sutil: deployment "rook-ceph-mds-mccfs-a" did not change, nothing to update
+2026-01-18 02:11:03.448709 I | cephclient: getting or creating ceph auth key "mds.mccfs-b"
+2026-01-18 02:11:04.207888 I | cephclient: writing config file /var/lib/rook/rook-ceph/rook-ceph.config
+2026-01-18 02:11:04.208137 I | cephclient: generated admin config in /var/lib/rook/rook-ceph
+2026-01-18 02:11:04.808946 I | op-mds: setting mds config flags
+2026-01-18 02:11:04.808965 I | op-config: setting "mds.mccfs-b"="mds_join_fs"="mccfs" option to the mon configuration database
+2026-01-18 02:11:05.016075 I | op-mon: 2 of 3 expected mon deployments exist. creating new deployment(s).
+2026-01-18 02:11:05.021653 I | op-mon: deployment for mon rook-ceph-mon-c already exists. updating if needed
+2026-01-18 02:11:05.028193 I | op-config: successfully set "mds.mccfs-b"="mds_join_fs"="mccfs" option to the mon configuration database
+2026-01-18 02:11:05.030521 I | op-k8sutil: updating deployment "rook-ceph-mon-c" after verifying it is safe to stop
+2026-01-18 02:11:05.030572 I | op-mon: checking if we can stop the deployment rook-ceph-mon-c
+2026-01-18 02:11:05.037720 I | op-mds: deployment for mds "rook-ceph-mds-mccfs-b" already exists. updating if needed
+2026-01-18 02:11:05.045044 I | op-k8sutil: deployment "rook-ceph-mds-mccfs-b" did not change, nothing to update
+2026-01-18 02:11:05.306853 I | ceph-file-controller: filesystem "mccfs" already exists
+2026-01-18 02:11:05.564252 I | util: retrying after 1m0s, last error: deployment rook-ceph-mon-c cannot be stopped: exit status 16
+2026-01-18 02:11:06.664479 I | cephclient: setting pool property "compression_mode" to "none" on pool "mccfs-metadata"
+2026-01-18 02:11:07.451757 I | cephclient: application "cephfs" is already set on pool "mccfs-metadata"
+2026-01-18 02:11:07.451813 I | cephclient: reconciling replicated pool mccfs-metadata succeeded
+2026-01-18 02:11:07.889258 I | cephclient: setting pool property "compression_mode" to "none" on pool "mccfs-mccpool"
+2026-01-18 02:11:08.461299 I | cephclient: application "cephfs" is already set on pool "mccfs-mccpool"
+2026-01-18 02:11:08.461447 I | cephclient: reconciling replicated pool mccfs-mccpool succeeded
+2026-01-18 02:11:08.699164 I | cephclient: setting allow_standby_replay to true for filesystem "mccfs"
+2026-01-18 02:11:09.257923 I | cephclient: creating cephfs "mccfs" subvolume group "csi"
+2026-01-18 02:11:09.745452 I | cephclient: successfully created subvolume group "csi" in filesystem "mccfs"
+2026-01-18 02:12:05.822785 I | util: retrying after 1m0s, last error: deployment rook-ceph-mon-c cannot be stopped: exit status 16
+2026-01-18 02:13:06.085828 I | util: retrying after 1m0s, last error: deployment rook-ceph-mon-c cannot be stopped: exit status 16
