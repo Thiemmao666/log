@@ -1,0 +1,47 @@
+sevtmcc@sevtmccmn01:~$ kl tempo-minio-8d6b68b66-wn9vj
+
+API: SYSTEM()
+Time: 08:11:55 UTC 01/19/2026
+Error: unable to rename (/export/.minio.sys/tmp -> /export/.minio.sys/tmp-old/7838b3c2-2589-4309-bcad-8ce4fead6725) file access denied, drive may be faulty please investigate (*fmt.wrapError)
+       6: internal/logger/logger.go:259:logger.LogIf()
+       5: cmd/prepare-storage.go:88:cmd.bgFormatErasureCleanupTmp()
+       4: cmd/xl-storage.go:246:cmd.newXLStorage()
+       3: cmd/object-api-common.go:83:cmd.newStorageAPI()
+       2: cmd/format-erasure.go:692:cmd.initStorageDisksWithErrors.func1()
+       1: internal/sync/errgroup/errgroup.go:123:errgroup.(*Group).Go.func1()
+
+API: SYSTEM()
+Time: 08:11:55 UTC 01/19/2026
+Error: unable to create (/export/.minio.sys/tmp) file access denied, drive may be faulty please investigate (*fmt.wrapError)
+       6: internal/logger/logger.go:259:logger.LogIf()
+       5: cmd/prepare-storage.go:95:cmd.bgFormatErasureCleanupTmp()
+       4: cmd/xl-storage.go:246:cmd.newXLStorage()
+       3: cmd/object-api-common.go:83:cmd.newStorageAPI()
+       2: cmd/format-erasure.go:692:cmd.initStorageDisksWithErrors.func1()
+       1: internal/sync/errgroup/errgroup.go:123:errgroup.(*Group).Go.func1()
+Unable to use the drive /export: drive access denied
+
+API: SYSTEM()
+Time: 08:11:56 UTC 01/19/2026
+Error: unable to rename (/export/.minio.sys/tmp -> /export/.minio.sys/tmp-old/a6772448-9037-41a3-a3dc-66f9bae2929f) file access denied, drive may be faulty please investigate (*fmt.wrapError)
+       6: internal/logger/logger.go:259:logger.LogIf()
+       5: cmd/prepare-storage.go:88:cmd.bgFormatErasureCleanupTmp()
+       4: cmd/xl-storage.go:246:cmd.newXLStorage()
+       3: cmd/object-api-common.go:83:cmd.newStorageAPI()
+       2: cmd/format-erasure.go:692:cmd.initStorageDisksWithErrors.func1()
+       1: internal/sync/errgroup/errgroup.go:123:errgroup.(*Group).Go.func1()
+
+API: SYSTEM()
+Time: 08:11:56 UTC 01/19/2026
+Error: unable to create (/export/.minio.sys/tmp) file access denied, drive may be faulty please investigate (*fmt.wrapError)
+       6: internal/logger/logger.go:259:logger.LogIf()
+       5: cmd/prepare-storage.go:95:cmd.bgFormatErasureCleanupTmp()
+       4: cmd/xl-storage.go:246:cmd.newXLStorage()
+       3: cmd/object-api-common.go:83:cmd.newStorageAPI()
+       2: cmd/format-erasure.go:692:cmd.initStorageDisksWithErrors.func1()
+       1: internal/sync/errgroup/errgroup.go:123:errgroup.(*Group).Go.func1()
+Unable to use the drive /export: drive access denied
+ERROR Unable to initialize backend: Unable to write to the backend
+      > Please ensure MinIO binary has write permissions for the backend
+      HINT:
+        Run the following command to add write permissions: `sudo chown -R <your-username>. <path> && sudo chmod u+rxw <path>`
