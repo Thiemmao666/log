@@ -1,0 +1,297 @@
+Ok 👍 mình tổng hợp BẢNG CHUẨN – ĐẦY ĐỦ – DÙNG ĐƯỢC TRONG PROD cho các metric Kubernetes quan trọng, mỗi metric đều có:
+Đơn vị (unit)
+Type (Counter / Gauge / Histogram)
+Nguồn
+Endpoint scrape
+Ý nghĩa
+Cách sử dụng đúng (PromQL / use-case)
+Lưu ý / bẫy
+Bảng này bạn có thể dùng làm tài liệu chuẩn nội bộ / design observability / audit monitoring
+📊 BẢNG METRIC CHUẨN CHO KUBERNETES
+1️⃣ Node / Infrastructure CPU
+Metric
+Unit
+Type
+Nguồn
+Endpoint
+Ý nghĩa
+Cách sử dụng
+Lưu ý
+node_cpu_seconds_total
+seconds
+Counter
+node_exporter
+:9100/metrics
+Tổng CPU time theo core & mode
+rate() để tính CPU usage
+❌ Không dùng trực tiếp
+node_load1
+none
+Gauge
+node_exporter
+:9100/metrics
+Số process chờ CPU/IO (1m)
+Load pressure
+Phải chia số core
+node_load5
+none
+Gauge
+node_exporter
+:9100/metrics
+Load trung bình 5m
+Overload dài hạn
+Không phải %
+node_load15
+none
+Gauge
+node_exporter
+:9100/metrics
+Load trung bình 15m
+Capacity
+—
+2️⃣ Node Memory / Disk / Network
+Metric
+Unit
+Type
+Nguồn
+Endpoint
+Ý nghĩa
+Cách sử dụng
+Lưu ý
+node_memory_MemAvailable_bytes
+bytes
+Gauge
+node_exporter
+:9100/metrics
+RAM thực sự còn dùng được
+Alert OOM
+Tốt hơn MemFree
+node_filesystem_avail_bytes
+bytes
+Gauge
+node_exporter
+:9100/metrics
+Disk trống
+Disk full alert
+Exclude tmpfs
+node_disk_io_time_seconds_total
+seconds
+Counter
+node_exporter
+:9100/metrics
+Thời gian disk bận
+IO bottleneck
+Kết hợp iowait
+node_network_receive_bytes_total
+bytes
+Counter
+node_exporter
+:9100/metrics
+Ingress network
+Traffic
+Không alert đơn lẻ
+3️⃣ Kubernetes State (Platform)
+📍 Nguồn: kube-state-metrics
+📍 Endpoint: :8080/metrics
+Metric
+Unit
+Type
+Ý nghĩa
+Cách dùng
+Lưu ý
+kube_node_status_condition
+bool
+Gauge
+Node Ready/NotReady
+Node health
+Label condition
+kube_pod_status_phase
+enum
+Gauge
+Pod state
+Pending / Failed
+Không alert Running
+kube_pod_container_status_restarts_total
+count
+Counter
+Container restart
+CrashLoop alert
+Dùng increase()
+kube_deployment_status_replicas_available
+count
+Gauge
+Replica sẵn sàng
+Deployment health
+Compare spec
+4️⃣ Container / Pod CPU (RẤT QUAN TRỌNG)
+📍 Nguồn: cAdvisor (trong kubelet)
+📍 Endpoint: https://node:10250/metrics/cadvisor
+Metric
+Unit
+Type
+Ý nghĩa
+Cách sử dụng
+Lưu ý
+container_cpu_usage_seconds_total
+seconds
+Counter
+CPU time container
+rate() → core
+Bỏ container="POD"
+container_cpu_cfs_throttled_seconds_total
+seconds
+Counter
+Thời gian bị throttle
+Detect limit thấp
+Rất quan trọng
+container_cpu_cfs_periods_total
+count
+Counter
+Chu kỳ CFS
+Tính throttle ratio
+—
+📌 CPU core thực tế
+Sao chép mã
+Promql
+rate(container_cpu_usage_seconds_total[5m])
+5️⃣ Pod / Container Memory
+Metric
+Unit
+Type
+Nguồn
+Ý nghĩa
+Cách dùng
+Lưu ý
+container_memory_working_set_bytes
+bytes
+Gauge
+cAdvisor
+RAM đang dùng
+Memory usage
+Chuẩn nhất
+container_memory_rss
+bytes
+Gauge
+cAdvisor
+RAM thực
+Debug leak
+—
+container_memory_cache
+bytes
+Gauge
+cAdvisor
+Cache
+Không alert
+—
+container_oom_events_total
+count
+Counter
+cAdvisor
+OOM kill
+Incident
+Rare nhưng critical
+6️⃣ Resource Request / Limit (KHÔNG PHẢI usage)
+📍 Nguồn: kube-state-metrics
+Metric
+Unit
+Type
+Ý nghĩa
+Dùng khi nào
+kube_pod_container_resource_requests_cpu_cores
+core
+Gauge
+CPU request
+Capacity, HPA
+kube_pod_container_resource_limits_cpu_cores
+core
+Gauge
+CPU limit
+Throttle analysis
+kube_pod_container_resource_requests_memory_bytes
+bytes
+Gauge
+Mem request
+Scheduling
+kube_pod_container_resource_limits_memory_bytes
+bytes
+Gauge
+Mem limit
+OOM risk
+7️⃣ Control Plane (Cluster Health)
+📍 Endpoint: /metrics trên control plane component
+Metric
+Unit
+Type
+Nguồn
+Ý nghĩa
+Dùng để
+apiserver_request_total
+count
+Counter
+kube-apiserver
+API load
+Platform alert
+apiserver_request_duration_seconds_bucket
+seconds
+Histogram
+kube-apiserver
+API latency
+Cluster slowness
+etcd_disk_backend_commit_duration_seconds
+seconds
+Histogram
+etcd
+Disk latency
+Etcd bottleneck
+etcd_server_has_leader
+bool
+Gauge
+etcd
+Leader state
+Split-brain
+8️⃣ Ingress / Network (ví dụ Nginx)
+Metric
+Unit
+Type
+Nguồn
+Ý nghĩa
+nginx_ingress_controller_requests
+count
+Counter
+ingress-nginx
+Traffic
+nginx_ingress_controller_request_duration_seconds_bucket
+seconds
+Histogram
+ingress-nginx
+Latency
+nginx_ingress_controller_requests{status=~"5.."}
+count
+Counter
+ingress-nginx
+Error
+9️⃣ Cách dùng đúng theo mục đích
+Mục đích
+Metric ưu tiên
+Alert
+Error rate, latency, restart, throttle
+Dashboard
+CPU, memory, load, traffic
+Capacity
+request vs usage
+Debug
+per-pod, per-container
+SLO
+latency p95, availability
+🔑 Cheat Sheet ngắn gọn
+Node → node_*
+Pod / Container runtime → container_*
+YAML state → kube_*
+CPU luôn dùng rate()
+Alert ≠ Dashboard
+Nếu bạn muốn bước tiếp theo 👉
+📈 Dashboard chuẩn Grafana cho toàn bộ bảng này
+🚨 Mapping metric → alert rule → severity
+🧠 Metric nào nên bỏ để giảm cardinality
+⚙️ So sánh Prometheus vs Alloy vs OTel Collector
+Chỉ cần nói hướng bạn muốn, mình triển khai tiếp cho đúng hệ của bạn 👌
