@@ -1,0 +1,6 @@
+2026-01-28 01:54:33.476 GMT [220] LOG:  recovery restart point at 5/CE3A3458
+2026-01-28 01:54:33.476 GMT [220] DETAIL:  Last completed transaction was at log time 2026-01-28 01:54:00.095347+00.
+2026-01-28 01:59:33.575 GMT [220] LOG:  restartpoint starting: time
+2026-01-28 01:59:34.391 GMT [220] LOG:  restartpoint complete: wrote 9 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.808 s, sync=0.003 s, total=0.817 s; sync files=9, longest=0.002 s, average=0.001 s; distance=22 kB, estimate=6183 kB; lsn=5/CE3A9030, redo lsn=5/CE3A8FF8
+2026-01-28 01:59:34.391 GMT [220] LOG:  recovery restart point at 5/CE3A8FF8
+2026-01-28 01:59:34.391 GMT [220] DETAIL:  Last completed transaction was at log time 2026-01-28 01:59:00.
