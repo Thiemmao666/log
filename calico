@@ -1,0 +1,5 @@
+readiness probe failed: calico/node is not ready: felix is not ready: Get "http://localhost:9099/readiness": dial tcp 127.0.0.1:9099: connect: connection refused
+
+
+
+felix/ratelimitedlogger.go 216: Interface remains dirty. name="cali52f327bb8b3" 2026-02-02 06:30:51.218 [INFO][72] felix/health.go 294: Reporter is not ready: reporting non-ready. name="BPFEndpointManager"
