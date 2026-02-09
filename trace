@@ -10,3 +10,28 @@
         }
 
       }
+
+
+ts=2026-02-09T07:13:28.458329945Z level=info msg="finished complete graph evaluation" controller_path=/ controller_id="" trace_id=b8ccca98550dea71d27a0e0c10d34704 duration=33.373482ms
+Error: /etc/alloy/config.alloy:28:1: Failed to build component: decoding configuration: unable to parse OTTL condition "attributes[\\\"http.route\"] matches  \\\".*actuator/health.*\"": condition has invalid syntax: 1:12: lexer: invalid input text "\\\"http.route\"] m..."
+
+27 |   }
+28 |   otelcol.processor.filter "drop_healthcheck" {
+   |  _^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+29 | |   error_mode = "ignore"
+30 | |   traces {
+31 | |     span = [
+32 | |       `attributes[\"http.route"] matches  \".*actuator/health.*"`,
+33 | |     ]
+34 | |   }
+35 | |   output {
+36 | |     traces  = [otelcol.exporter.otlp.to_tempo.input]
+37 | |   }
+38 | | 
+39 | | }
+
+   | |_^
+40 |   otelcol.exporter.otlp "to_tempo" {
+interrupt received
+ts=2026-02-09T07:13:28.459264293Z level=error msg="failed to evaluate config" controller_path=/ controller_id="" node=otelcol.processor.filter.drop_healthcheck err="decoding configuration: unable to parse OTTL condition \"attributes[\\\\\\\"http.route\\\"] matches  \\\\\\\".*actuator/health.*\\\"\": condition has invalid syntax: 1:12: lexer: invalid input text \"\\\\\\\"http.route\\\"] m...\""
+Error: could not perform the initial load successfully
