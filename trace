@@ -1,0 +1,12 @@
+      otelcol.processor.filter "drop_healthcheck" {
+        error_mode = "ignore"
+        traces {
+          span = [
+            `attributes["http.route"] ==  ".*/actuator/health.*"`,
+          ]
+        }
+        output {
+          traces  = [otelcol.exporter.otlp.to_tempo.input]
+        }
+
+      }
