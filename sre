@@ -1,0 +1,131 @@
+FinOps	Đảm bảo độ tin cậy của dịch vụ đồng thời sử dụng tài nguyên một cách hiệu quả.	Liệu có sự cân bằng giữa độ tin cậy  của dịch vụ và chi phí?	"cân bằng giữa tin cậy và chi phí 
+"	"tối ưu liên tục AI
+- mở rông không thủ công"	"- tất các các mọi quyết định thay đôi lớn và nhở đầu cần review
+( đều có review
+- đảm bảo phân bổ tài nguyền hợp lý không bi ảnh hưởng
+( vì theme chỉ có 1 thành phần nên được tối ưu với người dùng cuối) "	"->thay đôi lơn có review 
+thay đổi nhở thì không
+(scale dbj lên chỉ để cài agent hoặc sựa dụng thêm nhiều tài nguyên)
+-lớn: tạo cluster mở rộng region"	- 1 c	-> mọi quyết định đều có xem xét 
+		Chi phí vận hành đã được tối ưu hóa chưa?	xoá các cơ sở hạ tầng không cần thiết	"tối ưu liên tục AI
+- mở rông không thủ công
+catia"	"Hiệu quả chi phí là một trọng tâm thường xuyên, với các báo cáo tự động và chính sách quản trị đảm bảo rằng nguồn lực được phân bổ hợp lý và cơ sở hạ tầng không cần thiết được loại bỏ.
+ -> tài nguyên được quản lý chặt chẽ, có bài bản, có quy trình.
+ thường xuyền tối ưu chí phú
+- báo cáo từ động 
+(xem bill) alarm quá 600 S là gửi hoặc các recomem
+ - có chính sách phù hợp 
+( dev stg có gắn tag check tự động tắt resouce)"	"Một số chiến lược tiết kiệm chi phí được áp dụng, chẳng hạn như điều chỉnh kích thước máy chủ cho phù hợp hoặc tắt các tài nguyên không sử dụng, nhưng các cơ hội tối ưu hóa thường bị bỏ lỡ.
+
+Có áp dụng 1 số nhưng bỏ qia
+- chi phí tiết kiệm quá ít không đáng kế
+như kiểm tăng giảm size volume hoặc các tiết kiệm bé"	"- lãng phí vẫn vẫn còn nhừng hiến khi được theo dõi
+- tồn taij lãng phí  "	"There is no tracking or management of infrastructure costs. 
++ không theo dõi chi phí.
+-> không biết chi phí đang tiêu tốn ở đâu, có ngyuy cơ gây lãng phí, vượt ngân sách.
+Unused or unnecessary resources remain active, leading to waste.
++ Các tài nguyên không sử dụng hoặc không cần thiết vẫn ở trạng thái hoạt động, dẫn đến lãng phí.
+xóa store"
+		"Bạn có thực hiện việc gắn thẻ/ghi nhận chi phí/hoàn trả chi
+_gắn tag có resouce -> tự tông hợp chi phi có các mục đích
+showback: bill hiện tại 
+chacgeback: bill đã thành toán "	Chi tiêu quá mức, công suất không phù hợp → tình trạng chậm trễ/gián đoạn vào giờ cao điểm.	"tối ưu hóa theo thời gian thực dựa trên KPI; 
+đề xuất và áp dụng tự động việc tối ưu hóa quy mô
+phân tích kinh tế đơn vị và lập kế hoạch kịch bản như một quy trình thường xuyên.
++ tối ưu chi phí gắn với KPI theo thời gian thực, hệ thống tự động khuyến nghị và áp dụng rightsizing, kinh tế đơn vị và lập kế hoạch theo kịch bản như một thói quen.
+-> quản lý chi phí đạt mức cao nhấy, gắn trực tiếp với giá trị kinh doanh, tự động hóa toàn diện.
+-"	" hoàn chi phí
+dự toán chi phí tự động 
+phát hiện gia tăng chi phí bất thường 
+giới hạn workload
+kiểm thử trước deploy
+-báo cáo tự động phân tích các chi phi bất hợp lý (vi dụ như mục động sự dụng bất thường trong 1 giờ)
+- workload guardrails: có các răng buộc về tài nguyên( cho ừng ) có phép vượt nhưng cần có điều kiện vượt hoặc cần review
+- pre‑release TCO reviews: quá trình đánh giá TRÀ Soát chi phí của cả 3 trước lúc lên PRD( trong 3 hoặc 5 năm trước khi lên PRD) -> không còn áp dụng 
+-> nếu đã chạy thì là cần lên POST-relase
+post-relase"	"Gắn thẻ tiêu chuẩn (>80%); báo cáo ngược; 
+các yếu tố thúc đẩy giá trị/KPI được xác định; lợi ích được theo dõi; 
+hướng dẫn dữ toán
+80% đã được gắn tag 
+-> có hướng dẫn về RI/saving planschưa có hướng dẫn cụ thể 
+-> quản lý chi phi rõ ràng, gắn với giá trị kinh doanh, bắt đầu có chiến lược tiết kiệm.
+value: có giá trị làm được gì vơi phần chi phí bỏ ra  (vídu 10k ec2 có 10tr request
+- cần định nghĩa kpi và value driver cho phân chi phí bỏ ra
+-> cần định nghĩa"	"Gắn thẻ cơ bản;
+báo cáo hàng tháng kiểm soát ngân sách thủ công
+ một số cảnh báo chi phí.
+-> có alrt báo cáo chi phí 
+tổng hơp bill hàng tháng "	"Khả năng hiển thị chi phí thấp; ít chức năng gắn thẻ/báo cáo; không có tối ưu hóa/dự báo; lợi ích không được xác định rõ.
+-> có bill"
+
+
+
+FinOps Conduct	"Maintaining reliability while efficiently utilizing resources.
+Duy trì độ tin cậy đồng thời sử dụng hiệu quả các nguồn lực."	"Is there a balance between reliability and cost?
+Có sự cân bằng giữa độ tin cậy và chi phí không?"	"Balance reliability vs cost.
+Cân bằng giữa độ tin cậy và chi phí."	"Infrastructure cost and reliability are continuously monitored and optimized using automation and AI. 
++ Chi phí và độ tin cậy của cơ sở hạ tầng liên tục được giám sát và tối ưu hóa bằng cách sử dụng tự động hóa và AI.
+-> giảm thiểu can thiệp thủ công, giảm thiểu chi phí và tính ổn định của dịch vụ.
+Predictive scaling ensures optimal balance without manual intervention.
++ hệ thống tự động dự đoán nhu cầu và scale trước khi có sự cố.
+-> đảm bảo tối ưu giữa chi phí và độ tin cậy."	"Every infrastructure decision includes a structured review to balance reliability and cost.
++ mọi quyết định liên quan đến hạ tầng đều phải xem xét, đánh giá để cân bằng giữa chi phí và độ tin cậy của dịch vụ.
+Teams ensure efficient resource allocation without compromising availability.
++ đảm bảo phân bổ tài nguyên hợp lý, không ảnh hưởng đến độ tin cậy."	"Large-scale infrastructure changes include cost vs. reliability reviews, but minor changes are often made without analysis.
++ các thay đổi lớn (mở rộng region, scale cluster ) có xem xet đến chi phí và tính ổn định của dịch vụ, nhưng những thay đổi nhỏ thì không.
+-> giảm rủi ro ở mức lớn, nhưng vẫn có thể gây lãng phí ở mức nhỏ."	"Some cost vs. reliability reviews take place, but they are not systematic.
++ đôi khi có thực hiện việc đánh giá chi phí so với độ tin cậy, nhưng chúng diễn ra không theo quy chuẩn hay hệ thống.
+-> thính tính nhất quán, dễ bỏ sót. (vd khi cần mở rộng một cụm hoặc thêm tính năng mới thì có xem xet  đánh giá nhưng khi tạo các server nhỏ thì không ai xem xét).
+ Infrastructure may be created reactively without proper evaluation.
++ Cơ sở hạ tầng có thể được tạo ra một cách phản ứng mà không có đánh giá thích hợp.
+-> dễ dẫn đến phát sinh chi phí cao hoặc thiếu tin cậy."	"Infrastructure decisions are made without evaluating cost efficiency or reliability impact.
++ các quyết định về hạ tầng được đưa ra mà không có phân tích đánh giá hiệu quả chi phí hoặc tác động đến độ tin cậy.
+-> dễ dấn đến lãng phí hoặc rủi ro downtime. ->
+Resources may be over-provisioned or underutilized.
++ tài nguyên cung cấp thừa hoặc không dùng hết.
+-> chi phí cao nhưng hiệu quả thấp."
+		"Basis : There should be an item to review whether this is necessary when a new infrastructure is created.
+Cơ sở: Cần có một mục để xem xét xem việc này có cần thiết khi cơ sở hạ tầng mới được tạo hay không."	"Under-provisioning causes throttling/outages; over-spend pressures pricing/features for users.
+Cung cấp không đủ gây ra tình trạng nghẽn/gián đoạn; chi tiêu quá mức gây áp lực lên giá cả/tính năng cho người dùng."					
+		"Are operational costs optimized?
+Chi phí vận hành đã được tối ưu hóa chưa?"	"Operational costs optimized.
+Chi phí vận hành được tối ưu hóa."	"AI and automation continuously analyze and optimize infrastructure costs.
++ hệ thống sử dụng AI/automation để phân tích và tối ưu hóa chi phí liên tục.
+-> giảm can thiệp thủ công, chi phí luôn được tối ưu.
+Auto-scaling, spot instances, and predictive cost modeling ensure minimal waste while maintaining performance.
++ Tự động mở rộng quy mô, các phiên bản spot và mô hình dự đoán chi phí giúp giảm thiểu lãng phí đồng thời duy trì hiệu suất."	"Cost efficiency is a regular focus, with automated reports and governance policies ensuring that resources are right-sized and unnecessary infrastructure is decommissioned.
++ Hiệu quả chi phí là một mục tiêu thường xuyên, với các báo cáo tự động và chính sách quản trị đảm bảo rằng các nguồn lực được điều chỉnh phù hợp và cơ sở hạ tầng không cần thiết được loại bỏ.
+-> tài nguyên được quản lý chặt chẽ, có bài bản, có quy trình."	"Some cost-saving strategies are applied, such as right-sizing instances or shutting down unused resources, but opportunities for optimization are often missed.
++ Đã áp dụng một vài cách để tiết kiệm chi phí như điều chỉnh size của vm hoặc tắt các tài nguyên không sử dụng, nhưng làm chưa triệt để nên dư địa để tối ưu còn nhiều.
+-> giảm chi phí được phần nào đấy, nhưng đã bỏ qua các cơ hội khác."	"Costs are monitored occasionally, but unused resources are not regularly reviewed or removed. 
++ Chi phí được theo dõi không thường xuyên, nhưng các nguồn lực chưa sử dụng không được xem xét hoặc loại bỏ thường xuyên.
+-> vẫn tồn tại nhiều tài nguyên dư thừa.
+Waste persists.
++ lãng phí vẫn tồn tại.
+-> chi phí cao hơn mức cần thiết."	"There is no tracking or management of infrastructure costs. 
++ không theo dõi chi phí.
+-> không biết chi phí đang tiêu tốn ở đâu, có ngyuy cơ gây lãng phí, vượt ngân sách.
+Unused or unnecessary resources remain active, leading to waste.
++ Các tài nguyên không sử dụng hoặc không cần thiết vẫn ở trạng thái hoạt động, dẫn đến lãng phí."
+		"Basis : It should be managed whether the necessary infrastructure is maintained without useless infrastructure.
+Cơ sở: Cần phải quản lý việc duy trì cơ sở hạ tầng cần thiết mà không có cơ sở hạ tầng không cần thiết."	"Waste today, cuts tomorrow → performance dips and capacity shortfalls users feel.
+Lãng phí hôm nay, cắt giảm ngày mai → hiệu suất giảm sút và thiếu hụt công suất người dùng cảm nhận được."					
+		"Do you run tagging/showback/chargeback, forecasting/optimization and anomaly detection, linking spend to KPIs and value drivers?
+Bạn có thực hiện gắn thẻ/hiển thị lại/tính lại chi phí, dự báo/tối ưu hóa và phát hiện bất thường, liên kết chi tiêu với các KPI và động lực giá trị không?"	"FinOps(tagging/showback/chargeback/forecast/opt/anomaly)
+FinOps (gắn thẻ/hiển thị/tính hoàn lại/dự báo/tối ưu hóa/bất thường)"	"Real‑time KPI‑linked optimization; automated rightsizing recommendations and application; unit economics and scenario planning as routine.
++ tối ưu chi phí gắn với KPI theo thời gian thực, hệ thống tự động khuyến nghị và áp dụng rightsizing, kinh tế đơn vị và lập kế hoạch theo kịch bản như một thói quen.
+-> quản lý chi phí đạt mức cao nhấy, gắn trực tiếp với giá trị kinh doanh, tự động hóa toàn diện."	"Chargeback; automated forecasting/anomaly detection; workload guardrails; pre‑release TCO reviews.
++ có Chargeback (chi phí được phân bổ trực tiếp cho team), dự báo và phát hiện bất thường tự động, giới hạn khối lượng công việc, review TCO (total cost of ownership) trước khi release.
+-> quản lý chi phí chủ động, ngăn ngừa lãng phí, đảm bảo chi phí hợp lý trước khi triển khai."	"Standard tagging (>80%); showback; value drivers/KPIs defined; benefits tracked; RI/Savings Plans guidance.
++ việc đánh tag đạt chuẩn ( hơn 80% tài nguyên được gắn tag), có showback ( hiển thị chi phí cho từng team, hạng mục), có mục tiêu, có hướng dẫn về RI/saving plans.
+-> quản lý chi phi rõ ràng, gắn với giá trị kinh doanh, bắt đầu có chiến lược tiết kiệm."	"Basic tagging; monthly reports; manual budget controls; some cost alerts.
++ có đánh tag cơ bản, báo cáo hàng tháng, kiểm soát ngân sách thủ công, có một số alrts liên quan đến chi phí.
+-> bắt đầu có quan tâm, quán lý chi phí nhưng thiếu chi tiết và tính tự động hóa."	"Low cost visibility; little tagging/reporting; no optimization/forecasting; benefits not defined.
++ không có khả năng nhìn rõ chi phí, tagging gần như không có, không báo cáo, không tối ưu hay dự báo.
+-> không nắm được tình hình chi phí liên quan đến infrastructure của dịch vụ."
+								
+			"Runaway spend, wrong capacity → peak-time slowdowns/outages.
+Chi tiêu quá mức, công suất không phù hợp → tình trạng chậm trễ/gián đoạn vào giờ cao điểm."					
+
+
+
