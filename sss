@@ -1,0 +1,10 @@
+Node-Selectors:              kubernetes.io/os=linux
+Tolerations:                 CriticalAddonsOnly op=Exists
+                             node-role.kubernetes.io/control-plane:NoSchedule op=Exists
+                             node-role.kubernetes.io/master:NoSchedule
+                             node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                  From               Message
+  ----     ------            ----                 ----               -------
+  Warning  FailedScheduling  57s (x2 over 6m24s)  default-scheduler  0/2 nodes are available: 2 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/2 nodes are available: 2 Preemption is not helpful for scheduling.
