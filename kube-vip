@@ -1,0 +1,63 @@
+[kubelet-start] Starting the kubelet
+I0212 00:59:12.784882    3228 envvar.go:172] "Feature gate default state" feature="InformerResourceVersion" enabled=true
+I0212 00:59:12.784916    3228 envvar.go:172] "Feature gate default state" feature="WatchListClient" enabled=true
+I0212 00:59:12.784923    3228 envvar.go:172] "Feature gate default state" feature="ClientsAllowCBOR" enabled=false
+I0212 00:59:12.784929    3228 envvar.go:172] "Feature gate default state" feature="ClientsPreferCBOR" enabled=false
+I0212 00:59:12.784934    3228 envvar.go:172] "Feature gate default state" feature="InOrderInformers" enabled=true
+I0212 00:59:12.784939    3228 envvar.go:172] "Feature gate default state" feature="InOrderInformersBatchProcess" enabled=true
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests"
+[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
+[kubelet-check] The kubelet is healthy after 507.866332ms
+[control-plane-check] Waiting for healthy control plane components. This can take up to 4m0s
+[control-plane-check] Checking kube-apiserver at https://192.168.56.51:6443/livez
+[control-plane-check] Checking kube-controller-manager at https://127.0.0.1:10257/healthz
+[control-plane-check] Checking kube-scheduler at https://127.0.0.1:10259/livez
+I0212 00:59:13.296817    3228 wait.go:290] kube-controller-manager check failed at https://127.0.0.1:10257/healthz: Get "https://127.0.0.1:10257/healthz": dial tcp 127.0.0.1:10257: connect: connection refused
+I0212 00:59:13.296798    3228 wait.go:290] kube-scheduler check failed at https://127.0.0.1:10259/livez: Get "https://127.0.0.1:10259/livez": dial tcp 127.0.0.1:10259: connect: connection refused
+I0212 00:59:13.298388    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: Get "https://192.168.56.51:6443/livez?timeout=10s": dial tcp 192.168.56.51:6443: connect: connection refused
+I0212 00:59:13.799391    3228 wait.go:290] kube-scheduler check failed at https://127.0.0.1:10259/livez: Get "https://127.0.0.1:10259/livez": dial tcp 127.0.0.1:10259: connect: connection refused
+I0212 00:59:13.799565    3228 wait.go:290] kube-controller-manager check failed at https://127.0.0.1:10257/healthz: Get "https://127.0.0.1:10257/healthz": dial tcp 127.0.0.1:10257: connect: connection refused
+I0212 00:59:13.799631    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: Get "https://192.168.56.51:6443/livez?timeout=10s": dial tcp 192.168.56.51:6443: connect: connection refused
+I0212 00:59:14.298002    3228 wait.go:290] kube-scheduler check failed at https://127.0.0.1:10259/livez: Get "https://127.0.0.1:10259/livez": dial tcp 127.0.0.1:10259: connect: connection refused
+I0212 00:59:14.298018    3228 wait.go:290] kube-controller-manager check failed at https://127.0.0.1:10257/healthz: Get "https://127.0.0.1:10257/healthz": dial tcp 127.0.0.1:10257: connect: connection refused
+I0212 00:59:14.298233    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: Get "https://192.168.56.51:6443/livez?timeout=10s": dial tcp 192.168.56.51:6443: connect: connection refused
+I0212 00:59:14.797085    3228 wait.go:290] kube-scheduler check failed at https://127.0.0.1:10259/livez: Get "https://127.0.0.1:10259/livez": dial tcp 127.0.0.1:10259: connect: connection refused
+I0212 00:59:14.797759    3228 wait.go:290] kube-controller-manager check failed at https://127.0.0.1:10257/healthz: Get "https://127.0.0.1:10257/healthz": dial tcp 127.0.0.1:10257: connect: connection refused
+I0212 00:59:14.797791    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: Get "https://192.168.56.51:6443/livez?timeout=10s": dial tcp 192.168.56.51:6443: connect: connection refused
+I0212 00:59:15.352220    3228 wait.go:290] kube-controller-manager check failed at https://127.0.0.1:10257/healthz: Get "https://127.0.0.1:10257/healthz": dial tcp 127.0.0.1:10257: connect: connection refused
+I0212 00:59:15.354505    3228 wait.go:290] kube-scheduler check failed at https://127.0.0.1:10259/livez: Get "https://127.0.0.1:10259/livez": dial tcp 127.0.0.1:10259: connect: connection refused
+[control-plane-check] kube-controller-manager is healthy after 2.508664391s
+I0212 00:59:18.064914    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: forbidden: User "kubernetes-admin" cannot get path "/livez"
+I0212 00:59:18.143882    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: forbidden: User "kubernetes-admin" cannot get path "/livez"
+[control-plane-check] kube-scheduler is healthy after 4.932872037s
+I0212 00:59:18.309907    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: forbidden: User "kubernetes-admin" cannot get path "/livez"
+I0212 00:59:18.801256    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: forbidden: User "kubernetes-admin" cannot get path "/livez"
+I0212 00:59:19.299865    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: forbidden: User "kubernetes-admin" cannot get path "/livez"
+I0212 00:59:19.800014    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: forbidden: User "kubernetes-admin" cannot get path "/livez"
+I0212 00:59:20.299361    3228 request.go:1500] "Body was not decodable (unable to check for Status)" err="couldn't get version/kind; json parse error: json: cannot unmarshal array into Go value of type struct { APIVersion string \"json:\\\"apiVersion,omitempty\\\"\"; Kind string \"json:\\\"kind,omitempty\\\"\" }"
+I0212 00:59:20.300088    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: an error on the server ("[+]ping ok\n[+]log ok\n[+]etcd ok\n[+]poststarthook/start-apiserver-admission-initializer ok\n[+]poststarthook/generic-apiserver-start-informers ok\n[+]poststarthook/priority-and-fairness-config-consumer ok\n[+]poststarthook/priority-and-fairness-filter ok\n[+]poststarthook/storage-object-count-tracker-hook ok\n[+]poststarthook/start-apiextensions-informers ok\n[+]poststarthook/start-apiextensions-controllers ok\n[+]poststarthook/crd-informer-synced ok\n[+]poststarthook/start-system-namespaces-controller ok\n[+]poststarthook/start-cluster-authentication-info-controller ok\n[+]poststarthook/start-kube-apiserver-identity-lease-controller ok\n[+]poststarthook/start-kube-apiserver-identity-lease-garbage-collector ok\n[+]poststarthook/start-legacy-token-tracking-controller ok\n[+]poststarthook/start-service-ip-repair-controllers ok\n[-]poststarthook/rbac/bootstrap-roles failed: reason withheld\n[+]poststarthook/scheduling/bootstrap-system-priority-classes ok\n[+]poststarthook/priority-and-fairness-config-producer ok\n[+]poststarthook/bootstrap-controller ok\n[+]poststarthook/start-kubernetes-service-cidr-controller ok\n[+]poststarthook/aggregator-reload-proxy-client-cert ok\n[+]poststarthook/start-kube-aggregator-informers ok\n[+]poststarthook/apiservice-status-local-available-controller ok\n[+]poststarthook/apiservice-status-remote-available-controller ok\n[+]poststarthook/apiservice-registration-controller ok\n[+]poststarthook/apiservice-discovery-controller ok\n[+]poststarthook/kube-apiserver-autoregistration ok\n[+]autoregister-completion ok\n[+]poststarthook/apiservice-openapi-controller ok\n[+]poststarthook/apiservice-openapiv3-controller ok\nlivez check failed") has prevented the request from succeeding
+I0212 00:59:20.801392    3228 request.go:1500] "Body was not decodable (unable to check for Status)" err="couldn't get version/kind; json parse error: json: cannot unmarshal array into Go value of type struct { APIVersion string \"json:\\\"apiVersion,omitempty\\\"\"; Kind string \"json:\\\"kind,omitempty\\\"\" }"
+I0212 00:59:20.802584    3228 wait.go:283] kube-apiserver check failed at https://192.168.56.51:6443/livez: an error on the server ("[+]ping ok\n[+]log ok\n[+]etcd ok\n[+]poststarthook/start-apiserver-admission-initializer ok\n[+]poststarthook/generic-apiserver-start-informers ok\n[+]poststarthook/priority-and-fairness-config-consumer ok\n[+]poststarthook/priority-and-fairness-filter ok\n[+]poststarthook/storage-object-count-tracker-hook ok\n[+]poststarthook/start-apiextensions-informers ok\n[+]poststarthook/start-apiextensions-controllers ok\n[+]poststarthook/crd-informer-synced ok\n[+]poststarthook/start-system-namespaces-controller ok\n[+]poststarthook/start-cluster-authentication-info-controller ok\n[+]poststarthook/start-kube-apiserver-identity-lease-controller ok\n[+]poststarthook/start-kube-apiserver-identity-lease-garbage-collector ok\n[+]poststarthook/start-legacy-token-tracking-controller ok\n[+]poststarthook/start-service-ip-repair-controllers ok\n[-]poststarthook/rbac/bootstrap-roles failed: reason withheld\n[+]poststarthook/scheduling/bootstrap-system-priority-classes ok\n[+]poststarthook/priority-and-fairness-config-producer ok\n[+]poststarthook/bootstrap-controller ok\n[+]poststarthook/start-kubernetes-service-cidr-controller ok\n[+]poststarthook/aggregator-reload-proxy-client-cert ok\n[+]poststarthook/start-kube-aggregator-informers ok\n[+]poststarthook/apiservice-status-local-available-controller ok\n[+]poststarthook/apiservice-status-remote-available-controller ok\n[+]poststarthook/apiservice-registration-controller ok\n[+]poststarthook/apiservice-discovery-controller ok\n[+]poststarthook/kube-apiserver-autoregistration ok\n[+]autoregister-completion ok\n[+]poststarthook/apiservice-openapi-controller ok\n[+]poststarthook/apiservice-openapiv3-controller ok\nlivez check failed") has prevented the request from succeeding
+[control-plane-check] kube-apiserver is healthy after 8.005175059s
+I0212 00:59:21.304221    3228 kubeconfig.go:657] ensuring that the ClusterRoleBinding for the kubeadm:cluster-admins Group exists
+error: error execution phase upload-config/kubeadm: could not bootstrap the admin user in file admin.conf: unable to create ClusterRoleBinding: Post "https://192.168.56.100:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings?timeout=10s": context deadline exceeded
+k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow.(*Runner).Run.func1
+        k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow/runner.go:262
+k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow.(*Runner).visitAll
+        k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow/runner.go:450
+k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow.(*Runner).Run
+        k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow/runner.go:234
+k8s.io/kubernetes/cmd/kubeadm/app/cmd.newCmdInit.func1
+        k8s.io/kubernetes/cmd/kubeadm/app/cmd/init.go:135
+github.com/spf13/cobra.(*Command).execute
+        github.com/spf13/cobra@v1.10.0/command.go:1015
+github.com/spf13/cobra.(*Command).ExecuteC
+        github.com/spf13/cobra@v1.10.0/command.go:1148
+github.com/spf13/cobra.(*Command).Execute
+        github.com/spf13/cobra@v1.10.0/command.go:1071
+k8s.io/kubernetes/cmd/kubeadm/app.Run
+        k8s.io/kubernetes/cmd/kubeadm/app/kubeadm.go:48
+main.main
+        k8s.io/kubernetes/cmd/kubeadm/kubeadm.go:25
+runtime.goexit
+        runtime/asm_amd64.s:1693
