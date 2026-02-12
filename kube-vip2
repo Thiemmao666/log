@@ -1,0 +1,99 @@
+Hướng dẫn này tập trung vào phương pháp chuẩn và phổ biến nhất: cài đặt cụm Kubernetes (kubeadm) HA với kube-vip chạy dưới dạng Static Pod. Cách này giải quyết bài toán "con gà - quả trứng" khi VIP chưa tồn tại mà kubeadm init đã cần dùng VIP làm endpoint .
+
+Dưới đây là quy trình từng bước chi tiết.
+
+1. Chuẩn bị (Trên Node Control Plane đầu tiên)
+
+Trước khi chạy kubeadm init, bạn cần tạo file manifest để kubelet chạy kube-vip trước.
+
+Bước 1: Đặt biến môi trường
+
+```bash
+# Địa chỉ VIP bạn muốn dùng cho API Server
+export VIP=192.168.0.40
+
+# Tên interface mạng thật (dùng lệnh 'ip a' để xem, ví dụ: ens160, eth0)
+export INTERFACE=ens160
+
+# Lấy phiên bản kube-vip mới nhất
+export KVVERSION=$(curl -sL https://api.github.com/repos/kube-vip/kube-vip/releases | jq -r ".[0].name")
+```
+
+Yêu cầu: jq và curl đã được cài đặt. Bạn cũng có thể set cứng KVVERSION=v0.8.0 .
+
+Bước 2: Tạo alias cho container runtime
+
+· Nếu dùng Docker:
+  alias kube-vip="docker run --network host --rm ghcr.io/kube-vip/kube-vip:$KVVERSION"
+· Nếu dùng Containerd (thường dùng với kubeadm):
+  alias kube-vip="ctr image pull ghcr.io/kube-vip/kube-vip:$KVVERSION; ctr run --rm --net-host ghcr.io/kube-vip/kube-vip:$KVVERSION vip /kube-vip"
+
+2. Sinh Manifest cho Static Pod
+
+Tạo file cấu hình và đặt trực tiếp vào thư mục manifest của kubelet. Thư mục /etc/kubernetes/manifests/ phải được tạo trước.
+
+🔹 Chế độ ARP (Layer 2) - Phổ biến cho On-Prem
+
+```bash
+kube-vip manifest pod \
+    --interface $INTERFACE \
+    --address $VIP \
+    --controlplane \
+    --services \
+    --arp \
+    --leaderElection | tee /etc/kubernetes/manifests/kube-vip.yaml
+```
+
+Giải thích: --controlplane bật HA cho control plane, --services bật tính năng LoadBalancer cho Service (tùy chọn) .
+
+🔸 Chế độ BGP (Layer 3)
+Nếu bạn có router hỗ trợ BGP:
+
+```bash
+export INTERFACE=lo  # Nên dùng loopback cho BGP
+kube-vip manifest pod \
+    --interface $INTERFACE \
+    --address $VIP \
+    --controlplane \
+    --services \
+    --bgp \
+    --localAS 65000 \
+    --bgpRouterID 192.168.0.2 \
+    --bgppeers 192.168.0.10:65000::false,192.168.0.11:65000::false | tee /etc/kubernetes/manifests/kube-vip.yaml
+```
+
+
+
+3. Khởi tạo Cluster với VIP
+
+Sau khi file kube-vip.yaml đã nằm trong thư mục manifest, kubelet sẽ tự động start Pod kube-vip ngay lập tức. Lúc này bạn mới chạy kubeadm init.
+
+```bash
+sudo kubeadm init --control-plane-endpoint "$VIP:6443" --upload-certs
+```
+
+Luồng hoạt động: Kube-vip chạy -> Chiếm VIP -> kubeadm init kết nối tới $VIP:6443 (thực chất là chính node hiện tại) -> Khởi tạo thành công .
+
+4. Mở rộng ra các Control Plane còn lại
+
+Sau khi node đầu tiên chạy xong:
+
+1. Trên node control plane đầu tiên: Copy file manifest vừa tạo ra node khác:
+   scp /etc/kubernetes/manifests/kube-vip.yaml user@node2:/etc/kubernetes/manifests/
+2. Trên node thứ 2, thứ 3: Chạy lệnh kubeadm join với tham số --control-plane do kubeadm init cung cấp.
+3. Lúc này, kube-vip trên các node còn lại cũng sẽ chạy và tham gia Leader Election để giành quyền giữ VIP .
+
+5. Các lưu ý kỹ thuật quan trọng
+
+· Vấn đề với Kubernetes 1.29+: Ở phiên bản mới, admin.conf chưa khả dụng ngay lập tức khi bootstrap. Bạn nên dùng super-admin.conf để chạy kubeadm init hoặc cấu hình các lệnh copy file kubeconfig thủ công .
+· RBAC cho chế độ DaemonSet (K3s hoặc cluster đã có sẵn): Nếu bạn không dùng Static Pod mà cài sau khi cluster đã chạy (dạng add-on), hãy áp dụng RBAC trước:
+  kubectl apply -f https://kube-vip.io/manifests/rbac.yaml .
+· Capabilities: Container kube-vip yêu cầu các capability NET_ADMIN, NET_RAW. Bạn có thể thấy điều này rõ trong phần securityContext của manifest .
+
+6. Xác minh
+
+· Kiểm tra Pod: kubectl get pods -n kube-system | grep kube-vip
+· Kiểm tra VIP đã được bind trên interface chưa: ip a show $INTERFACE
+· Truy cập thử API qua VIP: curl -k https://$VIP:6443/livez?verbose
+
+Tóm lại, cốt lõi của việc cài đặt là sinh manifest và đặt vào đúng thư mục static pod trước kubeadm init. Nếu bạn gặp lỗi cụ thể (ví dụ: VIP không ping được, leader election thất bại), hãy cung cấp thêm thông tin để mình hỗ trợ chi tiết hơn.
