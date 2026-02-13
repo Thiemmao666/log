@@ -1,0 +1,12 @@
+$ kl calico-kube-controllers-5575ddcb8d-mmjf6 
+2026-02-11 21:24:56.258 [INFO][1] kube-controllers/client.go 414: Tier default already exists. error=resource already exists: Tier(default)
+2026-02-11 21:24:56.261 [INFO][1] kube-controllers/client.go 414: Tier adminnetworkpolicy already exists. error=resource already exists: Tier(adminnetworkpolicy)
+2026-02-11 21:25:06.269 [INFO][1] kube-controllers/client.go 414: Tier default already exists. error=resource already exists: Tier(default)
+2026-02-11 21:25:06.273 [INFO][1] kube-controllers/client.go 414: Tier adminnetworkpolicy already exists. error=resource already exists: Tier(adminnetworkpolicy)
+
+
+
+2026-02-13 04:34:05.832 [INFO][82] confd/watchercache.go 125: Watch error received from Upstream ListRoot="/calico/ipam/v2/host/sevtvts01" error=too old resource version: 7676397 (65362842)
+2026-02-13 04:45:57.511 [INFO][83] status-reporter/watchercache.go 125: Watch error received from Upstream ListRoot="/calico/resources/v3/projectcalico.org/caliconodestatuses" error=an error on the server ("unable to decode an event from the watch stream: http2: client connection lost") has prevented the request from succeeding
+2026-02-13 05:24:59.316 [INFO][82] confd/watchercache.go 125: Watch error received from Upstream ListRoot="/calico/ipam/v2/host/sevtvts01" error=too old resource version: 7676397 (65362842)
+2026-02-13 06:06:18.096 [INFO][82] confd/watchercache.go 125: Watch error received from Upstream ListRoot="/calico/ipam/v2/host/sevtvts01" error=too old resource version: 7676397 (65362842)
