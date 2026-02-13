@@ -10,3 +10,8 @@ $ kl calico-kube-controllers-5575ddcb8d-mmjf6
 2026-02-13 04:45:57.511 [INFO][83] status-reporter/watchercache.go 125: Watch error received from Upstream ListRoot="/calico/resources/v3/projectcalico.org/caliconodestatuses" error=an error on the server ("unable to decode an event from the watch stream: http2: client connection lost") has prevented the request from succeeding
 2026-02-13 05:24:59.316 [INFO][82] confd/watchercache.go 125: Watch error received from Upstream ListRoot="/calico/ipam/v2/host/sevtvts01" error=too old resource version: 7676397 (65362842)
 2026-02-13 06:06:18.096 [INFO][82] confd/watchercache.go 125: Watch error received from Upstream ListRoot="/calico/ipam/v2/host/sevtvts01" error=too old resource version: 7676397 (65362842)
+
+
+srv.devops@sevtmn01:/etc/etcd/ssl$ sudo etcdctl  --endpoints=https://107.114.34.150:2379  --cacert=./ca.pem  --cert=./client.pem --key=./client-key.pem  compact 65362842
+{"level":"warn","ts":"2026-02-13T14:44:21.686766+0700","logger":"etcd-client","caller":"v3@v3.5.15/retry_interceptor.go:63","msg":"retrying of unary invoker failed","target":"etcd-endpoints://0xc00045a000/107.114.34.150:2379","attempt":0,"error":"rpc error: code = OutOfRange desc = etcdserver: mvcc: required revision has been compacted"}
+Error: etcdserver: mvcc: required revision has been compacted
