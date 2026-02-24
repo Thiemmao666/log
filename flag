@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: query-db-on-flag
+  namespace: query-db-on-flag
+  labels:
+    app: query-db-on-flag
+spec:
+  replicas: 2
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: query-db-on-flag
+  template:
+    metadata:
+      labels:
+        app: query-db-on-flag
+    spec:
+      nodeSelector:
+        role: db
+      containers:
+        - name: query-db-on-flag
+          image: python:3.13.2-psycopg2
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: data
+              mountPath: /opt/data
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              VOLUME_MOUNT_PATH="/opt/data"
+              FLAG_FILE="$VOLUME_MOUNT_PATH/query.flag"
+
+              echo "Flag file: $FLAG_FILE"
+              echo ""
+              echo "Checking for flag file $FLAG_FILE ..."
+
+              while true; do
+                if [ -f "$FLAG_FILE" ]; then
+                  echo "Detected flag file $FLAG_FILE, searching for latest query script at $VOLUME_MOUNT_PATH ...";
+                  latest_query=$(ls -t "$VOLUME_MOUNT_PATH"/*.py 2>/dev/null | head -n1);
+                  if [ -n "$latest_query" ]; then
+                    OUTPUT_FILE="$VOLUME_MOUNT_PATH/data_$(date -u +"%Y%m%dT%H%MZ").csv"
+                    echo "Executing: $latest_query";
+                    python "$latest_query" "$OUTPUT_FILE";
+                  else
+                    echo "No query script found!";
+                  fi;
+                  rm -f "$FLAG_FILE";
+                  echo "Removed flag file $FLAG_FILE";
+                  echo ""
+                  echo "Checking for flag file $FLAG_FILE ..."
+                fi;
+                sleep 5;
+              done
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 200Mi
