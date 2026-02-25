@@ -1,0 +1,22 @@
+sevtmcc@sevtmccmn01:~/k8s-install$ sudo kubeadm token create  --print-join-command --v=5
+I0225 14:55:16.355811 2857852 token.go:119] [token] validating mixed arguments
+I0225 14:55:16.355847 2857852 token.go:128] [token] getting Clientsets from kubeconfig file
+I0225 14:55:16.355864 2857852 cmdutil.go:94] Using kubeconfig file: /root/.kube/config
+I0225 14:55:16.356686 2857852 token.go:243] [token] loading configurations
+I0225 14:55:16.357647 2857852 initconfiguration.go:114] skip CRI socket detection, fill with the default CRI socket unix:///var/run/containerd/containerd.sock
+I0225 14:55:16.357821 2857852 interface.go:432] Looking for default routes with IPv4 addresses
+I0225 14:55:16.357830 2857852 interface.go:437] Default route transits interface "ens160"
+I0225 14:55:16.358746 2857852 interface.go:209] Interface ens160 is up
+I0225 14:55:16.358788 2857852 interface.go:257] Interface "ens160" has 2 addresses :[107.114.34.107/24 fe80::250:56ff:fe97:1d77/64].
+I0225 14:55:16.358800 2857852 interface.go:224] Checking addr  107.114.34.107/24.
+I0225 14:55:16.358810 2857852 interface.go:231] IP found 107.114.34.107
+I0225 14:55:16.358824 2857852 interface.go:263] Found valid IPv4 address 107.114.34.107 for interface "ens160".
+I0225 14:55:16.358833 2857852 interface.go:443] Found active IP 107.114.34.107 
+I0225 14:55:16.358852 2857852 kubelet.go:196] the value of KubeletConfiguration.cgroupDriver is empty; setting it to "systemd"
+I0225 14:55:16.361273 2857852 token.go:252] [token] creating token
+Unauthorized
+unable to create Secret
+k8s.io/kubernetes/cmd/kubeadm/app/util/apiclient.CreateOrUpdateSecret.func1
+        k8s.io/kubernetes/cmd/kubeadm/app/util/apiclient/idempotency.go:149
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+
