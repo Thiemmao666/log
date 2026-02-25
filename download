@@ -1,0 +1,8 @@
+Do you want to continue? [Y/n] y
+Ign:1 https://download.docker.com/linux/ubuntu noble/stable amd64 containerd.io amd64 1.7.20-1
+Ign:1 https://download.docker.com/linux/ubuntu noble/stable amd64 containerd.io amd64 1.7.20-1
+Ign:1 https://download.docker.com/linux/ubuntu noble/stable amd64 containerd.io amd64 1.7.20-1
+Err:1 https://download.docker.com/linux/ubuntu noble/stable amd64 containerd.io amd64 1.7.20-1
+  Temporary failure resolving 'download.docker.com'
+E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/noble/pool/stable/amd64/containerd.io_1.7.20-1_amd64.deb  Temporary failure resolving 'download.docker.com'
+E: Some files failed to download
