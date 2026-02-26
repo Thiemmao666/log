@@ -1,0 +1,4 @@
+a@master1:~$ sudo ETCDCTL_API=3 etcdctl --endpoints=https://172.17.0.212:2379,https://172.17.0.211:2379  --cacert=/etc/etcd/ssl/ca.pem --cert=/etc/etcd/ssl/client.pem --key=/etc/etcd/ssl/client-key.pem  member add worker1 --peer-urls=https://172.17.0.214:2380
+{"level":"warn","ts":"2026-02-26T07:40:55.203632Z","caller":"flags/flag.go:94","msg":"unrecognized environment variable","environment-variable":"ETCDCTL_API=3"}
+{"level":"warn","ts":"2026-02-26T07:40:55.224479Z","logger":"etcd-client","caller":"v3@v3.6.7/retry_interceptor.go:65","msg":"retrying of unary invoker failed","target":"etcd-endpoints://0xc0002c8960/172.17.0.212:2379","method":"/etcdserverpb.Cluster/MemberAdd","attempt":0,"error":"rpc error: code = Unknown desc = etcdserver: re-configuration failed due to not enough started members"}
+Error: etcdserver: re-configuration failed due to not enough started members
