@@ -70,3 +70,16 @@ Events:
   Normal   Provisioning          23s (x7 over 55s)  rook-ceph.cephfs.csi.ceph.com_csi-cephfsplugin-provisioner-8dc646889-qpv9t_75cfc3b1-eaa5-4e99-9dc6-39d8bc50cd44  External provisioner is provisioning volume for claim "mcc/molo-jar-pvc"
   Warning  ProvisioningFailed    23s (x7 over 55s)  rook-ceph.cephfs.csi.ceph.com_csi-cephfsplugin-provisioner-8dc646889-qpv9t_75cfc3b1-eaa5-4e99-9dc6-39d8bc50cd44  rpc error: code = Internal desc = rados: ret=-22, Invalid argument: "invalid pool layout 'mccfs-mccpool'--need a valid data pool"
   Normal   ExternalProvisioning  8s (x6 over 55s)   persistentvolume-controller                                                                                      Waiting for a volume to be created either by the external provisioner 'rook-ceph.cephfs.csi.ceph.com' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+
+
+  Normal   Pulled            53s   kubelet            spec.initContainers{chown-container-data-dir}: Container image "quay.io/ceph/ceph:v20.2" already present on machine and can be accessed by the pod
+  Normal   Created           53s   kubelet            spec.initContainers{chown-container-data-dir}: Container created
+  Normal   Started           53s   kubelet            spec.initContainers{chown-container-data-dir}: Container started
+  Normal   Pulled            53s   kubelet            spec.containers{mds}: Container image "quay.io/ceph/ceph:v20.2" already present on machine and can be accessed by the pod
+  Normal   Created           53s   kubelet            spec.containers{mds}: Container created
+  Normal   Started           53s   kubelet            spec.containers{mds}: Container started
+  Normal   Pulled            53s   kubelet            spec.containers{log-collector}: Container image "quay.io/ceph/ceph:v20.2" already present on machine and can be accessed by the pod
+  Normal   Created           53s   kubelet            spec.containers{log-collector}: Container created
+  Normal   Started           53s   kubelet            spec.containers{log-collector}: Container started
+  Warning  Unhealthy         23s   kubelet            spec.containers{mds}: Liveness probe failed: Error: MDS ID not present in MDS map
+dumped fsmap epoch 73
