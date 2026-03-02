@@ -24,3 +24,19 @@ I0302 06:31:50.470623       1 event.go:389] "Event occurred" object="mcc/postgre
 I0302 06:31:50.470629       1 event.go:389] "Event occurred" object="mcc/postgres-backup-postgres-0" fieldPath="" kind="PersistentVolumeClaim" apiVersion="v1" type="Warning" reason="ProvisioningFailed" message="failed to provision volume with StorageClass \"local-path\": failed to create path from pattern {{ .PVC.Namespace }}/{{ .PVC.Name }}: pathPattern must start with {{ .PVC.Namespace }}/{{ .PVC.Name }}/: mcc/postgres-backup-postgres-0"
 I0302 06:31:50.470639       1 event.go:389] "Event occurred" object="mcc/postgres-data-postgres-0" fieldPath="" kind="PersistentVolumeClaim" apiVersion="v1" type="Warning" reason="ProvisioningFailed" message="failed to provision volume with StorageClass \"local-path\": failed to create path from pattern {{ .PVC.Namespace }}/{{ .PVC.Name }}: pathPattern must start with {{ .PVC.Namespace }}/{{ .PVC.Name }}/: mcc/postgres-data-postgres-0"
 sevtmcc@sevtdpassymn01:~/glass/2.mcc-db/1.postgres-service$ 
+
+
+
+configmap/local-path-config unchanged
+Error from server (Invalid): error when applying patch:
+{"metadata":{"annotations":{"kubectl.kubernetes.io/last-applied-configuration":"{\"apiVersion\":\"storage.k8s.io/v1\",\"kind\":\"StorageClass\",\"metadata\":{\"annotations\":{},\"name\":\"local-path\"},\"parameters\":{\"pathPattern\":\"{{ .PVC.Namespace }}/{{ .PVC.Name }}/\"},\"provisioner\":\"rancher.io/local-path\",\"reclaimPolicy\":\"Retain\",\"volumeBindingMode\":\"WaitForFirstConsumer\"}\n"}},"parameters":{"pathPattern":"{{ .PVC.Namespace }}/{{ .PVC.Name }}/"}}
+to:
+Resource: "storage.k8s.io/v1, Resource=storageclasses", GroupVersionKind: "storage.k8s.io/v1, Kind=StorageClass"
+Name: "local-path", Namespace: ""
+for: "local-path-storage.yaml": error when patching "local-path-storage.yaml": StorageClass.storage.k8s.io "local-path" is invalid: parameters: Forbidden: updates to parameters are forbidden.
+Error from server (Invalid): error when applying patch:
+{"metadata":{"annotations":{"kubectl.kubernetes.io/last-applied-configuration":"{\"apiVersion\":\"storage.k8s.io/v1\",\"kind\":\"StorageClass\",\"metadata\":{\"annotations\":{},\"name\":\"local-path-delete\"},\"parameters\":{\"pathPattern\":\"{{ .PVC.Namespace }}/{{ .PVC.Name }}/\"},\"provisioner\":\"rancher.io/local-path\",\"reclaimPolicy\":\"Delete\",\"volumeBindingMode\":\"WaitForFirstConsumer\"}\n"}},"parameters":{"pathPattern":"{{ .PVC.Namespace }}/{{ .PVC.Name }}/"}}
+to:
+Resource: "storage.k8s.io/v1, Resource=storageclasses", GroupVersionKind: "storage.k8s.io/v1, Kind=StorageClass"
+Name: "local-path-delete", Namespace: ""
+for: "local-path-storage.yaml": error when patching "local-path-storage.yaml": StorageClass.storage.k8s.io "local-path-delete" is invalid: parameters: Forbidden: updates to parameters are forbidden
