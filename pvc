@@ -40,3 +40,25 @@ to:
 Resource: "storage.k8s.io/v1, Resource=storageclasses", GroupVersionKind: "storage.k8s.io/v1, Kind=StorageClass"
 Name: "local-path-delete", Namespace: ""
 for: "local-path-storage.yaml": error when patching "local-path-storage.yaml": StorageClass.storage.k8s.io "local-path-delete" is invalid: parameters: Forbidden: updates to parameters are forbidden
+
+
+
+Name:          molo-jar-pvc
+Namespace:     mcc
+StorageClass:  rook-cephfs
+Status:        Pending
+Volume:        
+Labels:        <none>
+Annotations:   volume.beta.kubernetes.io/storage-provisioner: rook-ceph.cephfs.csi.ceph.com
+               volume.kubernetes.io/storage-provisioner: rook-ceph.cephfs.csi.ceph.com
+Finalizers:    [kubernetes.io/pvc-protection]
+Capacity:      
+Access Modes:  
+VolumeMode:    Filesystem
+Used By:       <none>
+Events:
+  Type     Reason                Age                From                                                                                                             Message
+  ----     ------                ----               ----                                                                                                             -------
+  Normal   Provisioning          35s                rook-ceph.cephfs.csi.ceph.com_csi-cephfsplugin-provisioner-8dc646889-qpv9t_75cfc3b1-eaa5-4e99-9dc6-39d8bc50cd44  External provisioner is provisioning volume for claim "mcc/molo-jar-pvc"
+  Warning  ProvisioningFailed    35s                rook-ceph.cephfs.csi.ceph.com_csi-cephfsplugin-provisioner-8dc646889-qpv9t_75cfc3b1-eaa5-4e99-9dc6-39d8bc50cd44  Volume provisioning failed with infeasible error. Retries will be delayed. rpc error: code = InvalidArgument desc = volume not found
+  Normal   ExternalProvisioning  14s (x3 over 35s)  persistentvolume-controller                                                                                      Waiting for a volume to be created either by the external provisioner 'rook-ceph.cephfs.csi.ceph.com' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
