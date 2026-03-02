@@ -62,3 +62,11 @@ Events:
   Normal   Provisioning          35s                rook-ceph.cephfs.csi.ceph.com_csi-cephfsplugin-provisioner-8dc646889-qpv9t_75cfc3b1-eaa5-4e99-9dc6-39d8bc50cd44  External provisioner is provisioning volume for claim "mcc/molo-jar-pvc"
   Warning  ProvisioningFailed    35s                rook-ceph.cephfs.csi.ceph.com_csi-cephfsplugin-provisioner-8dc646889-qpv9t_75cfc3b1-eaa5-4e99-9dc6-39d8bc50cd44  Volume provisioning failed with infeasible error. Retries will be delayed. rpc error: code = InvalidArgument desc = volume not found
   Normal   ExternalProvisioning  14s (x3 over 35s)  persistentvolume-controller                                                                                      Waiting for a volume to be created either by the external provisioner 'rook-ceph.cephfs.csi.ceph.com' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+
+
+Events:
+  Type     Reason                Age                From                                                                                                             Message
+  ----     ------                ----               ----                                                                                                             -------
+  Normal   Provisioning          23s (x7 over 55s)  rook-ceph.cephfs.csi.ceph.com_csi-cephfsplugin-provisioner-8dc646889-qpv9t_75cfc3b1-eaa5-4e99-9dc6-39d8bc50cd44  External provisioner is provisioning volume for claim "mcc/molo-jar-pvc"
+  Warning  ProvisioningFailed    23s (x7 over 55s)  rook-ceph.cephfs.csi.ceph.com_csi-cephfsplugin-provisioner-8dc646889-qpv9t_75cfc3b1-eaa5-4e99-9dc6-39d8bc50cd44  rpc error: code = Internal desc = rados: ret=-22, Invalid argument: "invalid pool layout 'mccfs-mccpool'--need a valid data pool"
+  Normal   ExternalProvisioning  8s (x6 over 55s)   persistentvolume-controller                                                                                      Waiting for a volume to be created either by the external provisioner 'rook-ceph.cephfs.csi.ceph.com' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
