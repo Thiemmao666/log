@@ -1,0 +1,184 @@
+# Yêu cầu hạ tầng và giả định
+
+【39†embed_image】 *Hình 1: Kiến trúc tham khảo một cụm Kubernetes gồm các node control-plane và node worker. Trong môi trường sản xuất, control-plane thường được chạy trên nhiều máy (có thể là 3 máy hoặc nhiều hơn) để đảm bảo tính sẵn sàng cao【38†L909-L914】.* 
+
+- Cụm HA cần **ít nhất 3 node control-plane** (số lẻ giúp bầu chọn lãnh đạo khi một máy gặp sự cố) và nhiều node worker. Mỗi node cần có **container runtime** (ví dụ containerd hoặc Docker) đã thiết lập và hoạt động ổn định【14†L932-L940】.  
+- Trên mỗi node phải tắt **swap** (bởi Kubernetes yêu cầu swap không kích hoạt), và đảm bảo các cài đặt mạng cơ bản (ví dụ bật `net.bridge.bridge-nf-call-iptables=1`, định tuyến mạng đầy đủ). Đặc biệt, container runtime như **containerd** nên dùng cgroup driver `systemd` để tránh lỗi khi kubelet khởi chạy các static Pod【32†L253-L255】.  
+- Cần cài đặt **kubeadm, kubelet, kubectl** trên tất cả các node (theo hướng dẫn chính thức) và cho phép kết nối SSH giữa các node. Người dùng cần quyền **root/sudo** trên tất cả các máy【14†L932-L940】.  
+
+# Cài đặt và cấu hình kube-vip với kubeadm
+
+## 1. Tạo manifest kube-vip cho control-plane
+
+Trên node control-plane đầu tiên, định nghĩa trước địa chỉ IP ảo (VIP) và tên interface mạng sẽ gán VIP. Ví dụ: 
+
+```bash
+export VIP=192.168.0.40
+export INTERFACE=ens160
+``` 
+
+Sau đó dùng image kube-vip để sinh file manifest dạng static Pod đặt trong `/etc/kubernetes/manifests`. Ví dụ với Docker:
+
+```bash
+# Giả sử KVVERSION là phiên bản kube-vip muốn dùng, ví dụ v0.5.0
+export KVVERSION=v0.5.0
+
+# Tạo manifest kube-vip (ARP mode, vừa cấp VIP cho control-plane, vừa hỗ trợ LoadBalancer Service)
+docker run --network host --rm ghcr.io/kube-vip/kube-vip:$KVVERSION manifest pod \
+   --interface $INTERFACE \
+   --address $VIP \
+   --controlplane \
+   --services \
+   --arp \
+   --leaderElection | sudo tee /etc/kubernetes/manifests/kube-vip.yaml
+```  
+
+Lệnh trên sẽ tạo file `/etc/kubernetes/manifests/kube-vip.yaml` (ví dụ manifest tách gọn):
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-vip
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-vip
+    image: ghcr.io/kube-vip/kube-vip:v0.4.0
+    args: ["manager"]
+    env:
+    - name: vip_arp
+      value: "true"
+    - name: address
+      value: "192.168.0.40"
+    - name: vip_interface
+      value: "ens160"
+    - name: cp_enable
+      value: "true"
+    - name: svc_enable
+      value: "true"
+    - name: vip_leaderelection
+      value: "true"
+    - name: vip_leaseduration
+      value: "5"
+    - name: vip_renewdeadline
+      value: "3"
+    - name: vip_retryperiod
+      value: "1"
+    - name: port
+      value: "6443"
+    volumeMounts:
+    - mountPath: /etc/kubernetes/admin.conf
+      name: kubeconfig
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN","NET_RAW","SYS_TIME"]
+  volumes:
+  - name: kubeconfig
+    hostPath:
+      path: /etc/kubernetes/admin.conf
+```
+
+File manifest này (ARP mode) sẽ chạy kube-vip trên node control-plane đầu tiên để gán VIP. Khi kubelet đọc file trong `/etc/kubernetes/manifests`, kube-vip sẽ tự khởi động và quảng bá VIP qua ARP lên mạng nội bộ. (Nếu cần BGP thay vì ARP, cấu hình tương tự với flag `--bgp --localAS ...` theo hướng dẫn chính thức【10†L466-L475】.)
+
+## 2. Khởi tạo control-plane đầu tiên với kubeadm
+
+Sau khi manifest kube-vip đã sẵn sàng trên control-plane đầu tiên, tiến hành khởi tạo cluster bằng kubeadm. Đảm bảo flag `--control-plane-endpoint` được đặt thành địa chỉ VIP (có thể là IP hoặc DNS) và cổng 6443. Ví dụ:
+
+```bash
+sudo kubeadm init \
+  --control-plane-endpoint=$VIP:6443 \
+  --upload-certs \
+  --pod-network-cidr=10.244.0.0/16
+``` 
+
+Lệnh trên sẽ tạo cluster với control plane đầu tiên và upload certificate key để dùng chung cho các control-plane sau. Cờ `--pod-network-cidr` tùy chọn theo mạng Pod (ví dụ Calico/Flannel dùng 10.244.0.0/16). Sau khi chạy, kubeadm sẽ khởi động kubelet, đọc manifest kube-vip, khởi các pod control plane (etcd, apiserver, controller-manager, scheduler) và kube-vip sẽ gán VIP tại interface `ens160`. Như vậy, tất cả thành phần control plane sẽ liên kết qua VIP này【17†L280-L288】【45†L1035-L1044】. 
+
+**Ví dụ kết quả** (với VIP `192.168.0.40:6443`):
+```
+kubeadm init --control-plane-endpoint 192.168.0.40:6443 --upload-certs --pod-network-cidr=10.244.0.0/16
+``` 
+Sau khi lệnh trên thành công, kubeadm sẽ in ra lệnh `kubeadm join` kèm token và certificate-key để thêm control plane và worker. Ghi nhớ token và certificate-key này để sử dụng cho các node sau【45†L1035-L1044】. 
+
+Tiếp theo, trên node này cài CNI network (ví dụ Calico, Flannel, Weave) theo tài liệu tương ứng. Ví dụ cài Flannel: 
+```bash
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+``` 
+Đảm bảo CNI khớp với subnet CIDR đã khai báo. Sau cùng, kiểm tra các pod trong namespace `kube-system` đều đang chạy, đặc biệt `kube-vip`, `etcd`, `kube-apiserver`, `coredns` đều ở trạng thái `Running` (có thể dùng `kubectl get pods -n kube-system -w` để giám sát).
+
+## 3. Tham gia các control-plane bổ sung
+
+Trên mỗi node control-plane thứ hai, thứ ba,… thực hiện: 
+
+1. **Sao chép manifest kube-vip**: Đưa file `/etc/kubernetes/manifests/kube-vip.yaml` từ node đầu tiên sang các node control-plane khác (ví dụ dùng `scp` hoặc `rsync`). Đặt ở cùng thư mục `/etc/kubernetes/manifests/`. Khi kubelet khởi chạy, tất cả node control-plane sẽ chạy kube-vip (ARP/BGP) và cùng tham gia bầu leader để gán VIP.  
+2. **Thực hiện kubeadm join**: Dùng lệnh `kubeadm join` mà kubeadm init trên node đầu tiên in ra. Ví dụ: 
+
+    ```bash
+    sudo kubeadm join 192.168.0.40:6443 \
+      --token <token-từ-init> \
+      --discovery-token-ca-cert-hash sha256:<hash-từ-init> \
+      --control-plane \
+      --certificate-key <certificate-key-từ-init>
+    ``` 
+
+   Trong đó `--control-plane` cho biết tạo control-plane mới, và `--certificate-key` để tải các chứng thư từ Secret đã upload【45†L1070-L1078】. Lệnh này sẽ thêm node vào cụm, sao chép cert và khởi các Pod control-plane ở node mới. Sau khi thành công, cụm sẽ có nhiều bản sao control-plane, nhưng tất cả sẽ dùng chung VIP để client truy cập APIServer【45†L1070-L1078】. 
+
+## 4. Tham gia các node worker
+
+Trên mỗi node worker, cài kubeadm/kubelet trước như các node khác. Sau đó dùng lệnh join bình thường (không cần `--control-plane`), ví dụ: 
+
+```bash
+sudo kubeadm join 192.168.0.40:6443 \
+  --token <token-từ-init> \
+  --discovery-token-ca-cert-hash sha256:<hash-từ-init>
+``` 
+
+Lệnh này sẽ thêm node worker vào cluster, với API endpoint là VIP đã định. Sau khi join thành công, chạy lại lệnh cài CNI trên node worker (cùng manifest đã cài ở control-plane nếu cần, thông thường chỉ cần cài một lần).
+
+## 5. Ví dụ cấu hình YAML và lệnh mẫu
+
+- **Tệp cấu hình kubeadm (ClusterConfiguration)**: Có thể sử dụng file YAML để cấu hình thay vì tham số CLI. Ví dụ `kubeadm-config.yaml`:
+  ```yaml
+  apiVersion: kubeadm.k8s.io/v1beta4
+  kind: ClusterConfiguration
+  kubernetesVersion: stable
+  controlPlaneEndpoint: "192.168.0.40:6443"
+  networking:
+    podSubnet: "10.244.0.0/16"
+  ```
+  Sau đó chạy `sudo kubeadm init --config=kubeadm-config.yaml --upload-certs`. (Tham khảo ví dụ cấu hình chính thức【43†L1187-L1192】.)
+
+- **Lệnh kubeadm init mẫu** (nếu không dùng file config):
+  ```bash
+  sudo kubeadm init --control-plane-endpoint=$VIP:6443 --upload-certs --pod-network-cidr=10.244.0.0/16
+  ```
+  (Flag `--pod-network-cidr` tùy theo plugin mạng; `--upload-certs` để chia sẻ cert giữa các control-plane【45†L1035-L1044】.)
+
+- **Lệnh kubeadm join mẫu (control-plane bổ sung)**:
+  ```bash
+  sudo kubeadm join 192.168.0.40:6443 \
+    --token <token> \
+    --discovery-token-ca-cert-hash sha256:<hash> \
+    --control-plane \
+    --certificate-key <cert-key>
+  ``` 
+  (các giá trị `<token>`, `<hash>`, `<cert-key>` lấy từ kết quả `kubeadm init` của control-plane đầu tiên【45†L1070-L1078】.)
+
+- **Chú ý**: IP hay DNS sử dụng trong `--control-plane-endpoint` phải khớp với VIP đã định cấu hình và cho phép client kết nối đến port 6443. Nếu là DNS, đảm bảo nó trỏ về địa chỉ VIP.
+
+## 6. Kiểm tra sau cài đặt và khắc phục sự cố
+
+- **Kiểm tra cluster hoạt động**: Dùng `kubectl get nodes` và `kubectl get pods -n kube-system` để đảm bảo tất cả node và pod (etcd, kube-apiserver, kube-vip, coredns, ...) đều Ready/Running.  
+- **Kiểm tra VIP**: Trên các control-plane, chạy `ip addr show <INTERFACE>` để xem địa chỉ VIP đã được gán. Trên mạng nội bộ, thử ping VIP và thử kết nối đến API qua VIP (`nc -zv 192.168.0.40 6443`). Cũng có thể từ một máy client: `kubectl get pods --kubeconfig=<đường dẫn tới file admin.conf>` với endpoint là VIP.  
+- **Định tuyến và ARP**: Đảm bảo không có xung đột IP trong mạng; nếu ARP không cập nhật nhanh, hãy kiểm tra cấu hình ARP (ví dụ kích hoạt Gratuitous ARP trong kube-vip hoặc trên interface).  
+- **Xử lý lỗi kube-vip**: Kiểm tra log pod kube-vip (`kubectl logs kube-vip -n kube-system` hoặc xem trực tiếp file log). Đảm bảo manifest đã khai báo đúng interface và quyền CAP_NET_ADMIN, NET_RAW, SYS_TIME.  
+- **Vấn đề Certificates/Join**: Nếu join control-plane thất bại, kiểm tra token chưa hết hạn và `certificate-key` nhập đúng. Chú ý thời hạn 2 giờ của `--upload-certs`.  
+- **Pod Control Plane không khởi được**: Có thể do cgroup driver không khớp. Đảm bảo containerd/Docker dùng cgroup `systemd` (có thể cấu hình trong `/etc/containerd/config.toml`)【32†L253-L255】. Sau đó khởi lại container runtime và thử lại.  
+- **Swap vẫn bật**: Nếu quên tắt swap, kubelet sẽ không khởi Pod, nên đảm bảo swap đã tắt hoàn toàn.  
+
+Nếu gặp lỗi bất thường, có thể tham khảo trang Troubleshooting chính thức của kube-vip (ví dụ lỗi gán IP ARP/BGP) hoặc của kubeadm. Điều thường gặp là lỗi cấu hình mạng (CNI chưa được cài hoặc sai CIDR) – đảm bảo CNI tương thích và được áp dụng sau khi init xong. 
+
+**Tóm lại**, với hướng dẫn trên, cụm Kubernetes HA sẽ có một VIP cố định để client và worker truy cập API server, do đó khi một control-plane chết thì VIP sẽ tự động chuyển sang node khác mà không làm gián đoạn dịch vụ. Tài liệu chính thức của kube-vip và kubeadm đã được trích dẫn ở trên【17†L280-L288】【45†L1035-L1044】 để đảm bảo các bước tuân thủ tiêu chuẩn và an toàn. 
+
+**Nguồn tham khảo**: Hướng dẫn chính thức từ Kubernetes về HA (kubeadm)【45†L1035-L1044】【17†L280-L288】 và tài liệu kube-vip (đặc biệt phần Static Pods)【17†L322-L330】【17†L380-L387】. Thông tin kiểm tra và xử lý sự cố được tổng hợp từ kinh nghiệm triển khai và tài liệu hỗ trợ của kube-vip【32†L253-L255】【45†L1070-L1078】.
