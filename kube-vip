@@ -61,3 +61,6 @@ main.main
         k8s.io/kubernetes/cmd/kubeadm/kubeadm.go:25
 runtime.goexit
         runtime/asm_amd64.s:1693
+
+
+E0304 08:10:08.147317       1 leaderelection.go:452] "Error retrieving lease lock" err="leases.coordination.k8s.io \"plndr-svcs-lock\" is forbidden: User \"kubernetes-admin\" cannot get resource \"leases\" in API group \"coordination.k8s.io\" in the namespace \"kube-system\"" lock="kube-system/plndr-svcs-lock"
