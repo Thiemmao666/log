@@ -1,0 +1,14 @@
+scloud@svim-53-197:/etc/apt/apt.conf.d$ sudo apt update
+Get:1 file:/media/iso precise InRelease
+Ign:1 file:/media/iso precise InRelease
+Get:2 file:/media/iso precise Release
+Err:2 file:/media/iso precise Release
+  File not found - /media/iso/dists/precise/Release (2: No such file or directory)
+Hit:3 http://107.113.53.50/ubuntu xenial InRelease
+Hit:4 http://107.113.53.50/ubuntu xenial-updates InRelease
+Hit:5 http://107.113.53.50/ubuntu xenial-backports InRelease
+Hit:6 http://107.113.53.50/ubuntu xenial-security InRelease
+Reading package lists... Done
+E: The repository 'file:/media/iso precise Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
