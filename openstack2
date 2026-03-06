@@ -25,3 +25,32 @@ update-initramfs: Generating /boot/initrd.img-4.4.0-210-generic
 dpkg: error processing package initramfs-tools (--configure):
  subprocess installed post-installation script returned error exit status 2
 E: Sub-process /usr/bin/dpkg returned an error code (1)
+
+
+
+I have no name!@svim-53-194:/etc/apt$ sudo apt update
+Ign:1 http://vn.archive.ubuntu.com/ubuntu focal InRelease
+Ign:2 http://vn.archive.ubuntu.com/ubuntu focal-updates InRelease
+Ign:3 http://vn.archive.ubuntu.com/ubuntu focal-backports InRelease
+Ign:4 http://vn.archive.ubuntu.com/ubuntu focal-security InRelease
+Err:5 http://vn.archive.ubuntu.com/ubuntu focal Release
+  Connection failed
+Err:6 http://vn.archive.ubuntu.com/ubuntu focal-updates Release
+  Connection failed
+Err:7 http://vn.archive.ubuntu.com/ubuntu focal-backports Release
+  Connection failed
+Err:8 http://vn.archive.ubuntu.com/ubuntu focal-security Release
+  Connection failed
+Reading package lists... Done
+E: The repository 'http://vn.archive.ubuntu.com/ubuntu focal Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+E: The repository 'http://vn.archive.ubuntu.com/ubuntu focal-updates Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+E: The repository 'http://vn.archive.ubuntu.com/ubuntu focal-backports Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+E: The repository 'http://vn.archive.ubuntu.com/ubuntu focal-security Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
