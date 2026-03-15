@@ -1,0 +1,13 @@
+
+          for node in $NODES; do
+            echo "----- Checking node: $node -----"
+            for image in $(echo '${{ needs.collect-images-stg.outputs.images }}' | jq -r '.[]'); do
+              echo "🔍 Image: $image"
+              if ssh -i /home/scloud/.ssh/share-key  "scloud@$node sudo crictl images | awk '{print \$1\":\"\$2}' | grep -qx $image" ; then 
+                  echo true
+              else
+                ssh -i /home/scloud/.ssh/share-key  "scloud@$node sudo ctr -n k8s.io i pull -u ${{ secrets.TOKEN_PULL_IMAGE }} $image"
+                  echo false
+              fi
+            done
+          done
