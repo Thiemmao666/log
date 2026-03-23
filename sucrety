@@ -1,2 +1,10 @@
-2.1 Does it use unnecessary package?  	"No known unnecessary packages are currently available
-Check installed packages to determine if they are unused"	※ When using the package, it is necessary to have the basis document for the client company's agreed exception handling.
+2.2 Does it manage the interface status with other DB as well?  	"Check whether the status of interworking with other databases is managed.
+① Other databases such as DB-LINK (ORACLE), NICKNAME (DB2), and Linked Server (MSSQL)
+Does the application procedure and the basis for creation exist according to the need for linkage?
+② Check if the application details match the created DB-LINK and NICKNAME.
+③ Approval route: Department head (approval) Customer (agreement) must be included
+[Database Interworking Check Method]
+ㆍSELECT dblink_get_connections();
+※ Exception processing is required when there is a server connected to DBA authority account such as sa"	"※ Available in version 10 or higher
+※ Upon interfacing with other DB, it must have evidential documents with purpose of use written and agreed by local DB  admin
+   In particular, PUBLIC DBLINK requires separate exception handling grounds."
