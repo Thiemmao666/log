@@ -1,4 +1,2 @@
-1.1 Is access limited only to allowed IP and ports? 	"The database itself sets access control over IP, ports, and accounts
- ① applying in pg_hba.conf file"	"※ IP and ports should not be registered in bands such as Class B or Class C. They must be registered individually.
-※  If an exception to that function is required for service continuity, a record of exception handling must be left.
-※ If the function is implemented through a separate DB security solution, check the setting value of the solution."
+2.1 Does it use unnecessary package?  	"No known unnecessary packages are currently available
+Check installed packages to determine if they are unused"	※ When using the package, it is necessary to have the basis document for the client company's agreed exception handling.
