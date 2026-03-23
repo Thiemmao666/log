@@ -1,10 +1,11 @@
-2.2 Does it manage the interface status with other DB as well?  	"Check whether the status of interworking with other databases is managed.
-① Other databases such as DB-LINK (ORACLE), NICKNAME (DB2), and Linked Server (MSSQL)
-Does the application procedure and the basis for creation exist according to the need for linkage?
-② Check if the application details match the created DB-LINK and NICKNAME.
-③ Approval route: Department head (approval) Customer (agreement) must be included
-[Database Interworking Check Method]
-ㆍSELECT dblink_get_connections();
-※ Exception processing is required when there is a server connected to DBA authority account such as sa"	"※ Available in version 10 or higher
-※ Upon interfacing with other DB, it must have evidential documents with purpose of use written and agreed by local DB  admin
-   In particular, PUBLIC DBLINK requires separate exception handling grounds."
+3.1 Does it have the history of account access?   	"Check if access history is manged.  (save for 1 yr or more)
+ - access account, access IP, access time (listener log, etc.)"	※ Check the log files when a separate logging solution is introduced
+
+
+
+4.1 Did it apply security update?  	"Check if the latest version with patched security-vulnerability is used. 
+ ㆍ(Query) select version();
+ ① Check if PM sets plans and security patch is described in the plans
+ ② Check action details compared to PM planning (SOP/results)"	"※  Check the status of applying security update 
+ ① Check if annual planning is set agreed with local DB admin and security patch is described in the planning 
+ ② Check if the planned security patch works well through SOP/work documents related to patch.  "
