@@ -1,11 +1,36 @@
-3.1 Does it have the history of account access?   	"Check if access history is manged.  (save for 1 yr or more)
- - access account, access IP, access time (listener log, etc.)"	※ Check the log files when a separate logging solution is introduced
-
-
-
-4.1 Did it apply security update?  	"Check if the latest version with patched security-vulnerability is used. 
- ㆍ(Query) select version();
- ① Check if PM sets plans and security patch is described in the plans
- ② Check action details compared to PM planning (SOP/results)"	"※  Check the status of applying security update 
- ① Check if annual planning is set agreed with local DB admin and security patch is described in the planning 
- ② Check if the planned security patch works well through SOP/work documents related to patch.  "
+sevtmcc@sevtmccmn01:~$ ua status
+Failed to connect to authentication server
+Check your Internet connection and try again.
+sevtmcc@sevtmccmn01:~$ ua status --all
+Failed to connect to authentication server
+Check your Internet connection and try again.
+sevtmcc@sevtmccmn01:~$ cd  /var/lib/ubuntu-advantage/
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage$ ll
+total 12
+drwxr-xr-x  3 root root 4096 Jul 17  2024 ./
+drwxr-xr-x 48 root root 4096 Sep 27  2024 ../
+drwxr-xr-x  2 root root 4096 Apr 23  2025 messages/
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage$ cd messages/
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage/messages$ ll
+total 32
+drwxr-xr-x 2 root root 4096 Apr 23  2025 ./
+drwxr-xr-x 3 root root 4096 Jul 17  2024 ../
+-rw-r--r-- 1 root root  208 Mar 24 03:36 apt-pre-invoke-esm-service-status
+-rw-r--r-- 1 root root  120 Mar 24 03:36 apt-pre-invoke-no-packages-infra.tmpl
+-rw-r--r-- 1 root root  120 Mar 24 03:36 apt-pre-invoke-packages-infra
+-rw-r--r-- 1 root root  198 Mar 24 03:36 apt-pre-invoke-packages-infra.tmpl
+-rw-r--r-- 1 root root   86 Mar 24 03:36 motd-esm-service-status
+-rw-r--r-- 1 root root   85 Mar 24 03:36 ubuntu-no-warranty
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage/messages$ cd grep -r esm /etc/apt/
+-bash: cd: too many arguments
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage/messages$  grep -r esm /etc/apt/
+/etc/apt/apt.conf.d/20apt-esm-hook.conf:        "[ ! -f /usr/lib/ubuntu-advantage/apt-esm-hook ] || /usr/lib/ubuntu-advantage/apt-esm-hook post-invoke-stats || true";
+/etc/apt/apt.conf.d/20apt-esm-hook.conf:        "[ ! -f /usr/lib/ubuntu-advantage/apt-esm-hook ] || /usr/lib/ubuntu-advantage/apt-esm-hook post-invoke-success || true";
+/etc/apt/apt.conf.d/20apt-esm-hook.conf:        "[ ! -f /usr/lib/ubuntu-advantage/apt-esm-hook ] || /usr/lib/ubuntu-advantage/apt-esm-hook pre-invoke || true";
+/etc/apt/apt.conf.d/20apt-esm-hook.conf:        "[ ! -f /usr/lib/ubuntu-advantage/apt-esm-json-hook ] || /usr/lib/ubuntu-advantage/apt-esm-json-hook || true";
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage/messa
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage/messa
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage/messages$ dpkg -l | grep ubuntu-no-warranty 
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage/messages$ dpkg -l | grep ubuntu-advantage-tools
+ii  ubuntu-advantage-tools                 27.2.2~20.04.1                        amd64        management tools for Ubuntu Advantage
+sevtmcc@sevtmccmn01:/var/lib/ubuntu-advantage/messages$ 
