@@ -134,7 +134,7 @@ Acquire::http::proxy "http://172.17.0.197:3128/";
 Acquire::https::proxy "http://172.17.0.197:3128/";
 
 
-
+1774520316.619    302 172.17.0.22 TCP_MISS/301 1172 GET http://google.com/ - FIRSTUP_PARENT/107.98.39.142 text/html
 
 
 
