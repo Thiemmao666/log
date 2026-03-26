@@ -1,0 +1,143 @@
+config 
+scloud@stg-master02:~$ cat  /etc/squid/squid.conf 
+acl localnet src 0.0.0.1-0.255.255.255  # RFC 1122 "this" network (LAN)
+acl localnet src 10.0.0.0/8             # RFC 1918 local private network (LAN)
+acl localnet src 100.64.0.0/10          # RFC 6598 shared address space (CGN)
+acl localnet src 169.254.0.0/16         # RFC 3927 link-local (directly plugged) machines
+acl localnet src 172.16.0.0/12          # RFC 1918 local private network (LAN)
+acl localnet src 192.168.0.0/16         # RFC 1918 local private network (LAN)
+acl localnet src fc00::/7               # RFC 4193 local private network range
+acl localnet src fe80::/10              # RFC 4291 link-local (directly plugged) machines
+acl localnet src 107.113.53.0/24
+acl localnet src 172.17.0.0/23
+
+
+acl SSL_ports port 443
+acl Safe_ports port 80          # http
+acl Safe_ports port 21          # ftp
+acl Safe_ports port 443         # https
+acl Safe_ports port 70          # gopher
+acl Safe_ports port 210         # wais
+acl Safe_ports port 1025-65535  # unregistered ports
+acl Safe_ports port 280         # http-mgmt
+acl Safe_ports port 488         # gss-http
+acl Safe_ports port 591         # filemaker
+acl Safe_ports port 777         # multiling http
+acl CONNECT method CONNECT
+
+
+http_access allow all
+http_access allow localnet
+http_access allow localhost
+http_access allow CONNECT SSL_ports
+http_access deny all
+
+
+
+
+
+http_access deny !Safe_ports
+
+http_access deny CONNECT !SSL_ports
+
+http_access allow localhost manager
+http_access deny manager
+
+include /etc/squid/conf.d/*
+
+http_access allow localhost
+
+http_access allow all
+http_port 3128
+
+cache_peer 107.98.39.142          parent    8082       0 no-query  default
+
+
+
+scloud@stg-master02:~$ sudo tail -n 50 /var/log/squid/access.log
+1774510901.898 120101 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/Release - HIER_DIRECT/91.189.91.82 -
+1774510944.277 120104 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/InRelease - HIER_DIRECT/91.189.91.82 -
+1774510944.280 120104 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/InRelease - HIER_DIRECT/91.189.91.83 -
+1774511021.977 120101 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial-updates/InRelease - HIER_DIRECT/91.189.91.81 -
+1774511022.001 120101 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/Release - HIER_DIRECT/91.189.91.83 -
+1774511064.384 120101 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/InRelease - HIER_DIRECT/91.189.91.81 -
+1774511064.387 120105 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/InRelease - HIER_DIRECT/91.189.92.22 -
+1774511142.058 120078 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial-backports/InRelease - HIER_DIRECT/91.189.91.81 -
+1774511142.110 120101 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/main/binary-amd64/Packages.diff/Index - HIER_DIRECT/91.189.91.81 -
+1774511184.492 120102 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial-updates/InRelease - HIER_DIRECT/91.189.91.82 -
+1774511184.498 120107 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/Release - HIER_DIRECT/91.189.91.81 -
+1774511262.088 120024 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial-backports/InRelease - HIER_DIRECT/91.189.91.83 -
+1774511262.214 120102 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/main/binary-amd64/Packages.diff/Index - HIER_DIRECT/185.125.190.83 -
+1774511272.716  88215 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial-updates/InRelease - HIER_DIRECT/91.189.91.82 -
+1774511272.718  88217 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/Release - HIER_DIRECT/91.189.92.22 -
+1774511382.113 120023 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/Release - HIER_DIRECT/91.189.91.81 -
+1774511382.296 120078 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/main/binary-i386/Packages.diff/Index - HIER_DIRECT/185.125.190.83 -
+1774511502.217 120101 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/Release - HIER_DIRECT/91.189.91.81 -
+1774511502.401 120102 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/main/binary-i386/Packages.diff/Index - HIER_DIRECT/185.125.190.82 -
+1774511622.264 120044 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial-updates/Release - HIER_DIRECT/91.189.91.82 -
+1774511622.453 120050 172.17.0.223 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/main/binary-all/Packages.xz - HIER_DIRECT/91.189.91.83 -
+1774511682.547  60278 172.17.0.223 TCP_MISS/503 4143 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial-updates/Release - HIER_DIRECT/91.189.91.81 text/html
+1774511682.547  60092 172.17.0.223 TCP_MISS/503 4176 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/main/binary-all/Packages.xz - HIER_DIRECT/91.189.91.82 text/html
+1774511717.567  35015 172.17.0.223 TCP_MISS/503 4246 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/main/i18n/Translation-en_US.xz - HIER_NONE/- text/html
+1774511717.567  35014 172.17.0.223 TCP_MISS/503 4210 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial-backports/Release - HIER_NONE/- text/html
+1774511717.569      0 172.17.0.223 TCP_MISS/503 4289 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/main/i18n/Translation-en.diff/Index - HIER_NONE/- text/html
+1774511717.570      0 172.17.0.223 TCP_MISS/503 4276 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/binary-amd64/Packages.diff/Index - HIER_NONE/- text/html
+1774511717.571      0 172.17.0.223 TCP_MISS/503 4313 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/restricted/binary-amd64/Packages.diff/Index - HIER_NONE/- text/html
+1774511717.571      0 172.17.0.223 TCP_MISS/503 4273 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/binary-i386/Packages.diff/Index - HIER_NONE/- text/html
+1774511717.573      1 172.17.0.223 TCP_MISS/503 4310 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/restricted/binary-i386/Packages.diff/Index - HIER_NONE/- text/html
+1774511717.573      0 172.17.0.223 TCP_MISS/503 4218 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/binary-all/Packages.xz - HIER_NONE/- text/html
+1774511717.574      0 172.17.0.223 TCP_MISS/503 4255 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/restricted/binary-all/Packages.xz - HIER_NONE/- text/html
+1774511717.574      0 172.17.0.223 TCP_MISS/503 4227 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/i18n/Translation-en_US.xz - HIER_NONE/- text/html
+1774511717.575      0 172.17.0.223 TCP_MISS/503 4264 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/restricted/i18n/Translation-en_US.xz - HIER_NONE/- text/html
+1774511717.576      0 172.17.0.223 TCP_MISS/503 4270 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/main/i18n/Translation-en.diff/Index - HIER_NONE/- text/html
+1774511717.580      2 172.17.0.223 TCP_MISS/503 4294 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/restricted/binary-amd64/Packages.diff/Index - HIER_NONE/- text/html
+1774511717.580      2 172.17.0.223 TCP_MISS/503 4307 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/restricted/i18n/Translation-en.diff/Index - HIER_NONE/- text/html
+1774511717.583      0 172.17.0.223 TCP_MISS/503 4307 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/universe/binary-amd64/Packages.diff/Index - HIER_NONE/- text/html
+1774511717.583      0 172.17.0.223 TCP_MISS/503 4291 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/restricted/binary-i386/Packages.diff/Index - HIER_NONE/- text/html
+1774511717.584      0 172.17.0.223 TCP_MISS/503 4304 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/universe/binary-i386/Packages.diff/Index - HIER_NONE/- text/html
+1774511717.585      0 172.17.0.223 TCP_MISS/503 4236 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/restricted/binary-all/Packages.xz - HIER_NONE/- text/html
+1774511717.586      0 172.17.0.223 TCP_MISS/503 4249 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/universe/binary-all/Packages.xz - HIER_NONE/- text/html
+1774511717.586      0 172.17.0.223 TCP_MISS/503 4245 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/restricted/1774513486.723  12710 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/InRelease - HIER_DIRECT/91.189.91.83 -
+1774513486.723  12699 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/InRelease - HIER_NONE/- -
+1774518102.086      0 172.17.0.197 TCP_MISS/403 4103 GET http://stg-master02:3128/squid-internal-dynamic/netdb - HIER_NONE/- text/html
+1774518102.087      9 172.17.0.22 TCP_MISS/403 4212 GET http://172.17.0.197:3128/squid-internal-dynamic/netdb - HIER_DIRECT/172.17.0.197 text/html
+1774518312.205 120060 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/InRelease - HIER_DIRECT/91.189.91.81 -
+1774518312.239 120093 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/InRelease - HIER_DIRECT/91.189.91.81 -
+1774518363.314  51073 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://security.ubuntu.com/ubuntu/dists/xenial-security/InRelease - HIER_DIRECT/91.189.91.82 -
+1774518363.314  51105 172.17.0.22 TCP_MISS_ABORTED/000 0 GET http://us.archive.ubuntu.com/ubuntu/dists/xenial/InRelease - HIER_DIRECT/91.189.91.81 -
+
+
+scloud@stg-master02:~$ cat /etc/apt/apt.conf.d/99proxy.conf 
+Acquire::http::Proxy "http://107.98.39.142:8082";
+Acquire::https::Proxy "http://107.98.39.142:8082";
+
+
+vm2
+a@m1:~$ curl -x http://172.17.0.197:3128 http://google.com -v
+* Rebuilt URL to: http://google.com/
+*   Trying 172.17.0.197...
+* Connected to 172.17.0.197 (172.17.0.197) port 3128 (#0)
+> GET http://google.com/ HTTP/1.1
+> Host: google.com
+> User-Agent: curl/7.47.0
+> Accept: */*
+> Proxy-Connection: Keep-Alive
+> 
+< HTTP/1.1 301 Moved Permanently
+< Location: http://www.google.com/
+< Content-Type: text/html; charset=UTF-8
+< Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-gYPRjLEk5ylPgD0WSED09Q' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+< Reporting-Endpoints: default="//www.google.com/httpservice/retry/jserror?ei=_QfFaeKzErzX1e8P6JXsWQ&cad=crash&error=Page%20Crash&jsel=1&bver=2409&dpf=cY9ovJbYc7q72n7eJD088HZOCBA5yQHV1-_CNUcAvVk"
+
+a@m1:~$ cat /etc/apt/apt.conf.d/99conf.conf 
+Acquire::http::proxy "http://172.17.0.197:3128/";
+Acquire::https::proxy "http://172.17.0.197:3128/";
+
+
+
+
+
+
+
+
+
