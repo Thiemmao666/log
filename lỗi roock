@@ -38,3 +38,23 @@ ID  CLASS  WEIGHT   TYPE NAME             STATUS  REWEIGHT  PRI-AFF
  0    ssd  0.09769          osd.0             up   1.00000  1.00000
 -3         0.09769      host sevtmccwn02                           
  1    ssd  0.09769          osd.1             up   1.00000  1.00000
+
+
+2026-04-29 00:44:22.667	
+debug 2026-04-28T17:44:22.661+0000 7f8209c2c640  0 cephx: verify_authorizer could not get service secret for service osd secret_id=13875
+	2026-04-29 00:44:22.666	
+debug 2026-04-28T17:44:22.661+0000 7f8209c2c640  0 auth: could not find secret_id=13875
+	2026-04-29 00:44:20.755	
+	2026-04-29 00:44:20.755	
+** File Read Latency Histogram By Level [p-1] **
+	2026-04-29 00:44:20.755	
+	2026-04-29 00:44:20.755	
+Block cache entry stats(count,size,portion): DataBlock(2973,11.99 MB,6.51476%) FilterBlock(428,86.63 MB,47.0809%) IndexBlock(437,66.06 MB,35.9005%) Misc(1,0.00 KB,0%)
+	2026-04-29 00:44:20.755	
+Block cache BinnedLRUCache@0x56054f00cdd0#470 capacity: 184.00 MB usage: 164.67 MB table_size: 0 occupancy: 18446744073709551615 collections: 6427 last_copies: 8 last_secs: 0.00044 secs_since: 0
+	2026-04-29 00:44:20.755	
+Stalls(count): 0 level0_slowdown, 0 level0_slowdown_with_compaction, 0 level0_numfiles, 0 level0_numfiles_with_compaction, 0 stop for pending_compaction_bytes, 0 slowdown for pending_compaction_bytes, 0 memtable_compaction, 0 memtable_slowdown, interval 0 total count
+	2026-04-29 00:44:20.755	
+Interval compaction: 0.00 GB write, 0.00 MB/s write, 0.00 GB read, 0.00 MB/s read, 0.0 seconds
+	2026-04-29 00:44:20.755	
+Cumulative compaction: 0.00 GB write, 0.00 MB/s write, 0.00 GB read, 0.00 MB/s read, 0.2 seconds
