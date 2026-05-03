@@ -53,3 +53,10 @@ debug 2026-04-30T16:58:13.244+0000 7303ef13b640  0 log_channel(audit) log [DBG] 
 
 debug
 debug 2026-04-30T16:58:13.244+0000 7303ef13b640  0 mon.c@2(peon) e3 handle_command mon_command({"prefix": "mgr stat", "format": "json"} v 0)
+
+
+
+
+2026-04-28 23:58:31.106
+ERROR
+debug 2026-04-28T16:58:31.101+0000 7f793dd31640  4 rocksdb: [db/db_impl/db_impl_files.cc:369] [JOB 120183] Tried to delete a non-existing file /var/lib/ceph/mon/ceph-c/store.db/1509792.log type=0 #1509792 -- IO error: No such file or directory: while unlink() file: /var/lib/ceph/mon/ceph-c/store.db/1509792.log: No such file or directory
