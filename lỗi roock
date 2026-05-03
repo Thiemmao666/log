@@ -1,0 +1,40 @@
+sevtmcc@sevtmccmn01:~$ kex rook-ceph-tools-68d6d598dc-ddj4w -- bash
+bash-5.1$ ceph -w
+  cluster:
+    id:     af6d9fc6-f18b-4170-b7ab-c3c8592a42a6
+    health: HEALTH_WARN
+            clock skew detected on mon.g, mon.j
+            484333 slow ops, oldest one blocked for 141387 sec, mon.j has slow ops
+ 
+  services:
+    mon: 3 daemons, quorum c,g,j (age 39h)
+    mgr: a(active, since 3d), standbys: b
+    mds: 1/1 daemons up, 1 hot standby
+    osd: 2 osds: 2 up (since 3d), 2 in (since 3d)
+ 
+  data:
+    volumes: 1/1 healthy
+    pools:   3 pools, 49 pgs
+    objects: 9.08k objects, 21 GiB
+    usage:   46 GiB used, 154 GiB / 200 GiB avail
+    pgs:     49 active+clean
+ 
+  io:
+    client:   16 MiB/s rd, 40 KiB/s wr, 16 op/s rd, 8 op/s wr
+ 
+
+2026-05-03T14:12:54.360441+0000 mon.c [WRN] Health check update: 484359 slow ops, oldest one blocked for 141392 sec, mon.j has slow ops (SLOW_OPS)
+2026-05-03T14:13:04.018348+0000 mon.c [WRN] Health check update: 484387 slow ops, oldest one blocked for 141397 sec, mon.j has slow ops (SLOW_OPS)
+2026-05-03T14:13:09.018927+0000 mon.c [WRN] Health check update: 484439 slow ops, oldest one blocked for 141408 sec, mon.j has slow ops (SLOW_OPS)
+2026-05-03T14:13:14.505929+0000 mon.c [WRN] Health check update: 484464 slow ops, oldest one blocked for 141413 sec, mon.j has slow ops (SLOW_OPS)
+2026-05-03T14:13:24.020657+0000 mon.c [WRN] Health check update: 484492 slow ops, oldest one blocked for 141418 sec, mon.j has slow ops (SLOW_OPS)
+2026-05-03T14:13:29.021239+0000 mon.c [WRN] Health check update: 484545 slow ops, oldest one blocked for 141428 sec, mon.j has slow ops (SLOW_OPS)
+2026-05-03T14:13:34.644981+0000 mon.c [WRN] Health check update: 484570 slow ops, oldest one blocked for 141433 sec, mon.j has slow ops (SLOW_OPS)
+^X^Cbash-5.1$ ceph osd tree
+ID  CLASS  WEIGHT   TYPE NAME             STATUS  REWEIGHT  PRI-AFF
+-1         0.19537  root default                                   
+-7               0      host sevtmccmn01                           
+-5         0.09769      host sevtmccwn01                           
+ 0    ssd  0.09769          osd.0             up   1.00000  1.00000
+-3         0.09769      host sevtmccwn02                           
+ 1    ssd  0.09769          osd.1             up   1.00000  1.00000
