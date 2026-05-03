@@ -140,3 +140,11 @@ Tuy nhiên, tôi nhấn mạnh lại: chỉ dùng cách này để kiểm tra nh
 3. Sau khi sửa, khởi động lại ứng dụng và kiểm tra lại API.
 
 Nếu bạn cần hỗ trợ thêm (như cách lấy chứng chỉ, xác định đúng vị trí cacerts trong container, hoặc cấu hình RestClient theo cách khác), hãy cho tôi biết môi trường cụ thể (JVM version, base image, ...) nhé.
+
+
+sevtmcc@sevtmccmn03:~$ openssl s_client -connect edm-sevt-sa.sec.samsung.net:443 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM > server.crt
+unable to load certificate
+140546229245248:error:0909006C:PEM routines:get_name:no start line:../crypto/pem/pem_lib.c:745:Expecting: TRUSTED CERTIFICATE
+sevtmcc@sevtmccmn03:~$ openssl s_client -connect edm-sevt-sa.sec.samsung.net:443 -showcerts
+139803838793024:error:2008F002:BIO routines:BIO_lookup_ex:system lib:../crypto/bio/b_addr.c:726:Temporary failure in name resolution
+connect:errno=11
