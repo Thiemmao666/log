@@ -1,0 +1,142 @@
+Chúng ta vừa có một lỗi mới, và lần này nó không liên quan đến Ceph hay việc di chuyển rack trước đó. Lỗi này là:
+
+```
+PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+```
+
+Đây là lỗi xác thực chứng chỉ SSL/TLS khi ứng dụng Java (Spring Boot) của bạn cố gắng gọi sang một API bên ngoài tại https://edm-sevt-sa.sec.samsung.net/analysis/getEquipmentDetailList.do. Nói một cách đơn giản: JVM không tin tưởng chứng chỉ SSL mà server đó gửi về.
+
+---
+
+📋 Nguyên nhân chi tiết
+
+Khi một ứng dụng Java kết nối tới một URL https://, nó sẽ kiểm tra xem chứng chỉ SSL của server có được ký bởi một Tổ chức phát hành chứng chỉ (CA) mà JVM tin tưởng hay không. Các CA đáng tin cậy được lưu trong một file tên là cacerts (truststore mặc định của JVM). Nếu chứng chỉ của server:
+
+· Là chứng chỉ tự ký (self-signed),
+· Được ký bởi một CA nội bộ (internal CA) không có trong truststore mặc định,
+· Đã hết hạn,
+· Hoặc chuỗi chứng chỉ (certificate chain) không đầy đủ,
+
+thì JVM sẽ từ chối kết nối và đưa ra lỗi PKIX path building failed.
+
+Trong trường hợp của bạn, server edm-sevt-sa.sec.samsung.net rất có thể đang dùng chứng chỉ do một CA nội bộ của Samsung cấp, và CA đó chưa được import vào truststore của JVM mà ứng dụng đang chạy.
+
+---
+
+🛠️ Các cách khắc phục
+
+Có hai hướng xử lý chính: giải pháp an toàn, chính thống (thêm chứng chỉ vào truststore) và giải pháp tạm thời, không an toàn (tắt kiểm tra SSL). Tôi sẽ ưu tiên hướng dẫn bạn giải pháp đầu tiên.
+
+✅ Cách 1: Import chứng chỉ của server vào truststore của JVM (khuyến nghị)
+
+Bước 1: Tải chứng chỉ từ server
+
+Dùng trình duyệt hoặc công cụ dòng lệnh openssl để lấy chứng chỉ.
+
+```bash
+openssl s_client -connect edm-sevt-sa.sec.samsung.net:443 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM > edm-sevt-sa.pem
+```
+
+Lệnh trên sẽ lưu chứng chỉ (bao gồm cả chain nếu có) vào file edm-sevt-sa.pem.
+
+Lưu ý: Nếu server dùng port khác 443 (HTTPS), hãy thay đổi port tương ứng. Nếu bạn không có openssl, có thể dùng trình duyệt: mở URL đó, nhấn vào biểu tượng ổ khóa, xuất chứng chỉ ra file .crt hoặc .pem.
+
+Bước 2: Xác định vị trí truststore mặc định của JVM
+
+Truststore mặc định thường nằm ở $JAVA_HOME/lib/security/cacerts. Nếu ứng dụng chạy trong container, có thể JRE được đặt ở /usr/lib/jvm/java-.../lib/security/cacerts. Để tìm chính xác, chạy lệnh:
+
+```bash
+# Nếu đang ở trong container
+find / -name "cacerts" 2>/dev/null
+```
+
+Ví dụ, thường là /usr/lib/jvm/java-17-openjdk-amd64/lib/security/cacerts hoặc /opt/java/openjdk/lib/security/cacerts.
+
+Bước 3: Import chứng chỉ vào truststore
+
+Dùng công cụ keytool (đi kèm với JDK).
+
+```bash
+keytool -import -trustcacerts -alias edm-sevt-sa -file edm-sevt-sa.pem -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
+```
+
+· -alias: đặt tên gợi nhớ (ví dụ edm-sevt-sa).
+· -file: file chứng chỉ vừa tải.
+· -keystore: đường dẫn đến file cacerts.
+· -storepass: mật khẩu mặc định của cacerts là changeit (nếu chưa bị thay đổi).
+
+Khi được hỏi Trust this certificate? [no]:, gõ yes rồi Enter.
+
+Bước 4: Khởi động lại ứng dụng
+
+Sau khi import, ứng dụng của bạn sẽ tin tưởng chứng chỉ của server kia.
+
+---
+
+🔧 Cách 2: Cấu hình ứng dụng Spring Boot sử dụng truststore tùy chỉnh (nếu không muốn sửa cacerts mặc định)
+
+Bạn có thể tạo một truststore riêng chỉ chứa chứng chỉ của server đó, rồi cấu hình cho ứng dụng dùng nó.
+
+1. Tạo truststore mới (file .jks hoặc .p12) từ file PEM:
+   ```bash
+   keytool -import -alias edm-sevt-sa -file edm-sevt-sa.pem -keystore my-truststore.jks -storepass mypassword
+   ```
+2. Đặt cấu hình cho Spring Boot (trong application.properties):
+   ```properties
+   server.ssl.trust-store=classpath:my-truststore.jks
+   server.ssl.trust-store-password=mypassword
+   ```
+   Hoặc nếu bạn muốn dùng cho RestClient/RestTemplate cụ thể, có thể cấu hình ở code khi tạo bean.
+3. Khởi động lại ứng dụng.
+
+---
+
+⚠️ Cách 3: Tắt kiểm tra SSL (chỉ dùng cho môi trường phát triển, không khuyến khích trong production)
+
+Trong code, bạn có thể tạo một RestTemplate (hoặc RestClient) bỏ qua xác thực chứng chỉ. Đây là giải pháp nhanh để kiểm tra xem có phải lỗi chỉ do chứng chỉ hay không, nhưng tuyệt đối không nên dùng trong môi trường thật vì mất hết lợi ích bảo mật của HTTPS.
+
+Ví dụ với RestTemplate cũ (nếu bạn đang dùng):
+
+```java
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import javax.net.ssl.*;
+import java.security.cert.X509Certificate;
+
+// Tạo RestTemplate bỏ qua SSL
+RestTemplate restTemplate = new RestTemplate();
+restTemplate.setRequestFactory(new SimpleClientHttpRequestFactory() {
+    @Override
+    protected void prepareConnection(HttpURLConnection connection, String httpMethod) {
+        if (connection instanceof HttpsURLConnection) {
+            ((HttpsURLConnection) connection).setHostnameVerifier((host, session) -> true);
+            // Tạo trust manager không kiểm tra gì
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public X509Certificate[] getAcceptedIssuers() { return null; }
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+                }
+            };
+            try {
+                SSLContext sc = SSLContext.getInstance("TLS");
+                sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                ((HttpsURLConnection) connection).setSSLSocketFactory(sc.getSocketFactory());
+            } catch (Exception e) { /* ... */ }
+        }
+    }
+});
+```
+
+Với RestClient (như bạn đang dùng trong stacktrace), bạn có thể tạo một ClientHttpRequestFactory tương tự với HttpComponentsClientHttpRequestFactory và cấu hình SSLContext.
+
+Tuy nhiên, tôi nhấn mạnh lại: chỉ dùng cách này để kiểm tra nhanh trong môi trường dev, không dùng cho production.
+
+---
+
+📌 Tổng kết hành động
+
+1. Kiểm tra xem edm-sevt-sa.sec.samsung.net có phải là server nội bộ, dùng chứng chỉ tự ký hoặc CA nội bộ không.
+2. Dùng Cách 1 (import chứng chỉ) – đây là giải pháp đúng đắn và an toàn.
+3. Sau khi sửa, khởi động lại ứng dụng và kiểm tra lại API.
+
+Nếu bạn cần hỗ trợ thêm (như cách lấy chứng chỉ, xác định đúng vị trí cacerts trong container, hoặc cấu hình RestClient theo cách khác), hãy cho tôi biết môi trường cụ thể (JVM version, base image, ...) nhé.
