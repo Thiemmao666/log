@@ -1,0 +1,55 @@
+
+ Sum      1/0   19.40 MB   0.0   1025.2    40.2    985.0    1025.2     40.2       0.2  25.6    323.1    323.1   3249.55           2073.20    106068    0.031   1246M    59M       0.0       0.0
+
+  L6      1/0   19.40 MB   0.0   1023.9    39.9    984.0     984.0      0.0       0.0  24.6    357.4    343.5   2933.57           1951.19     53026    0.055   1246M    59M       0.0       0.0
+
+  L5      0/0    0.00 KB   0.0      1.3     0.2      1.1       1.2      0.1       0.2   5.5    381.0    354.8      3.43              1.55        16    0.214    431K    25K       0.0       0.0
+
+  L0      0/0    0.00 KB   0.0      0.0     0.0      0.0      40.0     40.0       0.0   1.0      0.0    131.1    312.55            120.46     53026    0.006       0      0       0.0       0.0
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Level    Files   Size     Score Read(GB)  Rn(GB) Rnp1(GB) Write(GB) Wnew(GB) Moved(GB) W-Amp Rd(MB/s) Wr(MB/s) Comp(sec) CompMergeCPU(sec) Comp(cnt) Avg(sec) KeyIn KeyDrop Rblob(GB) Wblob(GB)
+
+** Compaction Stats [default] **
+
+
+Interval stall: 00:00:0.000 H:M:S, 0.0 percent
+
+Interval WAL: 1520 writes, 1520 syncs, 1.00 writes per sync, written: 0.01 GB, 0.01 MB/s
+
+Interval writes: 1520 writes, 8720 keys, 1520 commit groups, 1.0 writes per commit group, ingest: 5.66 MB, 0.01 MB/s
+
+Cumulative stall: 00:00:0.000 H:M:S, 0.0 percent
+
+Cumulative WAL: 13M writes, 13M syncs, 1.00 writes per sync, written: 65.34 GB, 0.01 MB/s
+
+Cumulative writes: 13M writes, 99M keys, 13M commit groups, 1.0 writes per commit group, ingest: 65.34 GB, 0.01 MB/s
+
+Uptime(secs): 5230815.2 total, 600.0 interval
+
+** DB Stats **
+
+debug
+debug 2026-04-30T16:58:15.456+0000 7303ec135640  4 rocksdb: [db/db_impl/db_impl.cc:1111] 
+
+debug
+debug 2026-04-30T16:58:15.456+0000 7303ec135640  4 rocksdb: [db/db_impl/db_impl.cc:1109] ------- DUMPING STATS -------
+
+debug
+debug 2026-04-30T16:58:14.462+0000 70d28e2df640  0 log_channel(audit) log [DBG] : from='mgr.5050219 10.244.1.67:0/3428769249' entity='mgr.b' cmd={"prefix": "osd blocklist ls", "format": "json"} : dispatch
+
+debug
+debug 2026-04-30T16:58:14.462+0000 70d28e2df640  0 mon.b@1(peon) e3 handle_command mon_command({"prefix": "osd blocklist ls", "format": "json"} v 0)
+
+debug
+debug 2026-04-30T16:58:14.255+0000 70d2944cb640  0 log_channel(audit) log [DBG] : from='admin socket' entity='admin socket' cmd=mon_status args=[]: finished
+
+debug
+debug 2026-04-30T16:58:14.242+0000 70d2944cb640  0 log_channel(audit) log [DBG] : from='admin socket' entity='admin socket' cmd='mon_status' args=[]: dispatch
+
+debug
+debug 2026-04-30T16:58:13.244+0000 7303ef13b640  0 log_channel(audit) log [DBG] : from='client.? 10.244.1.67:0/3322236785' entity='client.admin' cmd={"prefix": "mgr stat", "format": "json"} : dispatch
+
+debug
+debug 2026-04-30T16:58:13.244+0000 7303ef13b640  0 mon.c@2(peon) e3 handle_command mon_command({"prefix": "mgr stat", "format": "json"} v 0)
