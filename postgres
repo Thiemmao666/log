@@ -1,0 +1,16 @@
+a@stg-master01:~$ kl postgres-1
+postgresql-repmgr 00:01:50.10 INFO  ==> 
+postgresql-repmgr 00:01:50.10 INFO  ==> Welcome to the Bitnami postgresql-repmgr container
+postgresql-repmgr 00:01:50.11 INFO  ==> Subscribe to project updates by watching https://github.com/bitnami/containers
+postgresql-repmgr 00:01:50.11 INFO  ==> Submit issues and feature requests at https://github.com/bitnami/containers/issues
+postgresql-repmgr 00:01:50.11 INFO  ==> Upgrade to Tanzu Application Catalog for production environments to access custom-configured and pre-packaged software components. Gain enhanced features, including Software Bill of Materials (SBOM), CVE scan result reports, and VEX documents. To learn more, visit https://bitnami.com/enterprise
+postgresql-repmgr 00:01:50.11 INFO  ==> 
+postgresql-repmgr 00:01:50.14 INFO  ==> ** Starting PostgreSQL with Replication Manager setup **
+postgresql-repmgr 00:01:50.18 INFO  ==> Validating settings in REPMGR_* env vars...
+postgresql-repmgr 00:01:50.19 INFO  ==> Validating settings in POSTGRESQL_* env vars..
+postgresql-repmgr 00:01:50.20 INFO  ==> Querying all partner nodes for common upstream node...
+postgresql-repmgr 00:01:50.33 INFO  ==> Auto-detected primary node: 'postgres-0.postgres-headless.mcc.svc.cluster.local:5432'
+postgresql-repmgr 00:01:50.33 INFO  ==> Node configured as standby
+postgresql-repmgr 00:01:50.34 INFO  ==> Preparing PostgreSQL configuration...
+postgresql-repmgr 00:01:50.35 INFO  ==> postgresql.conf file not detected. Generating it...
+cp: cannot create regular file '/bitnami/postgresql/conf/postgresql.conf': Permission denied
