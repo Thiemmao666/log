@@ -1,0 +1,99 @@
+OK, trường hợp của bạn là nặng rồi:
+👉 Không login được bất kỳ tài khoản nào + không hiện user + lỗi quyền/PAM
+→ Cách nhanh nhất là sửa offline bằng chế độ boot (recovery / single-user mode)
+Mình hướng dẫn chuẩn cách cứu hệ thống 👇
+🚑 Cách sửa bằng boot (GRUB / Recovery Mode)
+🔥 Bước 1: Vào GRUB
+Khi khởi động máy:
+Giữ Shift (Ubuntu BIOS)
+hoặc Esc (UEFI)
+👉 hiện menu GRUB
+🔧 Bước 2: Vào Recovery mode
+Chọn dòng:
+Plain text
+Advanced options for Ubuntu
+→ chọn:
+Plain text
+(recovery mode)
+🔧 Bước 3: Chọn root shell
+Chọn:
+Plain text
+root - Drop to root shell prompt
+🔓 Bước 4: Mount lại filesystem (R/W)
+Mặc định đang read-only → phải sửa:
+Bash
+mount -o remount,rw /
+🛠️ Bước 5: Fix toàn bộ permission quan trọng
+✔️ Fix PAM
+Bash
+chown -R root:root /etc/pam.d
+chmod 644 /etc/pam.d/*
+✔️ Fix account files (cực quan trọng)
+Bash
+chown root:root /etc/passwd /etc/shadow /etc/group /etc/gshadow
+
+chmod 644 /etc/passwd /etc/group
+chmod 640 /etc/shadow /etc/gshadow
+✔️ Fix SSH (nếu có)
+Bash
+chmod 600 /etc/ssh/sshd_config
+chown root:root /etc/ssh/sshd_config
+🔧 Bước 6: Mở khóa tài khoản
+Check:
+Bash
+passwd -S username
+Nếu thấy L (locked):
+Bash
+passwd -u username
+🔧 Bước 7: Reset password (nếu cần)
+Bash
+passwd username
+🔧 Bước 8: Fix lại login (nếu PAM lỗi nặng)
+Cách nhanh nhất:
+Bash
+cp /usr/share/pam-configs/* /etc/pam.d/ 2>/dev/null
+👉 hoặc cài lại:
+Bash
+apt-get update
+apt-get install --reinstall libpam-modules libpam-runtime login
+🔧 Bước 9: Reboot
+Bash
+reboot
+🚨 Nếu vẫn không login được
+🔥 Cách mạnh hơn (edit GRUB trực tiếp)
+Ở menu GRUB:
+nhấn e vào dòng Ubuntu
+Tìm dòng:
+Plain text
+linux /boot/vmlinuz...
+👉 thêm vào cuối:
+Plain text
+init=/bin/bash
+Boot lên → sẽ vào root shell trực tiếp
+Sau đó chạy lại:
+Bash
+mount -o remount,rw /
+→ rồi fix giống phía trên
+🎯 Nguyên nhân 99% của bạn
+chmod sai:
+/etc/shadow
+/etc/pam.d
+hoặc xóa/sửa file PAM
+hoặc set quyền 777 lung tung
+💡 Lời khuyên sau khi sửa xong
+👉 Để tránh lặp lại:
+Bash
+# backup cấu hình quan trọng
+cp -r /etc/pam.d /root/pam_backup
+⚡ Checklist cứu hệ thống
+[x] vào recovery mode
+[x] mount rw
+[x] fix permission
+[x] unlock user
+[x] reset password
+[x] reboot
+Nếu bạn muốn, gửi mình:
+Bash
+ls -l /etc/pam.d
+ls -l /etc/shadow
+👉 mình sẽ chỉ chính xác file nào gây lỗi 👍
