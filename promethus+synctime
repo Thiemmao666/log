@@ -1,0 +1,47 @@
+sevtmcc@sevtdpassymn01:~/glass/1.mcc-app/2.auth-service$ kl kube-state-metrics-d4578bbf6-wm96l
+I0506 15:54:55.677618       1 wrapper.go:136] "Starting kube-state-metrics"
+W0506 15:54:55.677821       1 client_config.go:667] Neither --kubeconfig nor --master was specified.  Using the inClusterConfig.  This might not work.
+I0506 15:54:55.678384       1 server.go:222] "Used resources" resources=["mutatingwebhookconfigurations","replicasets","resourcequotas","storageclasses","validatingwebhookconfigurations","networkpolicies","certificatesigningrequests","configmaps","cronjobs","ingresses","limitranges","persistentvolumes","pods","leases","nodes","persistentvolumeclaims","replicationcontrollers","secrets","statefulsets","deployments","jobs","namespaces","poddisruptionbudgets","services","volumeattachments","daemonsets","endpointslices","horizontalpodautoscalers"]
+I0506 15:54:55.678436       1 types.go:195] "Using all namespaces"
+I0506 15:54:55.678480       1 server.go:255] "Metric allow-denylisting" allowDenyStatus="Excluding the following lists that were on denylist: "
+W0506 15:54:55.678508       1 client_config.go:667] Neither --kubeconfig nor --master was specified.  Using the inClusterConfig.  This might not work.
+I0506 15:54:55.679003       1 utils.go:70] "Tested communication with server"
+I0506 15:54:55.683450       1 utils.go:75] "Run with Kubernetes cluster version" major="1" minor="35" gitVersion="v1.35.0" gitTreeState="clean" gitCommit="66452049f3d692768c39c797b21b793dce80314e" platform="linux/amd64"
+I0506 15:54:55.683464       1 utils.go:76] "Communication with server successful"
+I0506 15:54:55.683485       1 server.go:287] "Using annotations allowlist" annotationsAllowList={}
+I0506 15:54:55.683492       1 server.go:292] "Using labels allowlist" labelsAllowList={}
+I0506 15:54:55.683950       1 server.go:388] "Started metrics server" metricsServerAddress="[::]:8080"
+I0506 15:54:55.683982       1 metrics_handler.go:110] "Autosharding disabled"
+I0506 15:54:55.684121       1 tls_config.go:354] "Listening on" address="[::]:8080"
+I0506 15:54:55.684146       1 tls_config.go:357] "TLS is disabled." http2=false address="[::]:8080"
+I0506 15:54:55.684189       1 server.go:377] "Started kube-state-metrics self metrics server" telemetryAddress="[::]:8081"
+I0506 15:54:55.684437       1 tls_config.go:354] "Listening on" address="[::]:8081"
+I0506 15:54:55.684458       1 tls_config.go:357] "TLS is disabled." http2=false address="[::]:8081"
+I0506 15:54:55.685188       1 builder.go:294] "Active resources" activeStoreNames="certificatesigningrequests,configmaps,cronjobs,daemonsets,deployments,endpointslices,horizontalpodautoscalers,ingresses,jobs,leases,limitranges,mutatingwebhookconfigurations,namespaces,networkpolicies,nodes,persistentvolumeclaims,persistentvolumes,poddisruptionbudgets,pods,replicasets,replicationcontrollers,resourcequotas,secrets,services,statefulsets,storageclasses,validatingwebhookconfigurations,volumeattachments"
+sevtmcc@sevtdpassymn01:~/glass/1.mcc-app/2.auth-service$ kl prometheus-kube-prometheus-prometheus-0
+time=2026-05-10T14:28:19.051Z level=INFO source=main.go:1544 msg="updated GOGC" old=100 new=75
+time=2026-05-10T14:28:19.052Z level=INFO source=main.go:676 msg="Updating GOMAXPROCS=1: using minimum allowed GOMAXPROCS" component=automaxprocs
+time=2026-05-10T14:28:19.053Z level=INFO source=memlimit.go:198 msg="GOMEMLIMIT is updated" component=automemlimit package=github.com/KimMachineGun/automemlimit/memlimit GOMEMLIMIT=724775731 previous=9223372036854775807
+time=2026-05-10T14:28:19.053Z level=INFO source=main.go:769 msg="Starting Prometheus Server" mode=server version="(version=3.5.0, branch=HEAD, revision=8be3a9560fbdd18a94dedec4b747c35178177202)"
+time=2026-05-10T14:28:19.053Z level=INFO source=main.go:774 msg="operational information" build_context="(go=go1.24.6, platform=linux/amd64, user=root@eb58f9e6132b, date=20250814-10:37:06, tags=netgo,builtinassets)" host_details="(Linux 6.8.0-71-generic #71-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 22 16:52:38 UTC 2025 x86_64 prometheus-kube-prometheus-prometheus-0 (none))" fd_limits="(soft=524287, hard=524288)" vm_limits="(soft=unlimited, hard=unlimited)"
+time=2026-05-10T14:28:19.061Z level=INFO source=web.go:656 msg="Start listening for connections" component=web address=0.0.0.0:9090
+time=2026-05-10T14:28:19.062Z level=INFO source=main.go:1288 msg="Starting TSDB ..."
+time=2026-05-10T14:28:19.062Z level=INFO source=repair.go:54 msg="Found healthy block" component=tsdb mint=1778082626978 maxt=1778083200000 ulid=01KQZA12NVC1PAP7MCSYEFKSN9
+time=2026-05-10T14:28:19.063Z level=INFO source=repair.go:54 msg="Found healthy block" component=tsdb mint=1778083200118 maxt=1778090400000 ulid=01KQZAJJ7GCD9R65JJ511Q7J7R
+time=2026-05-10T14:28:19.076Z level=INFO source=main.go:1100 msg="Stopping scrape discovery manager..."
+time=2026-05-10T14:28:19.076Z level=INFO source=main.go:1114 msg="Stopping notify discovery manager..."
+time=2026-05-10T14:28:19.076Z level=INFO source=manager.go:190 msg="Stopping rule manager..." component="rule manager"
+time=2026-05-10T14:28:19.076Z level=INFO source=manager.go:206 msg="Rule manager stopped" component="rule manager"
+time=2026-05-10T14:28:19.076Z level=INFO source=main.go:1151 msg="Stopping scrape manager..."
+time=2026-05-10T14:28:19.076Z level=INFO source=main.go:1110 msg="Notify discovery manager stopped"
+time=2026-05-10T14:28:19.077Z level=INFO source=tls_config.go:347 msg="Listening on" component=web address=[::]:9090
+time=2026-05-10T14:28:19.077Z level=INFO source=tls_config.go:386 msg="TLS is disabled." component=web http2=false address=[::]:9090
+time=2026-05-10T14:28:19.077Z level=INFO source=main.go:1096 msg="Scrape discovery manager stopped"
+time=2026-05-10T14:28:19.077Z level=INFO source=manager.go:540 msg="Stopping notification manager..." component=notifier
+time=2026-05-10T14:28:19.077Z level=INFO source=manager.go:282 msg="Draining any remaining notifications..." component=notifier
+time=2026-05-10T14:28:19.077Z level=INFO source=manager.go:288 msg="Remaining notifications drained" component=notifier
+time=2026-05-10T14:28:19.077Z level=INFO source=main.go:1143 msg="Scrape manager stopped"
+time=2026-05-10T14:28:19.077Z level=INFO source=manager.go:176 msg="Starting rule manager..." component="rule manager"
+time=2026-05-10T14:28:19.077Z level=INFO source=manager.go:218 msg="Notification manager stopped" component=notifier
+time=2026-05-10T14:28:19.077Z level=INFO source=main.go:1421 msg="Notifier manager stopped"
+time=2026-05-10T14:28:19.077Z level=ERROR source=main.go:1431 msg="Fatal error" err="opening storage failed: /prometheus/chunks_head/000002: invalid magic number 0"
