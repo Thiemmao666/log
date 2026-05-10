@@ -1,0 +1,15 @@
+debug3: resolve_host: lookup ec2-3-39-252-235.ap-northeast-2.compute.amazonaws.com:8080
+debug3: ssh_connect_direct: entering
+debug1: Connecting to ec2-3-39-252-235.ap-northeast-2.compute.amazonaws.com [3.39.252.235] port 8080.
+debug1: Connection established.
+debug3: Failed to open file:D:/service/themestudio/theme-editor-global-dev-keypair.pem.pub error:2
+debug1: identity file .\\theme-editor-global-dev-keypair.pem type -1
+debug3: Failed to open file:D:/service/themestudio/theme-editor-global-dev-keypair.pem-cert error:2
+debug3: Failed to open file:D:/service/themestudio/theme-editor-global-dev-keypair.pem-cert.pub error:2
+debug3: failed to open file:D:/service/themestudio/theme-editor-global-dev-keypair.pem-cert error:2
+debug1: identity file .\\theme-editor-global-dev-keypair.pem-cert type -1
+debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5
+debug3: recv - from CB(2) ERROR:108, io:000001E386DF6E20
+kex_exchange_identification: read: Connection reset
+Connection reset by 3.39.252.235 port 8080
+PS D:\service\themestudio> ssh -i .\theme-editor-global
