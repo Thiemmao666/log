@@ -1,0 +1,16 @@
+a@a1:~$ sudo apt-get update
+Hit:1 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.31/deb  InRelease
+Err:2 http://archive.ubuntu.com/ubuntu focal InRelease
+  Connection failed [IP: 104.20.28.246 80]
+Err:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease
+  Connection failed [IP: 104.20.28.246 80]
+Err:4 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+  Connection failed [IP: 104.20.28.246 80]
+Err:5 http://archive.ubuntu.com/ubuntu focal-security InRelease
+  Connection failed [IP: 104.20.28.246 80]
+Reading package lists... Done
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/focal/InRelease  Connection failed [IP: 104.20.28.246 80]
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/focal-updates/InRelease  Connection failed [IP: 104.20.28.246 80]
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/focal-backports/InRelease  Connection failed [IP: 104.20.28.246 80]
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/focal-security/InRelease  Connection failed [IP: 104.20.28.246 80]
+W: Some index files failed to download. They have been ignored, or old ones used instead.
