@@ -11,3 +11,18 @@ time=2026-05-13T20:59:14.830Z level=WARN source=group.go:544 msg="Evaluating rul
 
 
 ts=2026-05-13T23:25:36.358309063Z level=error msg="Exporting failed. Dropping data." component_path=/ component_id=otelcol.exporter.otlp.to_tempo error="not retryable error: Permanent error: rpc error: code = Unimplemented desc = unknown service opentelemetry.proto.collector.metrics.v1.MetricsService" dropped_items=3
+
+
+ts=2026-05-13T23:31:05.732574906Z level=error msg="Exporting failed. Dropping data." component_path=/ component_id=otelcol.exporter.otlp.to_tempo error="not retryable error: Permanent error: rpc error: code = Unimplemented desc = unknown service opentelemetry.proto.collector.metrics.v1.MetricsService" dropped_items=18
+
+      otelcol.exporter.otlp "to_tempo" {
+        client {
+          endpoint = "http://107.114.34.109:4317"
+          tls {
+            insecure = true
+          }
+          headers = {
+            "X-Scope-OrgID" = "MOSS-GlASS",
+          }
+        }
+      }
