@@ -1,0 +1,1 @@
+docker login -u='meoluoimeonhac' -p='IWfbbfnVGVgMZ23sZgtOoXcuqcQiAajJ1SsA1NDKTcndKhdFmX8QgJW3y5yR8xFb' quay.io
